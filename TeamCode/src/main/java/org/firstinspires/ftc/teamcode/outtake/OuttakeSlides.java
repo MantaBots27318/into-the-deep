@@ -86,9 +86,9 @@ public class OuttakeSlides {
         else {
 
             // Configure motor
-            if (slides.shallMock()) { mMotor = new MotorMock("outtake-slides-left"); }
-            else if (slides.getHw().size() == 1) { mMotor = new MotorSingle(slides, hwm, "outtake-slides-left", logger); }
-            else if (slides.getHw().size() == 2) { mMotor = new MotorCoupled(slides, hwm, "outtake-slides-left", logger); }
+            if (slides.shallMock()) { mMotor = new MotorMock("outtake-slides"); }
+            else if (slides.getHw().size() == 1) { mMotor = new MotorSingle(slides, hwm, "outtake-slides", logger); }
+            else if (slides.getHw().size() == 2) { mMotor = new MotorCoupled(slides, hwm, "outtake-slides", logger); }
 
             if (!mMotor.isReady()) { mReady = false; status += " HW";}
             else {

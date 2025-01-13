@@ -48,7 +48,7 @@ public class Moving {
 
         mReady = true;
 
-        /// Get wheels and IMU parameters from configuration
+        // Get wheels and IMU parameters from configuration
         ConfMotor frontLeftWheel  = config.getMotor("front-left-wheel");
         ConfMotor frontRightWheel = config.getMotor("front-right-wheel");
         ConfMotor backLeftWheel   = config.getMotor("back-left-wheel");

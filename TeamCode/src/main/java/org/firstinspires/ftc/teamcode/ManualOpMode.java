@@ -17,13 +17,19 @@ public class ManualOpMode extends OpMode {
     @Override
     public void init(){
 
-        moving = new Moving();
-        collecting = new Collecting();
-        
-        moving.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad1);
-        collecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
-        
+        try {
+            moving = new Moving();
+            collecting = new Collecting();
+
+            moving.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad1);
+            collecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
+        }
+        catch(Exception e){
+            telemetry.addLine("Something went wrong") ;
+        }
+
     }
+    @Override
     public void loop (){
         
         moving.move();

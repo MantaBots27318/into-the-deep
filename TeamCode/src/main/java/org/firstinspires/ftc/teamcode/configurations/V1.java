@@ -36,16 +36,16 @@ public class V1 extends Configuration {
         mServos.put("intake-claw", new ConfServo("intakeClaw", false));                     // EH Servo 2     CSIn
 
         /* Outtake configuration */
-        mMotors.put("outtake-slides-left",new ConfMotor(
+       mMotors.put("outtake-slides",new ConfMotor(
                 "outtakeSlidesLeft",true, false,                              // EH Motor 0
                        "outtakeSlidesRight",false, false));                          // EH Motor 1
 
-        mServos.put("outtake-wrist-roll", new ConfServo("outtakeWristRoll", false));         // CH Servo 0     CSRoOut
-        mServos.put("outtake-claw", new ConfServo("outtakeClaw", false));                    // CH Servo 1     CSOut
-        mServos.put("outtake-elbow-pitch", new ConfServo(
+       mServos.put("outtake-wrist-roll", new ConfServo("outtakeWristRoll", false));         // CH Servo 0     CSRoOut
+       mServos.put("outtake-claw", new ConfServo("outtakeClaw", false));                    // CH Servo 1     CSOut
+       mServos.put("outtake-elbow-pitch", new ConfServo(
                 "outtakeElbowPitchLeft", false,                                                // CH Servo 2     CSPROut
                 "outtakeElbowPitchRight", false)                                                      // CH Servo 3     CSPLOut
-        );
+       );
 
         mMotors.get("intake-slides").addPosition("min",0 );
         mMotors.get("intake-slides").addPosition("transfer",177 );
@@ -102,7 +102,7 @@ public class V1 extends Configuration {
         mServos.get("outtake-claw").addPosition("microrelease", 0.65);
         mServos.get("outtake-claw").addPosition("open", 0.31);
 
-        mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.11);
+        mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.11);//0.11
         mServos.get("outtake-elbow-pitch").addPosition("drop", 0.026);
         mServos.get("outtake-elbow-pitch").addPosition("off", 0.05);
 
