@@ -226,12 +226,12 @@ public class Collecting {
         }
         else { wasDPadDownPressed = false; }
 
-        if(gamepad.dpad_right) {
-            logger.addLine(String.format("==> RETRACT"));
-            if(!wasDPadRightPressed){ this.retract() ;}
-            wasDPadRightPressed = true;
-        }
-        else { wasDPadRightPressed = false; }
+//        if(gamepad.dpad_right) {
+//            logger.addLine(String.format("==> RETRACT"));
+//            if(!wasDPadRightPressed){ this.retract() ;}
+//            wasDPadRightPressed = true;
+//        }
+//        else { wasDPadRightPressed = false; }
 
         if(gamepad.left_stick_x < 0) {
             logger.addLine(String.format("==> RDW IN WRS : " + intakeWrist.getPosition()));
