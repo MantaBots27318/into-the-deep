@@ -37,7 +37,7 @@ public class OuttakeElbow {
             "off",Position.OFF
     );
 
-    private static int      sTimeOut = 100; // Timeout in ms
+    private static int      sTimeOut = 1000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
@@ -108,14 +108,15 @@ public class OuttakeElbow {
 
     // Switch between the different positions of the arm, in the direction of the drop position
     public void moveUp() {
-        if(mPosition == Position.OFF)              { this.setPosition(Position.TRANSFER);          }
-        else if(mPosition == Position.TRANSFER)    { this.setPosition(Position.DROP); }
+         if(mPosition == Position.TRANSFER)    { this.setPosition(Position.OFF); }
+         else if(mPosition == Position.OFF)              { this.setPosition(Position.DROP);          }
+
     }
 
     // Switch between the different positions of the arm, in the direction of the off position
     public void moveDown() {
-        if(mPosition == Position.DROP)          { this.setPosition(Position.TRANSFER);         }
-        else if(mPosition == Position.TRANSFER) { this.setPosition(Position.OFF);          }
+        if(mPosition == Position.DROP)          { this.setPosition(Position.OFF);         }
+        else if(mPosition == Position.OFF) { this.setPosition(Position.TRANSFER );          }
     }
 }
 

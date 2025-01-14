@@ -167,7 +167,7 @@ public class OuttakeSlides {
 
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            mMotor.setPower(0.35);
+            mMotor.setPower(0.60);
             mTimer.arm(sTimeOut);
 
             mPosition = position;

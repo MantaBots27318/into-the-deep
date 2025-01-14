@@ -41,7 +41,7 @@ public class IntakeElbow {
             "off",  Position.OFF
     );
 
-    private static int      sTimeOut = 100; // Timeout in ms
+    private static int      sTimeOut = 1000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
