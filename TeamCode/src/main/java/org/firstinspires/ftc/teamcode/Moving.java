@@ -122,9 +122,9 @@ public class Moving {
 
         if (mReady) {
 
-            double multiplier = 0.45;
-            if (mGamepad.left_bumper)  { multiplier = 0.9; }
-            if (mGamepad.right_bumper) { multiplier = 0.25; }
+            double multiplier = 1.0;
+            //if (mGamepad.left_bumper)  { multiplier = 0.9; }
+            if (mGamepad.right_bumper) { multiplier = 0.4; }
 
             double y = -applyDeadzone(mGamepad.left_stick_y, 0.1);
             double x = applyDeadzone(mGamepad.left_stick_x, 0.1) * 1;

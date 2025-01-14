@@ -26,6 +26,7 @@ public class IntakeSlides {
     public enum Position {
         MIN,
         TRANSFER,
+        INIT,
         MAX,
         UNKNOWN
     };
@@ -33,6 +34,7 @@ public class IntakeSlides {
     private static final Map<String, Position> sConfToPosition = Map.of(
             "min",  Position.MIN,
             "transfer", Position.TRANSFER,
+            "init", Position.INIT,
             "max", Position.MAX
     );
 

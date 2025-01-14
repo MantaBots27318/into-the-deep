@@ -28,6 +28,7 @@ public class Collecting {
 
     public enum TransitionMode {
         NONE,
+        INIT,
         IS_MOVING_OUTTAKE_ARM,
         IS_MOVING_OUTTAKE_SLIDES,
         IS_MOVING_INTAKE_ARM,
@@ -273,6 +274,10 @@ public class Collecting {
         logger.addLine("TRANSITIONING : " + transitionMode);
 
         if (transitionMode == TransitionMode.NONE) {
+            transitionMode = TransitionMode.INIT;
+            intakeSlides.setPosition(IntakeSlides.Position.INIT);
+        }
+        if (transitionMode == TransitionMode.INIT && !intakeSlides.isMoving()) {
             transitionMode = TransitionMode.IS_MOVING_OUTTAKE_ARM;
             outtakeClaw.setPosition(OuttakeClaw.Position.OPEN);
             outtakeWrist.setPosition(OuttakeWrist.Position.NULL);
