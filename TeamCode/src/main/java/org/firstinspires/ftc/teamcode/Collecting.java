@@ -142,11 +142,11 @@ public class Collecting {
 
         if (gamepad.left_bumper)       {
             logger.addLine("==> EXT OUT SLD");
-            outtakeSlides.extend(0.1);
+            outtakeSlides.extend(0.8);
         }
         else if (gamepad.right_bumper) {
             logger.addLine("==> RLB OUT SLD");
-            outtakeSlides.rollback(0.1);
+            outtakeSlides.rollback(0.5);
         }
         else                            {
             outtakeSlides.stop();
@@ -161,11 +161,11 @@ public class Collecting {
 
         if(gamepad.left_trigger > 0 )                {
             logger.addLine("==> EXT IN SLD");
-            intakeSlides.extend(gamepad.left_trigger * 0.3);
+            intakeSlides.extend(gamepad.left_trigger * 0.6);
         }
         else if (gamepad.right_trigger > 0)          {
             logger.addLine("==> RLB IN SLD");
-            intakeSlides.rollback(gamepad.right_trigger * 0.3);
+            intakeSlides.rollback(gamepad.right_trigger * 0.6);
         }
         else                                         {
             intakeSlides.stop();

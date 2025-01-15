@@ -154,7 +154,7 @@ public class IntakeSlides {
 
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            mMotor.setPower(0.35);
+            mMotor.setPower(0.6);
             mTimer.arm(sTimeOut);
 
             mPosition = position;
