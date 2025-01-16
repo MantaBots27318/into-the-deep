@@ -25,7 +25,11 @@ import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 
 
 public class Collecting {
-
+    public enum ClawMode{
+        NONE,
+        IS_CLOSING,
+        IS_LIFTING_ARM,
+    }
     public enum TransitionMode {
         NONE,
         INIT,
@@ -51,7 +55,7 @@ public class Collecting {
 
     TransitionMode  transitionMode;
     RetractMode     retractMode;
-
+    ClawMode        clawMode;
     IntakeSlides    intakeSlides;
     IntakeArm       intakeArm;
     IntakeElbow     intakeElbow;
@@ -116,7 +120,7 @@ public class Collecting {
 
         transitionMode = TransitionMode.NONE;
         retractMode = RetractMode.NONE;
-
+        clawMode = ClawMode.NONE;
     }
 
     public void setHW(Configuration config, HardwareMap hwm, Telemetry tm, Gamepad gp) {
@@ -208,7 +212,14 @@ public class Collecting {
 
         if(gamepad.dpad_left) {
             logger.addLine(String.format("==> SWT IN CLW : " + intakeClaw.getPosition()));
-            if(!wasDPadLeftPressed){  intakeClaw.switchPosition(); }
+            if(!wasDPadLeftPressed){
+                if (intakeClaw.getPosition() == IntakeClaw.Position.OPEN){
+                    this.closing();
+                }
+                if(intakeClaw.getPosition() == IntakeClaw.Position.CLOSED){
+                    intakeClaw.setPosition(IntakeClaw.Position.OPEN);
+                }
+            }
             wasDPadLeftPressed = true;
         }
         else { wasDPadLeftPressed = false; }
@@ -264,6 +275,7 @@ public class Collecting {
 
         if(transitionMode != TransitionMode.NONE) { this.transition(); }
         if(retractMode != RetractMode.NONE)       { this.retract();    }
+        if(clawMode != ClawMode.NONE)             { this.closing();    }
 
         logger.addLine(intakeSlides.logPositions());
         logger.addLine(outtakeSlides.logPositions());
@@ -358,6 +370,20 @@ public class Collecting {
 
     }
 
-
+    public void closing(){
+        logger.addLine("CLOSING CLAW : " + clawMode);
+        if (clawMode == ClawMode.NONE){
+            intakeClaw.setPosition(IntakeClaw.Position.CLOSED);
+            clawMode = ClawMode.IS_CLOSING;
+        }
+        else if(clawMode == ClawMode.IS_CLOSING && !intakeClaw.isMoving()){
+            intakeArm.setPosition(IntakeArm.Position.OVER_SUBMERSIBLE);
+            clawMode = ClawMode.IS_LIFTING_ARM;
+        }
+        else if(clawMode == ClawMode.IS_LIFTING_ARM && !intakeArm.isMoving())
+        {
+            clawMode = ClawMode.NONE;
+        }
+    }
 }
 
