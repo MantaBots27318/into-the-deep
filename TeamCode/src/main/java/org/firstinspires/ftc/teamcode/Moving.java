@@ -39,7 +39,7 @@ public class Moving {
 
     Gamepad         mGamepad;
 
-    boolean         mIsFieldCentric = true;
+    boolean         mIsFieldCentric = false;
 
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger, Gamepad gp) {
 
@@ -122,9 +122,9 @@ public class Moving {
 
         if (mReady) {
 
-            double multiplier = 1.0;
-            //if (mGamepad.left_bumper)  { multiplier = 0.9; }
-            if (mGamepad.right_bumper) { multiplier = 0.4; }
+            double multiplier = 0.45;
+            if (mGamepad.left_bumper)  { multiplier = 0.2; }
+            if (mGamepad.right_bumper) { multiplier = 0.9; }
 
             double y = -applyDeadzone(mGamepad.left_stick_y, 0.1);
             double x = applyDeadzone(mGamepad.left_stick_x, 0.1) * 1;

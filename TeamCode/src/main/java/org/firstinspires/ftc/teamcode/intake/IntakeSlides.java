@@ -38,7 +38,7 @@ public class IntakeSlides {
             "max", Position.MAX
     );
 
-    private static int sTimeOut = 5000; // Timeout in ms
+    private static int sTimeOut = 2000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
@@ -154,7 +154,8 @@ public class IntakeSlides {
 
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            mMotor.setPower(0.6);
+            // mMotor.setPower(position==IntakeSlides.Position.TRANSFER? 0.9 : 0.6);
+            mMotor.setPower(1.0);
             mTimer.arm(sTimeOut);
 
             mPosition = position;

@@ -48,8 +48,8 @@ public class V1 extends Configuration {
        );
 
         mMotors.get("intake-slides").addPosition("min",0 );
-        mMotors.get("intake-slides").addPosition("transfer",177 );
-        mMotors.get("intake-slides").addPosition("init",230 );
+        mMotors.get("intake-slides").addPosition("transfer",187 );
+        mMotors.get("intake-slides").addPosition("init",300 );
         mMotors.get("intake-slides").addPosition("max",358 );
 
         /* Outtake motors reference positions */
