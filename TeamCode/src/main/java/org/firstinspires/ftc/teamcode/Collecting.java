@@ -169,18 +169,18 @@ public class Collecting {
         }
         else if (gamepad.right_trigger > 0)          {
             logger.addLine("==> RLB IN SLD");
-            intakeSlides.rollback(gamepad.right_trigger * 0.6);
+            intakeSlides.rollback(gamepad.right_trigger * 0.4);
         }
         else                                         {
             intakeSlides.stop();
         }
 
-        if(gamepad.left_stick_button) {
-            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
-            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
-            wasLeftStickButtonPressed = true;
-        }
-        else { wasLeftStickButtonPressed = false; }
+        //if(gamepad.left_stick_button) {
+//            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
+//            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
+//            wasLeftStickButtonPressed = true;
+        //}
+//        else { wasLeftStickButtonPressed = false; }
 
         if(gamepad.x)                 {
             logger.addLine(String.format("==> SWT OUT CLW : " + outtakeClaw.getPosition()));

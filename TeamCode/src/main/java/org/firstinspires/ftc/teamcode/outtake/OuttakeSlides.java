@@ -48,7 +48,7 @@ public class OuttakeSlides {
 
     );
 
-    private static int sTimeOut = 5000; // Timeout in ms
+    private static int sTimeOut = 1000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
