@@ -30,11 +30,9 @@ public class SmartTimer {
 
     public boolean isArmed()
     {
-        mLogger.addLine("" + mHasAlreadyBeenCalled);
         if(mHasAlreadyBeenCalled) {
             double delta = (System.nanoTime() - mStartTime) / 1_000_000.0;
             if (delta >= mTarget) { mIsRunning = false; }
-            mLogger.addLine("" + delta + " " + mIsRunning);
         }
         return mIsRunning;
     }

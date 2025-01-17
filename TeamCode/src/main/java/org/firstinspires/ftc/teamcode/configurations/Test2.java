@@ -35,14 +35,22 @@ public class Test2 extends Configuration {
                 "outtakeSlidesLeft",false,
                 "outtakeSlidesRight",false));        // EH Motor 1
 
+
         mMotors.get("intake-slides").addPosition("min",0 );
-        mMotors.get("intake-slides").addPosition("transfer",177 );
-        mMotors.get("intake-slides").addPosition("max",350 );
+        mMotors.get("intake-slides").addPosition("transfer",173 );
+        mMotors.get("intake-slides").addPosition("retracted",250 );
+        mMotors.get("intake-slides").addPosition("init",300 );
+        mMotors.get("intake-slides").addPosition("max",358 );
 
+        /* Outtake motors reference positions */
         mMotors.get("outtake-slides").addPosition("min",0 );
-        mMotors.get("outtake-slides").addPosition("transfer",0);
-        mMotors.get("outtake-slides").addPosition("max",4000 );
-
+        mMotors.get("outtake-slides").addPosition("transfer",0 );
+        mMotors.get("outtake-slides").addPosition("retracted",1300 );
+        mMotors.get("outtake-slides").addPosition("max",3726 );
+        mMotors.get("outtake-slides").addPosition("highBasket",10 );
+        mMotors.get("outtake-slides").addPosition("lowBasket",10 );
+        mMotors.get("outtake-slides").addPosition("lowSubmersible",10 );
+        mMotors.get("outtake-slides").addPosition("highSubmersible",10 );
 
         mServos.get("intake-wrist-roll").addPosition("-2", 0.27);
         mServos.get("intake-wrist-roll").addPosition("-1", 0.335);

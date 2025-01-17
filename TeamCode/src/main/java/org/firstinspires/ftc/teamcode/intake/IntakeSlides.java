@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.components.MotorComponent;
 import org.firstinspires.ftc.teamcode.components.MotorMock;
 import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
+import org.firstinspires.ftc.teamcode.outtake.OuttakeSlides;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 import java.util.LinkedHashMap;
@@ -26,6 +27,7 @@ public class IntakeSlides {
     public enum Position {
         MIN,
         TRANSFER,
+        RETRACT,
         INIT,
         MAX,
         UNKNOWN
@@ -34,6 +36,7 @@ public class IntakeSlides {
     private static final Map<String, Position> sConfToPosition = Map.of(
             "min",  Position.MIN,
             "transfer", Position.TRANSFER,
+            "retracted", Position.RETRACT,
             "init", Position.INIT,
             "max", Position.MAX
     );
@@ -54,7 +57,6 @@ public class IntakeSlides {
 
     // Check if the component is currently moving on command
     public boolean isMoving() {
-        mLogger.addLine("IN SLD isBusy : " + mMotor.isBusy() + " armed : " + mTimer.isArmed());
         return (mMotor.isBusy() && mTimer.isArmed());
     }
 
@@ -166,15 +168,25 @@ public class IntakeSlides {
         }
     }
 
+
+    public boolean isRetracted() {
+        boolean result = true;
+        if(mReady && mPositions.containsKey(Position.RETRACT)) {
+            mLogger.addLine("OUT SLD : Current position " + mMotor.getCurrentPosition() + ", Retract : " + mPositions.get(Position.RETRACT));
+            result = (mMotor.getCurrentPosition() < mPositions.get(Position.RETRACT));
+        }
+        return result;
+    }
+
     // Logging function
     public String logPositions()
     {
-        return "POS IN SLD : " + mMotor.logPositions();
+        String result = "";
+        if(mReady) {
+            result = "POS OUT SLD : " + mMotor.logPositions();
+        }
+        return result;
     }
-
-    public int    getEncoder() { return mMotor.getCurrentPosition();}
-
-
 
 }
 

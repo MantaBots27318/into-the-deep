@@ -90,7 +90,7 @@ public class OuttakeClaw {
         else        { logger.addLine("==>  OUT CLW : KO : " + status); }
 
         // Initialize position
-        this.setPosition(Position.OPEN);
+        this.setPosition(Position.CLOSED);
     }
 
     // Make the servo reach current position. A timer is armed, and the servo won't respond until it is unarmed.

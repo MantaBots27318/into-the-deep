@@ -37,7 +37,7 @@ public class IntakeClaw {
             "closed", Position.CLOSED
     );
 
-    private static int    sTimeOut = 200; // Timeout in ms
+    private static int    sTimeOut = 500; // Timeout in ms
 
     Telemetry             mLogger;        // Local logger
 

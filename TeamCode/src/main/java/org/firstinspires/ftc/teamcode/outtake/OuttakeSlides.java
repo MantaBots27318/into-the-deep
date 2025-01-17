@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
 
 /* Utils includes */
+import org.firstinspires.ftc.teamcode.intake.IntakeSlides;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 import java.util.LinkedHashMap;
@@ -31,6 +32,7 @@ public class OuttakeSlides {
         MAX,
         UNKNOWN,
         TRANSFER,
+        RETRACT,
         HIGH_BASKET,
         LOW_BASKET,
         LOW_SUBMERSIBLE,
@@ -39,6 +41,7 @@ public class OuttakeSlides {
 
     private static final Map<String,Position> sConfToPosition = Map.of(
             "transfer", Position.TRANSFER,
+            "retracted", Position.RETRACT,
             "highBasket",  Position.HIGH_BASKET ,
             "lowBasket",     Position.LOW_BASKET,
             "lowSubmersible",     Position.LOW_SUBMERSIBLE,
@@ -66,7 +69,6 @@ public class OuttakeSlides {
 
     // Check if the component is currently moving on command
     public boolean isMoving() {
-        mLogger.addLine("OUT SLD isBusy : " + mMotor.isBusy() + " armed : " + mTimer.isArmed());
         return (mMotor.isBusy() && mTimer.isArmed());
     }
 
@@ -178,13 +180,26 @@ public class OuttakeSlides {
         }
     }
 
+    public boolean isRetracted() {
+        boolean result = true;
+        if(mReady && mPositions.containsKey(Position.RETRACT)) {
+            mLogger.addLine("OUT SLD : Current position " + mMotor.getCurrentPosition() + ", Retract : " + mPositions.get(Position.RETRACT));
+            result = (mMotor.getCurrentPosition() < mPositions.get(Position.RETRACT));
+        }
+        return result;
+    }
+
     // Logging function
     public String logPositions()
     {
-        return "POS OUT SLD : " + mMotor.logPositions();
+
+        String result = "";
+        if(mReady) {
+            result = "POS OUT SLD : " + mMotor.logPositions();
+        }
+        return result;
     }
 
-    public int    getEncoder() { return mMotor.getCurrentPosition();}
 
 }
 
