@@ -183,7 +183,7 @@ public class IntakeSlides {
     {
         String result = "";
         if(mReady) {
-            result = "POS OUT SLD : " + mMotor.logPositions();
+            result = "POS IN SLD : " + mMotor.logPositions();
         }
         return result;
     }

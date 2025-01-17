@@ -158,7 +158,7 @@ public class Collecting {
         }
 
         if(gamepad.right_stick_button) {
-            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
+            logger.addLine(String.format("==> OUT SLD TO TRANSFER"));
             if(!wasRightStickButtonPressed) { outtakeSlides.setPosition(OuttakeSlides.Position.TRANSFER ); }
             wasRightStickButtonPressed = true;
         }
@@ -176,12 +176,12 @@ public class Collecting {
             intakeSlides.stop();
         }
 
-        if(gamepad.left_stick_button) {
-            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
-            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
-            wasLeftStickButtonPressed = true;
-        }
-        else { wasLeftStickButtonPressed = false; }
+//        if(gamepad.left_stick_button) {
+//            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
+//            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
+//            wasLeftStickButtonPressed = true;
+//        }
+//        else { wasLeftStickButtonPressed = false; }
 
         if(gamepad.x)                 {
             logger.addLine(String.format("==> SWT OUT CLW : " + outtakeClaw.getPosition()));
