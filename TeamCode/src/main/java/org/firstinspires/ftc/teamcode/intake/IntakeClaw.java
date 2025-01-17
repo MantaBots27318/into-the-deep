@@ -29,7 +29,7 @@ public class IntakeClaw {
         OPEN,
         MICRORELEASED,
         CLOSED
-    };
+    }
 
     private static final Map<String, Position> sConfToPosition = Map.of(
             "open",  Position.OPEN,
@@ -37,7 +37,7 @@ public class IntakeClaw {
             "closed", Position.CLOSED
     );
 
-    private static int    sTimeOut = 500; // Timeout in ms
+    private static final int    sTimeOut = 500; // Timeout in ms
 
     Telemetry             mLogger;        // Local logger
 

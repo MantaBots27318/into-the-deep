@@ -29,7 +29,7 @@ public class OuttakeElbow {
         TRANSFER,
         DROP,
         OFF
-    };
+    }
 
     private static final Map<String, Position> sConfToPosition = Map.of(
             "transfer", Position.TRANSFER,
@@ -37,7 +37,7 @@ public class OuttakeElbow {
             "off",Position.OFF
     );
 
-    private static int      sTimeOut = 1000; // Timeout in ms
+    private static final int      sTimeOut = 1000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 

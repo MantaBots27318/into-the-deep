@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.components.MotorComponent;
 import org.firstinspires.ftc.teamcode.components.MotorMock;
 import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
-import org.firstinspires.ftc.teamcode.outtake.OuttakeSlides;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 import java.util.LinkedHashMap;
@@ -31,7 +30,7 @@ public class IntakeSlides {
         INIT,
         MAX,
         UNKNOWN
-    };
+    }
 
     private static final Map<String, Position> sConfToPosition = Map.of(
             "min",  Position.MIN,
@@ -41,14 +40,14 @@ public class IntakeSlides {
             "max", Position.MAX
     );
 
-    private static int sTimeOut = 2000; // Timeout in ms
+    private static final int sTimeOut = 2000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
     boolean                 mReady;       // True if component is able to fulfil its mission
     SmartTimer              mTimer;       // Timer for timeout management
 
-    Position                mPosition;    // Current slide position (unknown if movimg freely)
+    Position                mPosition;    // Current slide position (unknown if moving freely)
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
 
@@ -75,7 +74,7 @@ public class IntakeSlides {
         if(slides == null)  { mReady = false; status += " CONF";}
         else {
 
-            // Build motor based on configuratioh
+            // Build motor based on configuration
             if (slides.shallMock()) { mMotor = new MotorMock("intake-slides"); }
             else if (slides.getHw().size() == 1) { mMotor = new MotorSingle(slides, hwm, "intake-slides", logger); }
             else if (slides.getHw().size() == 2) { mMotor = new MotorCoupled(slides, hwm, "intake-slides", logger); }
@@ -172,7 +171,7 @@ public class IntakeSlides {
     public boolean isRetracted() {
         boolean result = true;
         if(mReady && mPositions.containsKey(Position.RETRACT)) {
-            mLogger.addLine("OUT SLD : Current position " + mMotor.getCurrentPosition() + ", Retract : " + mPositions.get(Position.RETRACT));
+            mLogger.addLine("IN SLD : Current position " + mMotor.getCurrentPosition() + ", Retract : " + mPositions.get(Position.RETRACT));
             result = (mMotor.getCurrentPosition() < mPositions.get(Position.RETRACT));
         }
         return result;

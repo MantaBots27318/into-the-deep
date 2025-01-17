@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.outtake;
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /* FTC Controller includes */
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -19,7 +18,6 @@ import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
 
 /* Utils includes */
-import org.firstinspires.ftc.teamcode.intake.IntakeSlides;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 import java.util.LinkedHashMap;
@@ -37,7 +35,7 @@ public class OuttakeSlides {
         LOW_BASKET,
         LOW_SUBMERSIBLE,
         HIGH_SUBMERSIBLE
-    };
+    }
 
     private static final Map<String,Position> sConfToPosition = Map.of(
             "transfer", Position.TRANSFER,
@@ -51,21 +49,18 @@ public class OuttakeSlides {
 
     );
 
-    private static int sTimeOut = 5000; // Timeout in ms
+    private static final int sTimeOut = 5000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
     boolean                 mReady;       // True if component is able to fulfil its mission
     SmartTimer              mTimer;       // Timer for timeout management
 
-    Position                mPosition;    // Current slide position (unknown if movimg freely
+    Position                mPosition;    // Current slide position (unknown if moving freely
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
 
     Map<Position, Integer>  mPositions;    // Link between positions enumerated and encoder positions
-
-    //TouchSensor            mTouchSensorRight;
-    //TouchSensor            mTouchSensorLeft;
 
     // Check if the component is currently moving on command
     public boolean isMoving() {
@@ -82,9 +77,6 @@ public class OuttakeSlides {
         mTimer = new SmartTimer(mLogger);
 
         String status = "";
-
-        //mTouchSensorRight = hwm.touchSensor.get("outtakeSlidesRightTouch");
-        //mTouchSensorLeft = hwm.touchSensor.get("outtakeSlidesLeftTouch");
 
         ConfMotor slides = config.getMotor("outtake-slides");
         if(slides == null)  { mReady = false; status += " CONF";}
@@ -126,9 +118,6 @@ public class OuttakeSlides {
 
             mMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             mPosition = Position.UNKNOWN;
-
-            boolean shall_work = (
-                    (mMotor.getCurrentPosition() < mPositions.get(Position.MAX)));
 
             if(mMotor.getCurrentPosition() < mPositions.get(Position.MAX)){
                 mMotor.setPower(Power);

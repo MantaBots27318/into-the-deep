@@ -158,7 +158,7 @@ public class Collecting {
         }
 
         if(gamepad.right_stick_button) {
-            logger.addLine(String.format("==> OUT SLD TO TRANSFER"));
+            logger.addLine("==> OUT SLD TO TRANSFER");
             if(!wasRightStickButtonPressed) { outtakeSlides.setPosition(OuttakeSlides.Position.TRANSFER ); }
             wasRightStickButtonPressed = true;
         }
@@ -205,7 +205,7 @@ public class Collecting {
         else { wasAPressed = false; }
 
         if(gamepad.b) {
-            logger.addLine(String.format("==> TRANSITION"));
+            logger.addLine("==> TRANSITION");
             if(!wasBPressed){ this.transition() ;}
             wasBPressed = true;
         }

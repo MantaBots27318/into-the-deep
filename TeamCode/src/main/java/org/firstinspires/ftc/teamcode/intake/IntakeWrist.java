@@ -1,9 +1,5 @@
 package org.firstinspires.ftc.teamcode.intake;
 
-/* System includes */
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,7 +34,7 @@ public class IntakeWrist {
         FOUR,
         FIVE,
         SIX
-    };
+    }
     private static final Map<String, Position> sConfToPosition = Map.of(
             "-2", Position.MINUS_TWO,
             "-1", Position.MINUS_ONE,
@@ -50,7 +46,7 @@ public class IntakeWrist {
             "5", Position.FIVE,
             "6", Position.SIX
     );
-    private static int sTimeOut = 100; // Timeout in ms
+    private static final int sTimeOut = 100; // Timeout in ms
 
     Telemetry             mLogger;      // Local logger
 
