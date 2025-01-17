@@ -48,7 +48,7 @@ public class OuttakeSlides {
 
     );
 
-    private static int sTimeOut = 1000; // Timeout in ms
+    private static int sTimeOut = 5000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
@@ -65,7 +65,10 @@ public class OuttakeSlides {
     //TouchSensor            mTouchSensorLeft;
 
     // Check if the component is currently moving on command
-    public boolean isMoving() { return (mMotor.isBusy() && mTimer.isArmed());}
+    public boolean isMoving() {
+        mLogger.addLine("OUT SLD isBusy : " + mMotor.isBusy() + " armed : " + mTimer.isArmed());
+        return (mMotor.isBusy() && mTimer.isArmed());
+    }
 
     // Initialize component from configuration
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger) {
@@ -167,7 +170,7 @@ public class OuttakeSlides {
 
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            mMotor.setPower(0.9);
+            mMotor.setPower(1.0);
             mTimer.arm(sTimeOut);
 
             mPosition = position;
@@ -181,7 +184,7 @@ public class OuttakeSlides {
         return "POS OUT SLD : " + mMotor.logPositions();
     }
 
-
+    public int    getEncoder() { return mMotor.getCurrentPosition();}
 
 }
 

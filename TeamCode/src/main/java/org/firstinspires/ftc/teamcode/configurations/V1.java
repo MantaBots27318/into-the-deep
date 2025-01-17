@@ -68,7 +68,7 @@ public class V1 extends Configuration {
         mServos.get("intake-arm-pitch").addPosition("grab", 0.39);
         mServos.get("intake-arm-pitch").addPosition("off", 1.0);
 
-        mServos.get("intake-elbow-pitch").addPosition("transfer", 0.18);
+        mServos.get("intake-elbow-pitch").addPosition("transfer", 0.2);
         mServos.get("intake-elbow-pitch").addPosition("grab", 0.68);
         mServos.get("intake-elbow-pitch").addPosition("look", 0.70);
         mServos.get("intake-elbow-pitch").addPosition("overSub", 0.73);

@@ -144,13 +144,14 @@ public class Collecting {
 
     public void move() {
 
-        if (gamepad.left_bumper)       {
+        if (gamepad.left_bumper && (intakeSlides.getEncoder() < 200))
+        {
             logger.addLine("==> EXT OUT SLD");
             outtakeSlides.extend(0.8);
         }
         else if (gamepad.right_bumper) {
             logger.addLine("==> RLB OUT SLD");
-            outtakeSlides.rollback(0.5);
+            outtakeSlides.rollback(0.7);
         }
         else                            {
             outtakeSlides.stop();
@@ -163,7 +164,7 @@ public class Collecting {
         }
         else { wasRightStickButtonPressed = false; }
 
-        if(gamepad.left_trigger > 0 )                {
+        if((gamepad.left_trigger > 0 ) && (outtakeSlides.getEncoder() < 1300)) {
             logger.addLine("==> EXT IN SLD");
             intakeSlides.extend(gamepad.left_trigger * 0.6);
         }

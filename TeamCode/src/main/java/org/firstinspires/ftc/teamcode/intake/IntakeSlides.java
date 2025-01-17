@@ -53,7 +53,10 @@ public class IntakeSlides {
 
 
     // Check if the component is currently moving on command
-    public boolean isMoving() { return (mMotor.isBusy() && mTimer.isArmed()); }
+    public boolean isMoving() {
+        mLogger.addLine("IN SLD isBusy : " + mMotor.isBusy() + " armed : " + mTimer.isArmed());
+        return (mMotor.isBusy() && mTimer.isArmed());
+    }
 
     // Initialize component from configuration
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger) {
@@ -168,6 +171,10 @@ public class IntakeSlides {
     {
         return "POS IN SLD : " + mMotor.logPositions();
     }
+
+    public int    getEncoder() { return mMotor.getCurrentPosition();}
+
+
 
 }
 
