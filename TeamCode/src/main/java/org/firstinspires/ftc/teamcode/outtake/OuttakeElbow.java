@@ -29,12 +29,14 @@ public class OuttakeElbow {
         TRANSFER,
         DROP,
         OFF
+
     }
 
     private static final Map<String, Position> sConfToPosition = Map.of(
             "transfer", Position.TRANSFER,
             "drop",Position.DROP,
             "off",Position.OFF
+
     );
 
     private static final int      sTimeOut = 1000; // Timeout in ms

@@ -48,10 +48,10 @@ public class V1 extends Configuration {
        );
 
         mMotors.get("intake-slides").addPosition("min",0 );
-        mMotors.get("intake-slides").addPosition("transfer",173 );
+        mMotors.get("intake-slides").addPosition("transfer",180 );
         mMotors.get("intake-slides").addPosition("retracted",250 );
         mMotors.get("intake-slides").addPosition("init",300 );
-        mMotors.get("intake-slides").addPosition("max",358 );
+        mMotors.get("intake-slides").addPosition("max",315 );
 
         /* Outtake motors reference positions */
         mMotors.get("outtake-slides").addPosition("min",0 );
@@ -106,8 +106,8 @@ public class V1 extends Configuration {
         mServos.get("outtake-claw").addPosition("open", 0.31);
 
         mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.105);//0.11
-        mServos.get("outtake-elbow-pitch").addPosition("drop", 0.0260);
-        mServos.get("outtake-elbow-pitch").addPosition("off", 0.05);
+        mServos.get("outtake-elbow-pitch").addPosition("drop", 0.05);
+        mServos.get("outtake-elbow-pitch").addPosition("off", 0.08);
 
     }
 
