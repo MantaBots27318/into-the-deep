@@ -105,16 +105,4 @@ public class Tuning extends Configuration {
 
     }
 
-    protected void initializeTuning() {
-        mSingleServos.put("intake-arm-left-pitch", new ConfServo("intakeArmPitchLeft", false));
-        mSingleServos.put("intake-arm-right-pitch", new ConfServo("intakeArmPitchRight", true));
-        mSingleServos.put("intake-elbow-pitch", new ConfServo("intakeElbowPitch", false));
-        mSingleServos.put("intake-wrist-roll", new ConfServo("intakeWristRoll", false));
-        mSingleServos.put("intake-claw", new ConfServo("intakeClaw", false));
-
-        mSingleServos.put("outtake-wrist-roll", new ConfServo("outtakeWristRoll", false));
-        mSingleServos.put("outtake-claw", new ConfServo("outtakeClaw", false));
-        mSingleServos.put("outtake-elbow-left-pitch", new ConfServo("outtakeElbowPitchLeft", false));
-        mSingleServos.put("outtake-elbow-right-pitch", new ConfServo("outtakeElbowPitchRight", true));
-    }
 }

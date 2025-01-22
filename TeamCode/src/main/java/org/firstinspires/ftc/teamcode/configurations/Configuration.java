@@ -53,11 +53,9 @@ abstract public class Configuration {
 
     // Abstract method for initializing specific configurations
     protected abstract void initialize();
-    protected abstract void initializeTuning();
 
     // Constructor
     public Configuration() {
         initialize();
-        initializeTuning();
     }
 }

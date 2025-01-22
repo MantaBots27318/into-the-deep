@@ -36,6 +36,17 @@ public class ConfServo {
         mShallMock    = false;
     }
 
+    public ConfServo(ConfServo Configuration)
+    {
+        mShallMock = Configuration.mShallMock;
+        for (Map.Entry<String, Boolean> hw : Configuration.mHw.entrySet()) {
+            mHw.put(hw.getKey(),hw.getValue());
+        }
+        for (Map.Entry<String, Double> pos : Configuration.mPositions.entrySet()) {
+            mPositions.put(pos.getKey(),pos.getValue());
+        }
+    }
+
     public void addHw(String Name, boolean ShallReverse) { mHw.put(Name,ShallReverse);  }
     public void addPosition(String Name, Double Value)   { mPositions.put(Name, Value); }
 

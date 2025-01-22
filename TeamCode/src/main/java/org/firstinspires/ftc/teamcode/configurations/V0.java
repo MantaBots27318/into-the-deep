@@ -24,7 +24,4 @@ public class V0 extends Configuration {
 
     }
 
-    protected void initializeTuning() {
-
-    }
 }

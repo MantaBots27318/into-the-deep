@@ -26,9 +26,14 @@ public class Test2 extends Configuration {
         mMotors.put("intake-slides",new ConfMotor(
                 "intakeSlidesLeft",true,
                 "intakeSlidesRight",true));
-         mServos.put("intake-wrist-roll", new ConfServo("left", false));           // CH Servo 4     CSRoIn
-        mServos.put("intake-claw", new ConfServo("right", false));                      // EH Servo 2     CSIn
-
+        mServos.put("intake-wrist-roll", new ConfServo("left", false));
+        mServos.put("intake-claw", new ConfServo("right", false));
+        mServos.put("outtake-wrist-roll", new ConfServo("left", true));
+        mServos.put("outtake-claw", new ConfServo("right", true));
+        mServos.put("outtake-elbow-pitch", new ConfServo(
+                "left", false,
+                "right", true));
+        mServos.put("toto", new ConfServo("unknown", true));
 
         /* Outtake configuration */
         mMotors.put("outtake-slides",new ConfMotor(
@@ -65,11 +70,6 @@ public class Test2 extends Configuration {
         mServos.get("intake-claw").addPosition("closed", 1.0);
         mServos.get("intake-claw").addPosition("microrelease", 0.98);
         mServos.get("intake-claw").addPosition("open", 0.62);
-
-    }
-
-    protected void initializeTuning() {
-
 
     }
 }

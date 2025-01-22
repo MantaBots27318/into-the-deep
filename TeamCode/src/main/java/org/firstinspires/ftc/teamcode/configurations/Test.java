@@ -35,10 +35,4 @@ public class Test extends Configuration {
 
     }
 
-    protected void initializeTuning() {
-
-        mSingleServos.put("intake-arm-left-pitch", new ConfServo("left", true));
-        mSingleServos.put("intake-arm-right-pitch", new ConfServo("right", false));
-
-    }
 }

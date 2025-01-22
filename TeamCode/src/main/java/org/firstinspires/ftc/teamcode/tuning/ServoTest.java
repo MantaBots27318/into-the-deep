@@ -1,131 +1,350 @@
 package org.firstinspires.ftc.teamcode.tuning;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+/* System includes */
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
+/* Qualcomm includes */
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.configurations.Configuration;
+/* Acmerobotics includes */
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.ValueProvider;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.Collections;
-import java.util.Comparator;
+/* FtcController includes */
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+/* Local includes */
+import org.firstinspires.ftc.teamcode.configurations.Configuration;
+import org.firstinspires.ftc.teamcode.configurations.ConfServo;
+
 
 @Config
 @TeleOp(name = "ServoTest")
 public class ServoTest extends LinearOpMode {
 
-    public static double   incrementStep  = 0.01;
-    public static double   targetPos      = 0.0;
-    public static long     sleepMs        = 200;
-    public static boolean  reverseForce   = false;
-    public static boolean  reverseFromConf = true;
 
-    private static boolean holdPosition   = false;
+    public static String                ALL_SERVOS      = "";
+    public static String                CURRENT_SERVO   = "";
+    public static double                INCREMENT_STEP  = 0.01;
+    public static long                  SLEEP_MS        = 200;
+    public static double                TARGET_POS      = 0.0;
+    public static String                UPDATED_CONF    = "";
+    public static boolean               HOLD_POSITION   = false;
 
-    private final Map<String,Servo>                 servos = new HashMap<>();
-    List<Map.Entry<String, Servo>>                  entryList;
-    public ListIterator<Map.Entry<String, Servo>>   iterator;
-    Map.Entry<String,Servo>                         current;
+    private static List<String>         mAllServos      = new ArrayList<>();
+    private final  Map<String,Servo>    mServos         = new LinkedHashMap<>();
+     private String                     mCurrentServo   = "";
+    private Map<String,ConfServo>       mCurrentConf    = new LinkedHashMap<>();
+
+    private ReverseProvider             mFirstReverse;
+    private ReverseProvider             mSecondReverse;
+    private ModeProvider                mMode;
 
     @Override
     public void runOpMode() {
 
         telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
+        /* Load all servos name into list */
+        mAllServos.clear();
+        mCurrentConf.clear();
+        ALL_SERVOS = "";
         Configuration.s_Current.getForTuning().forEach((key, value) -> {
-            Map.Entry<String, Boolean> hw = value.getHw(0);
-            Servo temp = null;
-            if(hw != null) { temp = hardwareMap.tryGet(Servo.class,hw.getKey());}
-            if( reverseFromConf) {
-                if (temp != null && value.getHw(0).getValue()) {
-                    temp.setDirection(Servo.Direction.REVERSE);
-                }
-                else if (temp != null) {
-                    temp.setDirection(Servo.Direction.FORWARD);
-                }
-            }
-            else { temp.setDirection(Servo.Direction.FORWARD); }
-            if (temp != null && reverseForce) { temp.setDirection(Servo.Direction.REVERSE); }
-
-            if(temp != null) { servos.put(key,temp); }
+            mAllServos.add(key);
+            ALL_SERVOS += key + "; ";
+            mCurrentConf.put(key,new ConfServo(value));
         });
-
-        if (!servos.isEmpty()) {
-
-            entryList = new ArrayList<>(servos.entrySet());
-
-            iterator = entryList.listIterator();
-            if (iterator.hasNext()) {
-                current = iterator.next();
-                targetPos = current.getValue().getPosition();
-            }
-
-        }
-        telemetry.addLine("Found " + servos.size() + " servos to tune");
-
+        if((CURRENT_SERVO.length() == 0) && (mAllServos.size() != 0)) { CURRENT_SERVO = mAllServos.get(0); }
+        FtcDashboard.getInstance().updateConfig();
+        telemetry.update();
+        mMode = new ModeProvider();
+        
         waitForStart();
 
-        // Scan servo till stop pressed.
-        while(opModeIsActive() && !servos.isEmpty()) {
-            // Toggle caching position mode
-            if (gamepad1.a) {
-                holdPosition = !holdPosition;
+        while(opModeIsActive() && !mAllServos.isEmpty()) {
+
+            telemetry.clear();
+
+            /* -------------- Update Servo if needed --------------- */
+            if((mCurrentServo != CURRENT_SERVO) || this.wasReverseChanged()) {
+
+                // Stop servos if they don't need to hold
+                if (!HOLD_POSITION) { this.stopServos(); }
+
+                mCurrentServo = CURRENT_SERVO;
+
+                // Load servos
+                this.updateCurrentServos(mCurrentServo);
+                mMode.set(Mode.FIRST);
+                TARGET_POS = this.getServosPosition();
+
+                // Adapt configuration
+                if(this.mServos.size() >= 1) {
+                    mFirstReverse = new ReverseProvider(mCurrentConf.get(mCurrentServo).getHw(0));
+                    FtcDashboard.getInstance().addConfigVariable(this.getClass().getSimpleName(),"REVERSE_CONF_1",mFirstReverse);
+                }
+                else {
+                    FtcDashboard.getInstance().removeConfigVariable(this.getClass().getSimpleName(),"REVERSE_CONF_1");
+                }
+                if(this.mServos.size() >= 2) {
+                    mSecondReverse = new ReverseProvider(mCurrentConf.get(mCurrentServo).getHw(1));
+                    FtcDashboard.getInstance().addConfigVariable(this.getClass().getSimpleName(),"REVERSE_CONF_2",mSecondReverse);
+                    FtcDashboard.getInstance().addConfigVariable(this.getClass().getSimpleName(),"MODE",mMode);
+                }
+                else {
+                    FtcDashboard.getInstance().removeConfigVariable(this.getClass().getSimpleName(),"REVERSE_CONF_2");
+                    FtcDashboard.getInstance().removeConfigVariable(this.getClass().getSimpleName(),"MODE");
+                }
+
+                // Update configuration
+                UPDATED_CONF = this.updateConf();
+
+                // Start servos
+                this.startServos();
+
+                FtcDashboard.getInstance().updateConfig();
             }
 
-            // Cycle through servos with X/Y buttons
-            if (gamepad1.x) {
-                if (!holdPosition) {
-                    // Disable PWM for the current servo if hold position is disabled
-                    current.getValue().getController().pwmDisable();
-                }
-                if (iterator.hasNext()) {
-                    current = iterator.next();
-                } else {
-                    iterator = entryList.listIterator();
-                }
-                targetPos = current.getValue().getPosition();
-                current.getValue().getController().pwmEnable(); // Enable PWM for the new servo
-            } else if (gamepad1.y) {
-                if (!holdPosition) {
-                    // Disable PWM for the current servo if hold position is disabled
-                    current.getValue().getController().pwmDisable();
-                }
-                if (iterator.hasPrevious()) {
-                    current = iterator.previous();
-                } else {
-                    iterator = entryList.listIterator(entryList.size());
-                }// Enable PWM for the new servo
-                targetPos = current.getValue().getPosition();
-                current.getValue().getController().pwmEnable();
+            
+            /* ------------------ Manage controls ------------------ */
+
+            // Cycle through servos with DPAD buttons
+            if (gamepad1.dpad_up) {
+
+                // Step to next servos name
+                int currentIndex = this.getIndexFromServoName(mCurrentServo);
+                if (currentIndex < (mAllServos.size() - 1)) { currentIndex++; }
+                else { currentIndex = 0; }
+                CURRENT_SERVO = mAllServos.get(currentIndex);
+                FtcDashboard.getInstance().updateConfig();
+
+            }
+            else if (gamepad1.dpad_down) {
+
+                // Step to previous servos name
+                int currentIndex = this.getIndexFromServoName(mCurrentServo);
+                if (currentIndex > 0) { currentIndex--; }
+                else { currentIndex = mAllServos.size() - 1; }
+                CURRENT_SERVO = mAllServos.get(currentIndex);
+                FtcDashboard.getInstance().updateConfig();
+
             }
 
             // Adjust servo position with Left/Right bumpers
             if (gamepad1.left_bumper) {
-                targetPos = Math.max(0.00, targetPos - incrementStep); // Decrease position but don't go below 0
+                TARGET_POS = Math.max(0.00, TARGET_POS - INCREMENT_STEP); // Decrease position but don't go below 0
             } else if (gamepad1.right_bumper) {
-                targetPos = Math.min(1.00, targetPos + incrementStep); // Increase position but don't exceed 1
+                TARGET_POS = Math.min(1.00, TARGET_POS + INCREMENT_STEP); // Increase position but don't exceed 1
             }
 
-            // Set the current servo to the target position
-            current.getValue().setPosition(targetPos);
+            this.setServosPosition(TARGET_POS);
 
             // Display telemetry
-            telemetry.addData("Servo", current.getKey());
-            telemetry.addData("Position", targetPos);
-            telemetry.addData("Holding position", holdPosition);
-            telemetry.addData("Reverse", current.getValue().getDirection());
+            this.logServosState(telemetry);
             telemetry.update();
 
-            sleep(sleepMs);
+            sleep(SLEEP_MS);
 
         }
 
     }
+
+    private int getIndexFromServoName(String name) {
+        int result = -1;
+        for (int i_servo = 0; i_servo < mAllServos.size(); i_servo++) {
+            if (mAllServos.get(i_servo).equals(CURRENT_SERVO)) {
+                result = i_servo;
+            }
+        }
+        return result;
+    }
+
+    private void updateCurrentServos(String name) {
+        mServos.clear();
+        if(mCurrentConf.containsKey(name)) {
+            mCurrentConf.get(name).getHw().forEach((key, value) -> {
+                Servo servo = hardwareMap.tryGet(Servo.class,key);
+                if (servo != null) {
+                    if(value) { servo.setDirection(Servo.Direction.REVERSE); }
+                    else { servo.setDirection(Servo.Direction.FORWARD); }
+                    mServos.put(key,servo);
+                }
+            });
+        }
+    }
+
+    private void stopServos()
+    {
+        mServos.forEach((key, value) -> {
+            value.getController().pwmDisable();
+        });
+    }
+
+    private void startServos()
+    {
+        mServos.forEach((key, value) -> {
+            value.getController().pwmEnable();
+        });
+    }
+
+    private double getServosPosition()
+    {
+        double result = -1;
+
+        Servo first = null;
+        Servo second = null;
+
+        ConfServo conf = mCurrentConf.get(mCurrentServo);
+        if(conf.getHw().size() >= 1) {
+            if (mServos.containsKey(conf.getHw(0).getKey())) {
+                first = mServos.get(conf.getHw(0).getKey());
+            }
+        }
+        if(conf.getHw().size() >= 2) {
+            if (mServos.containsKey(conf.getHw(1).getKey())) {
+                second = mServos.get(conf.getHw(1).getKey());
+            }
+        }
+
+        if ((first != null) && (mMode.get() == Mode.FIRST || mMode.get() == Mode.BOTH)) {
+            result = first.getPosition();
+        }
+        if ((second != null) && (mMode.get() == Mode.SECOND || mMode.get() == Mode.BOTH)) {
+            result = second.getPosition();
+        }
+        return result;
+    }
+
+    private void setServosPosition( double position)
+    {
+        Servo first = null;
+        Servo second = null;
+
+        ConfServo conf = mCurrentConf.get(mCurrentServo);
+        if(conf.getHw().size() >= 1) {
+            if (mServos.containsKey(conf.getHw(0).getKey())) {
+                first = mServos.get(conf.getHw(0).getKey());
+            }
+        }
+        if(conf.getHw().size() >= 2) {
+            if (mServos.containsKey(conf.getHw(1).getKey())) {
+                second = mServos.get(conf.getHw(1).getKey());
+            }
+        }
+
+        if ((first != null) && (mMode.get() == Mode.FIRST || mMode.get() == Mode.BOTH)) {
+            first.setPosition(position);
+        }
+        if ((second != null) && (mMode.get() == Mode.SECOND || mMode.get() == Mode.BOTH)) {
+            second.setPosition(position);
+        }
+    }
+
+    private void logServosState(Telemetry logger) {
+        logger.addLine("CURRENT SERVOS");
+        int index = 0;
+        for (Map.Entry<String, Servo> servo : mServos.entrySet()) {
+            logger.addLine("--> Servo " + index);
+            logger.addLine("-----> HwMap : " + servo.getKey());
+            logger.addLine("-----> Direction : " + servo.getValue().getDirection());
+            logger.addLine("-----> Position : " + servo.getValue().getPosition());
+            index ++;
+        }
+    }
+
+    private boolean   wasReverseChanged()
+    {
+        boolean result = false;
+
+        ConfServo local_conf = mCurrentConf.get(mCurrentServo);
+
+        if(local_conf.getHw().size() >= 1) {
+            if (mServos.containsKey(local_conf.getHw(0).getKey())) {
+                Servo temp = mServos.get(local_conf.getHw(0).getKey());
+                if ((temp.getDirection() == Servo.Direction.REVERSE) &&
+                        !local_conf.getHw(0).getValue()) {
+                    result = true;
+                }
+                if ((temp.getDirection() == Servo.Direction.FORWARD) &&
+                        local_conf.getHw(0).getValue()) {
+                    result = true;
+                }
+            }
+        }
+
+        if(local_conf.getHw().size() >= 2) {
+            if (mServos.containsKey(local_conf.getHw(1).getKey())) {
+                Servo temp = mServos.get(local_conf.getHw(1).getKey());
+                if ((temp.getDirection() == Servo.Direction.REVERSE) &&
+                        !local_conf.getHw(1).getValue()) {
+                    result = true;
+                }
+                if ((temp.getDirection() == Servo.Direction.FORWARD) &&
+                        local_conf.getHw(1).getValue()) {
+                    result = true;
+                }
+            }
+        }
+
+
+        return result;
+
+    }
+
+
+    private String updateConf() {
+        String result = "";
+        for (Map.Entry<String, ConfServo> conf : mCurrentConf.entrySet()) {
+            result += "mServos.put(\"" + conf.getKey() + "\", new ConfServo(";
+            for (int i_servo = 0; i_servo < conf.getValue().getHw().size(); i_servo ++)
+            {
+                result += "\"" + conf.getValue().getHw(i_servo).getKey() + "\",";
+                if(conf.getValue().getHw(i_servo).getValue()) { result += "true"; }
+                else { result += "false"; }
+                if(i_servo < (conf.getValue().getHw().size() - 1)) { result += ","; }
+            }
+            result += "));";
+        }
+
+        return result;
+
+    }
+
+    class ReverseProvider implements ValueProvider<Boolean> {
+        Map.Entry<String, Boolean> mHw;
+        public ReverseProvider( Map.Entry<String, Boolean> hw) {
+            mHw = hw;
+        }
+        @Override
+        public Boolean get()           { return mHw.getValue(); }
+        @Override
+        public void set(Boolean Value) { mHw.setValue(Value);   }
+    };
+
+    private enum Mode {
+        FIRST,
+        SECOND,
+        BOTH
+    };
+
+    class ModeProvider implements ValueProvider<Mode> {
+        Mode mMode;
+        @Override
+        public Mode get()              { return mMode;  }
+        @Override
+        public void set(Mode Value)    { mMode = Value; }
+    }
+
+
+
+
 }
