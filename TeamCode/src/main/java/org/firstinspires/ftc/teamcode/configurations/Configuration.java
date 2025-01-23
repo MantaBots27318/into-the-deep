@@ -23,20 +23,17 @@ abstract public class Configuration {
 
     // Method to retrieve a motor by its reference name
     public ConfMotor getMotor(String name) {
-        if (mMotors.containsKey(name)) { return mMotors.get(name); }
-        else                           { return null;               }
+        return mMotors.getOrDefault(name, null);
     }
 
     // Method to retrieve an imu by its reference name
     public ConfImu getImu(String name) {
-        if (mImus.containsKey(name)) { return mImus.get(name); }
-        else                         { return null;             }
+        return mImus.getOrDefault(name, null);
     }
 
     // Method to retrieve a servo by its reference name
     public ConfServo getServo(String name) {
-        if (mServos.containsKey(name)) { return mServos.get(name); }
-        else                           { return null;            }
+        return mServos.getOrDefault(name, null);
     }
 
     // Method to retrieve all servos uncoupled for tuning

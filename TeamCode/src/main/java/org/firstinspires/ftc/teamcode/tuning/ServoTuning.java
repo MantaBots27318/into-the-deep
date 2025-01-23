@@ -206,12 +206,13 @@ public class ServoTuning extends LinearOpMode {
         Servo second = null;
 
         ConfServo conf = mCurrentConf.get(mCurrentServo);
-        if(conf.getHw().size() >= 1) {
+
+        if(conf != null && conf.getHw().size() >= 1) {
             if (mServos.containsKey(conf.getHw(0).getKey())) {
                 first = mServos.get(conf.getHw(0).getKey());
             }
         }
-        if(conf.getHw().size() >= 2) {
+        if(conf != null && conf.getHw().size() >= 2) {
             if (mServos.containsKey(conf.getHw(1).getKey())) {
                 second = mServos.get(conf.getHw(1).getKey());
             }
@@ -304,24 +305,24 @@ public class ServoTuning extends LinearOpMode {
 
 
     private String updateConf() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Map.Entry<String, ConfServo> conf : mCurrentConf.entrySet()) {
-            result += "mServos.put(\"" + conf.getKey() + "\", new ConfServo(";
+            result.append("mServos.put(\"").append(conf.getKey()).append("\", new ConfServo(");
             for (int i_servo = 0; i_servo < conf.getValue().getHw().size(); i_servo ++)
             {
-                result += "\"" + conf.getValue().getHw(i_servo).getKey() + "\",";
-                if(conf.getValue().getHw(i_servo).getValue()) { result += "true"; }
-                else { result += "false"; }
-                if(i_servo < (conf.getValue().getHw().size() - 1)) { result += ","; }
+                result.append("\"").append(conf.getValue().getHw(i_servo).getKey()).append("\",");
+                if(conf.getValue().getHw(i_servo).getValue()) { result.append("true"); }
+                else { result.append("false"); }
+                if(i_servo < (conf.getValue().getHw().size() - 1)) { result.append(","); }
             }
-            result += "));";
+            result.append("));");
         }
 
-        return result;
+        return result.toString();
 
     }
 
-    class ReverseProvider implements ValueProvider<Boolean> {
+    static class ReverseProvider implements ValueProvider<Boolean> {
         Map.Entry<String, Boolean> mHw;
         public ReverseProvider( Map.Entry<String, Boolean> hw) {
             mHw = hw;
@@ -330,15 +331,15 @@ public class ServoTuning extends LinearOpMode {
         public Boolean get()           { return mHw.getValue(); }
         @Override
         public void set(Boolean Value) { mHw.setValue(Value);   }
-    };
+    }
 
-    private enum Mode {
+    static public enum Mode {
         FIRST,
         SECOND,
         BOTH
-    };
+    }
 
-    class ModeProvider implements ValueProvider<Mode> {
+    static class ModeProvider implements ValueProvider<Mode> {
         Mode mMode;
         @Override
         public Mode get()              { return mMode;  }
