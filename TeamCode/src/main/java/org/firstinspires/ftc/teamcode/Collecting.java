@@ -27,12 +27,14 @@ import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 public class Collecting {
     public enum ClawMode{
         NONE,
+        WAITING,
         IS_CLOSING,
         IS_LIFTING_ARM,
     }
     public enum TransitionMode {
         NONE,
-        INIT,
+        WAITING,
+        IS_EXTENDING_INTAKE_SLIDES,
         IS_MOVING_OUTTAKE_ARM,
         IS_MOVING_OUTTAKE_SLIDES,
         IS_MOVING_INTAKE_ARM,
@@ -44,6 +46,7 @@ public class Collecting {
 
     public enum RetractMode {
         NONE,
+        WAITING,
         IS_REACHING_TRANSFER,
         IS_MOVING_OUTTAKE_ARM,
         IS_MOVING_OUTTAKE_SLIDES,
@@ -144,6 +147,8 @@ public class Collecting {
 
     public void move() {
 
+        logger.addLine("-------- FUNCTION --------");
+
         if (gamepad.left_bumper && (intakeSlides.isRetracted()))
         {
             logger.addLine("==> EXT OUT SLD");
@@ -159,7 +164,7 @@ public class Collecting {
 
         if(gamepad.right_stick_button) {
             logger.addLine("==> OUT SLD TO TRANSFER");
-            if(!wasRightStickButtonPressed) { outtakeSlides.setPosition(OuttakeSlides.Position.TRANSFER ); }
+            if(!wasRightStickButtonPressed) { outtakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5 ); }
             wasRightStickButtonPressed = true;
         }
         else { wasRightStickButtonPressed = false; }
@@ -177,8 +182,8 @@ public class Collecting {
         }
 
         if(gamepad.left_stick_button) {
-            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
-            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
+            logger.addLine("==> IN SLD TO TRANSFER");
+            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 2 ); }
             wasLeftStickButtonPressed = true;
         }
         else { wasLeftStickButtonPressed = false; }
@@ -275,11 +280,14 @@ public class Collecting {
         else { wasRightStickXPositivePressed = false; }
 
         if(transitionMode != TransitionMode.NONE) { this.transition(); }
-        if(retractMode != RetractMode.NONE)       { this.retract();    }
         if(clawMode != ClawMode.NONE)             { this.closing();    }
 
+        logger.addLine("\n-------- POSITION --------");
         logger.addLine(intakeSlides.logPositions());
         logger.addLine(outtakeSlides.logPositions());
+
+        logger.addLine("\n--------- MOVING ---------");
+        logger.addLine(this.logMovements());
     }
 
     public void transition (){
@@ -287,104 +295,122 @@ public class Collecting {
         logger.addLine("TRANSITIONING : " + transitionMode);
 
         if (transitionMode == TransitionMode.NONE) {
-            transitionMode = TransitionMode.INIT;
-            intakeSlides.setPosition(IntakeSlides.Position.INIT);
+            // Just transition to make sure that even though the first robot part is not yet ready
+            // to move, we won't forget we have to keep on transiting
+            transitionMode = TransitionMode.WAITING;
         }
-        if (transitionMode == TransitionMode.INIT && !intakeSlides.isMoving()) {
-            transitionMode = TransitionMode.IS_MOVING_OUTTAKE_ARM;
+        if (transitionMode == TransitionMode.WAITING) {
+            intakeSlides.setPosition(IntakeSlides.Position.EXTEND, 5);
+
+            if(intakeSlides.getPosition() == IntakeSlides.Position.EXTEND) {
+                transitionMode = TransitionMode.IS_EXTENDING_INTAKE_SLIDES;
+            }
+        }
+        if (transitionMode == TransitionMode.IS_EXTENDING_INTAKE_SLIDES && !intakeSlides.isMoving()) {
             outtakeClaw.setPosition(OuttakeClaw.Position.OPEN);
             outtakeWrist.setPosition(OuttakeWrist.Position.NULL);
             outtakeElbow.setPosition(OuttakeElbow.Position.TRANSFER);
+
+            if(     (outtakeClaw.getPosition() == OuttakeClaw.Position.OPEN) &&
+                    (outtakeWrist.getPosition() == OuttakeWrist.Position.NULL) &&
+                    (outtakeElbow.getPosition() == OuttakeElbow.Position.TRANSFER))
+            {
+                transitionMode = TransitionMode.IS_MOVING_OUTTAKE_ARM;
+            }
         }
         else if(transitionMode == TransitionMode.IS_MOVING_OUTTAKE_ARM && !outtakeClaw.isMoving() && !outtakeWrist.isMoving() && !outtakeElbow.isMoving())
         {
-            transitionMode = TransitionMode.IS_MOVING_OUTTAKE_SLIDES;
-            outtakeSlides.setPosition(OuttakeSlides.Position.TRANSFER);
+            outtakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
+
+            if(outtakeSlides.getPosition() == OuttakeSlides.Position.TRANSFER) {
+                transitionMode = TransitionMode.IS_MOVING_OUTTAKE_SLIDES;
+            }
         }
         else if(transitionMode == TransitionMode.IS_MOVING_OUTTAKE_SLIDES && !outtakeSlides.isMoving())
         {
-            transitionMode = TransitionMode.IS_MOVING_INTAKE_ARM;
             intakeWrist.setPosition(IntakeWrist.Position.NULL );
             intakeElbow.setPosition(IntakeElbow.Position.TRANSFER );
             intakeArm.setPosition(IntakeArm.Position.TRANSFER );
+
+            if(     (intakeWrist.getPosition() == IntakeWrist.Position.NULL) &&
+                    (intakeElbow.getPosition() == IntakeElbow.Position.TRANSFER) &&
+                    (intakeArm.getPosition() == IntakeArm.Position.TRANSFER))
+            {
+                transitionMode = TransitionMode.IS_MOVING_INTAKE_ARM;
+            }
         }
         else if(transitionMode == TransitionMode.IS_MOVING_INTAKE_ARM && !intakeArm.isMoving() && !intakeWrist.isMoving() && !intakeElbow.isMoving())
         {
-            transitionMode = TransitionMode.IS_MOVING_INTAKE_SLIDES;
-            intakeSlides.setPosition(IntakeSlides.Position.TRANSFER);
+            intakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 2);
+
+            if(intakeSlides.getPosition() == IntakeSlides.Position.TRANSFER) {
+                transitionMode = TransitionMode.IS_MOVING_INTAKE_SLIDES;
+            }
         }
         else if(transitionMode == TransitionMode.IS_MOVING_INTAKE_SLIDES && !intakeSlides.isMoving()) {
-            transitionMode = TransitionMode.IS_MICRO_RELEASING;
             intakeClaw.setPosition(IntakeClaw.Position.MICRORELEASED);
+
+            if(intakeClaw.getPosition() == IntakeClaw.Position.MICRORELEASED) {
+                transitionMode = TransitionMode.IS_MICRO_RELEASING;
+            }
         }
         else if(transitionMode == TransitionMode.IS_MICRO_RELEASING && !intakeClaw.isMoving()) {
-            transitionMode = TransitionMode.IS_GRABBING;
             outtakeClaw.setPosition(OuttakeClaw.Position.CLOSED);
+
+            if (outtakeClaw.getPosition() == OuttakeClaw.Position.CLOSED) {
+                transitionMode = TransitionMode.IS_GRABBING;
+            }
         }
         else if(transitionMode == TransitionMode.IS_GRABBING && !outtakeClaw.isMoving()) {
-            transitionMode = TransitionMode.IS_RELEASING;
             intakeClaw.setPosition(IntakeClaw.Position.OPEN);
+
+            if(intakeClaw.getPosition() == IntakeClaw.Position.OPEN) {
+                transitionMode = TransitionMode.IS_RELEASING;
+            }
         }
         else if(transitionMode == TransitionMode.IS_RELEASING && !intakeClaw.isMoving()) {
             transitionMode = TransitionMode.NONE;
         }
     }
 
-    public void retract (){
-
-        logger.addLine("RETRACTING : " + retractMode);
-
-        if(retractMode == RetractMode.NONE)
-        {
-            retractMode = RetractMode.IS_REACHING_TRANSFER;
-            intakeSlides.setPosition(IntakeSlides.Position.TRANSFER);
-        }
-        else if(retractMode == RetractMode.IS_REACHING_TRANSFER && !intakeSlides.isMoving())
-        {
-            retractMode = RetractMode.IS_MOVING_INTAKE_ARM;
-            intakeElbow.setPosition(IntakeElbow.Position.OFF );
-            intakeArm.setPosition(IntakeArm.Position.OFF);
-            intakeClaw.setPosition(IntakeClaw.Position.CLOSED );
-            intakeWrist.setPosition(IntakeWrist.Position.NULL );
-        }
-        else if(retractMode == RetractMode.IS_MOVING_INTAKE_ARM && !intakeElbow.isMoving() && !intakeArm.isMoving() && !intakeClaw.isMoving() && !intakeWrist.isMoving())
-        {
-            retractMode = RetractMode.IS_MOVING_OUTTAKE_ARM;
-            outtakeClaw.setPosition(OuttakeClaw.Position.CLOSED );
-            outtakeWrist.setPosition(OuttakeWrist.Position.NULL  );
-            outtakeElbow.setPosition(OuttakeElbow.Position.OFF );
-        }
-        else if(retractMode == RetractMode.IS_MOVING_OUTTAKE_ARM && !outtakeClaw.isMoving() && !outtakeWrist.isMoving() && !outtakeElbow.isMoving())
-        {
-            retractMode = RetractMode.IS_MOVING_OUTTAKE_SLIDES;
-            outtakeSlides.setPosition(OuttakeSlides.Position.MIN );
-        }
-        else if(retractMode == RetractMode.IS_MOVING_OUTTAKE_SLIDES && !outtakeSlides.isMoving())
-        {
-            retractMode = RetractMode.IS_MOVING_INTAKE_SLIDES;
-            intakeSlides.setPosition(IntakeSlides.Position.MIN );
-        }
-        else if(retractMode == RetractMode.IS_MOVING_INTAKE_SLIDES && !intakeSlides.isMoving())
-        {
-            retractMode = RetractMode.NONE;
-        }
-
-    }
-
     public void closing(){
         logger.addLine("CLOSING CLAW : " + clawMode);
-        if (clawMode == ClawMode.NONE){
-            intakeClaw.setPosition(IntakeClaw.Position.CLOSED);
-            clawMode = ClawMode.IS_CLOSING;
+        if (clawMode == ClawMode.NONE) {
+            clawMode = ClawMode.WAITING;
         }
-        else if(clawMode == ClawMode.IS_CLOSING && !intakeClaw.isMoving()){
+        if(clawMode == ClawMode.WAITING) {
+            intakeClaw.setPosition(IntakeClaw.Position.CLOSED);
+
+            if(intakeClaw.getPosition() == IntakeClaw.Position.CLOSED) {
+                clawMode = ClawMode.IS_CLOSING;
+            }
+        }
+        if(clawMode == ClawMode.IS_CLOSING && !intakeClaw.isMoving()){
+
             intakeArm.setPosition(IntakeArm.Position.OVER_SUBMERSIBLE);
-            clawMode = ClawMode.IS_LIFTING_ARM;
+
+            if(intakeArm.getPosition() == IntakeArm.Position.OVER_SUBMERSIBLE) {
+                clawMode = ClawMode.IS_LIFTING_ARM;
+            }
         }
         else if(clawMode == ClawMode.IS_LIFTING_ARM && !intakeArm.isMoving())
         {
             clawMode = ClawMode.NONE;
         }
+    }
+
+    public String logMovements() {
+        String result = "";
+        if(intakeClaw.isMoving())    { result += "IN CLW\n"; }
+        if(intakeWrist.isMoving())   { result += "IN WRS\n"; }
+        if(intakeArm.isMoving())     { result += "IN ARM\n"; }
+        if(intakeElbow.isMoving())   { result += "IN ELB\n"; }
+        if(intakeSlides.isMoving())  { result += "IN SLD\n"; }
+        if(outtakeClaw.isMoving())   { result += "OUT CLW\n"; }
+        if(outtakeWrist.isMoving())  { result += "OUT WRS\n"; }
+        if(outtakeElbow.isMoving())  { result += "OUT ELB\n"; }
+        if(outtakeSlides.isMoving()) { result += "OUT SLD\n"; }
+        return result;
     }
 }
 

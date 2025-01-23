@@ -8,7 +8,6 @@
 package org.firstinspires.ftc.teamcode.configurations;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class V1 extends Configuration {
 

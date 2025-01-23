@@ -21,7 +21,6 @@ import org.firstinspires.ftc.teamcode.components.ServoCoupled;
 import org.firstinspires.ftc.teamcode.components.ServoSingle;
 
 /* Utils includes */
-import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 public class IntakeElbow {

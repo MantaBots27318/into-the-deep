@@ -1,8 +1,14 @@
 package org.firstinspires.ftc.teamcode.outtake;
 
+/* System includes */
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /* FTC Controller includes */
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,10 +24,9 @@ import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
 
 /* Utils includes */
+import org.firstinspires.ftc.teamcode.intake.IntakeSlides;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class OuttakeSlides {
 
@@ -59,6 +64,7 @@ public class OuttakeSlides {
     Position                mPosition;    // Current slide position (unknown if moving freely
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
+    PIDFCoefficients        mPID;
 
     Map<Position, Integer>  mPositions;    // Link between positions enumerated and encoder positions
 
@@ -105,6 +111,11 @@ public class OuttakeSlides {
 
         if (!mPositions.containsKey(Position.MIN)) { mReady = false; }
         if (!mPositions.containsKey(Position.MAX)) { mReady = false; }
+
+        // Setting the slides PID for more precision
+        if(mReady){
+            mPID = new PIDFCoefficients(10.0,0.05,0,0, MotorControlAlgorithm.LegacyPID);
+        }
 
         // Log status
         if (mReady) { logger.addLine("==>  OUT SLD : OK"); }
@@ -155,13 +166,17 @@ public class OuttakeSlides {
 
     // Make the slides reach current position. The slides won't respond anymore until slides reached the position
     // A timer is armed fpr time out, and the slides will respond again once unarmed
-    public void setPosition(Position position)
+    public void setPosition(Position position, int tolerance)
     {
         if(mReady && !this.isMoving() && mPositions.containsKey(position)) {
+
+            mMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, mPID);
+            mMotor.setTargetPositionTolerance(tolerance);
 
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             mMotor.setPower(1.0);
+
             mTimer.arm(sTimeOut);
 
             mPosition = position;
@@ -172,7 +187,6 @@ public class OuttakeSlides {
     public boolean isRetracted() {
         boolean result = true;
         if(mReady && mPositions.containsKey(Position.RETRACT)) {
-            mLogger.addLine("OUT SLD : Current position " + mMotor.getCurrentPosition() + ", Retract : " + mPositions.get(Position.RETRACT));
             result = (mMotor.getCurrentPosition() < mPositions.get(Position.RETRACT));
         }
         return result;
@@ -185,6 +199,18 @@ public class OuttakeSlides {
         String result = "";
         if(mReady) {
             result = "POS OUT SLD : " + mMotor.logPositions();
+            if(mPositions.containsKey(Position.RETRACT)) {
+                result += "\nRETRACT OUT SLD : " + mPositions.get(Position.RETRACT);
+            }
+        }
+        return result;
+    }
+
+
+    public Position getPosition() {
+        Position result = Position.UNKNOWN;
+        if(mReady) {
+            result = mPosition;
         }
         return result;
     }

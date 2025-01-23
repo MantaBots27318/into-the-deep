@@ -87,16 +87,6 @@ public class MotorCoupled extends MotorComponent {
     }
 
     @Override
-    public String                      logPositions()
-    {
-        String result = "";
-        if(mReady) {
-            result += "First : " + mFirst.getCurrentPosition() + " Second : " + mSecond.getCurrentPosition();
-        }
-        return result;
-    }
-
-    @Override
     public int	                        getCurrentPosition()
     {
         int result = -1;
@@ -155,7 +145,7 @@ public class MotorCoupled extends MotorComponent {
     public boolean	                    isBusy()
     {
         boolean result = false;
-        if(mReady) { result = (mFirst.isBusy() || mSecond.isBusy()); }
+        if(mReady) { result = (mFirst.isBusy() && mSecond.isBusy()); }
         return result;
     }
 
@@ -247,4 +237,16 @@ public class MotorCoupled extends MotorComponent {
         return result;
 
     }
+
+    @Override
+    public String                      logPositions()
+    {
+        String result = "";
+        if(mReady) {
+            result += "\n  First : P : " + mFirst.getCurrentPosition() + " V : " + mFirst.getVelocity() + " P : " + mFirst.getPower();
+            result += "\n  Second : P : " + mSecond.getCurrentPosition() + " V : " + mSecond.getVelocity() + " P : " + mSecond.getPower();
+        }
+        return result;
+    }
+
 }

@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.intake;
 
+/* System includes */
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -20,8 +24,6 @@ import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class IntakeSlides {
 
@@ -29,7 +31,7 @@ public class IntakeSlides {
         MIN,
         TRANSFER,
         RETRACT,
-        INIT,
+        EXTEND,
         MAX,
         UNKNOWN
     }
@@ -38,7 +40,7 @@ public class IntakeSlides {
             "min",  Position.MIN,
             "transfer", Position.TRANSFER,
             "retracted", Position.RETRACT,
-            "init", Position.INIT,
+            "init", Position.EXTEND,
             "max", Position.MAX
     );
 
@@ -52,6 +54,7 @@ public class IntakeSlides {
     Position                mPosition;    // Current slide position (unknown if moving freely)
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
+    PIDFCoefficients        mPID;
 
     Map<Position, Integer>  mPositions;    // Link between positions enumerated and encoder positions
 
@@ -106,8 +109,7 @@ public class IntakeSlides {
 
         //Setting the intake slides PID for more precision
         if(mReady){
-            mMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(10.0,0.05,0,0, MotorControlAlgorithm.LegacyPID));
-            mMotor.setTargetPositionTolerance(2);
+            mPID = new PIDFCoefficients(15.0,0.5,0,0, MotorControlAlgorithm.LegacyPID);
         }
 
         // Log status
@@ -162,14 +164,17 @@ public class IntakeSlides {
 
     // Make the slides reach current position. The slides won't respond anymore until slides reached the position
     // A timer is armed fpr time out, and the slides will respond again once unarmed
-    public void setPosition(Position position)
+    public void setPosition(Position position, int tolerance)
     {
         if(mReady && !this.isMoving() && mPositions.containsKey(position)) {
-
+            
+            mMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, mPID);
+            mMotor.setTargetPositionTolerance(tolerance);
+            
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            // mMotor.setPower(position==IntakeSlides.Position.TRANSFER? 0.9 : 0.6);
             mMotor.setPower(1.0);
+            
             mTimer.arm(sTimeOut);
 
             mPosition = position;
@@ -181,7 +186,6 @@ public class IntakeSlides {
     public boolean isRetracted() {
         boolean result = true;
         if(mReady && mPositions.containsKey(Position.RETRACT)) {
-            mLogger.addLine("IN SLD : Current position " + mMotor.getCurrentPosition() + ", Retract : " + mPositions.get(Position.RETRACT));
             result = (mMotor.getCurrentPosition() < mPositions.get(Position.RETRACT));
         }
         return result;
@@ -192,8 +196,18 @@ public class IntakeSlides {
     {
         String result = "";
         if(mReady) {
-            result = "POS IN SLD : " + mMotor.logPositions() + "  " + mMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION) + "  " + mMotor.getTargetPositionTolerance();
-
+            result = "POS IN SLD : " + mMotor.logPositions();
+            if(mPositions.containsKey(Position.RETRACT)) {
+                result += "\nRETRACT IN SLD : " + mPositions.get(Position.RETRACT);
+            }
+        }
+        return result;
+    }
+    
+    public Position getPosition() {
+        Position result = Position.UNKNOWN;
+        if(mReady) {
+            result = mPosition;
         }
         return result;
     }

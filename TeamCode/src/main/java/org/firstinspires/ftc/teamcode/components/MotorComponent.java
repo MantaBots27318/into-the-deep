@@ -23,6 +23,10 @@ public abstract class MotorComponent {
     protected boolean  mReady;
     protected String   mName;
 
+    public abstract String                      logPositions();
+
+    /* --------------------- DcMotor functions --------------------- */
+
     public boolean                              isReady() { return mReady;}
     public String                               getName() { return mName; }
     public abstract boolean	                    isBusy();
@@ -40,7 +44,8 @@ public abstract class MotorComponent {
     public abstract void	                    setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior);
     public abstract void                        setPower(double power);
 
-    public abstract String                      logPositions();
+
+    /* -------------------- DcMotorEx functions -------------------- */
 
     public abstract PIDFCoefficients            getPIDFCoefficients(DcMotor.RunMode mode);
     public abstract void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients);
