@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.components.ServoCoupled;
 import org.firstinspires.ftc.teamcode.components.ServoSingle;
 
 /* Utils includes */
+import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 public class IntakeElbow {
@@ -108,6 +109,16 @@ public class IntakeElbow {
             mPosition = position;
         }
     }
+    public void setPosition(Position position, int timeout) {
+
+        if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mServo.setPosition(mPositions.get(position));
+            mPosition = position;
+            mTimer.arm(timeout);
+        }
+
+    }
+
 
     // Switch between the different positions of the arm, in the direction of the transfer position
     public void moveUp() {

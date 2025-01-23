@@ -21,6 +21,7 @@ package org.firstinspires.ftc.teamcode.components;
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class MotorMock extends MotorComponent {
 
@@ -29,6 +30,7 @@ public class MotorMock extends MotorComponent {
     int                         mPosition;
     DcMotor.ZeroPowerBehavior   mBehavior;
     double                      mPower;
+    int                         mTolerance;
 
     public MotorMock(String name)
     {
@@ -79,5 +81,27 @@ public class MotorMock extends MotorComponent {
 
     @Override
     public void	                        setPower(double power) { mPower = power; }
+
+    @Override
+    public PIDFCoefficients getPIDFCoefficients(DcMotor.RunMode mode){
+        PIDFCoefficients result = null;
+        return result;
+    }
+
+    @Override
+    public void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients){
+    }
+
+    @Override
+    public void                        setTargetPositionTolerance(int tolerance)
+    {
+        mTolerance = tolerance;
+    }
+
+    @Override
+    public int                         getTargetPositionTolerance()
+    {
+        return mTolerance;
+    }
 
 }

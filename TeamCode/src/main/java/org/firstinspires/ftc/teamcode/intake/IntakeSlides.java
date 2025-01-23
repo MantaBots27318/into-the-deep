@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.intake;
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /* FTC Controller includes */
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -40,7 +42,7 @@ public class IntakeSlides {
             "max", Position.MAX
     );
 
-    private static final int sTimeOut = 2000; // Timeout in ms
+    private static final int sTimeOut = 60000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
 
@@ -101,9 +103,17 @@ public class IntakeSlides {
         if (!mPositions.containsKey(Position.MIN)) { mReady = false; }
         if (!mPositions.containsKey(Position.MAX)) { mReady = false; }
 
+
+        //Setting the intake slides PID for more precision
+        if(mReady){
+            mMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(10.0,0.05,0,0, MotorControlAlgorithm.LegacyPID));
+            mMotor.setTargetPositionTolerance(2);
+        }
+
         // Log status
         if (mReady) { logger.addLine("==>  IN SLD : OK"); }
         else        { logger.addLine("==>  IN SLD : KO : " + status); }
+
 
     }
 
@@ -182,7 +192,8 @@ public class IntakeSlides {
     {
         String result = "";
         if(mReady) {
-            result = "POS IN SLD : " + mMotor.logPositions();
+            result = "POS IN SLD : " + mMotor.logPositions() + "  " + mMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION) + "  " + mMotor.getTargetPositionTolerance();
+
         }
         return result;
     }

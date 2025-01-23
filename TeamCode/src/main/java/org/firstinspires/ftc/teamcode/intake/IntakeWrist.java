@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.components.ServoCoupled;
 import org.firstinspires.ftc.teamcode.components.ServoSingle;
 
 /* Utils includes */
+import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 public class IntakeWrist {
@@ -114,6 +115,16 @@ public class IntakeWrist {
             mTimer.arm(sTimeOut);
         }
     }
+    public void setPosition(Position position, int timeout) {
+
+        if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mServo.setPosition(mPositions.get(position));
+            mPosition = position;
+            mTimer.arm(timeout);
+        }
+
+    }
+
 
     // Make the wrist rotate one step in one direction
     public void rotateUp() {

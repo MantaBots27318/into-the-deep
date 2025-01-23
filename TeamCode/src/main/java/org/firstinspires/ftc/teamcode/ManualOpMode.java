@@ -25,15 +25,20 @@ public class ManualOpMode extends OpMode {
             collecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
         }
         catch(Exception e){
-            telemetry.addLine("Something went wrong") ;
+            telemetry.addLine("INIT error : " + e.getMessage()) ;
         }
 
     }
     @Override
     public void loop (){
-        
-        moving.move();
-        collecting.move();
+
+        try {
+            moving.move();
+            collecting.move();
+        }
+        catch(Exception e){
+            telemetry.addLine("LOOP error : " + e.toString()) ;
+        }
         
     }
 }

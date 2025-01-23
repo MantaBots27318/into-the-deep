@@ -147,7 +147,7 @@ public class Collecting {
         if (gamepad.left_bumper && (intakeSlides.isRetracted()))
         {
             logger.addLine("==> EXT OUT SLD");
-            outtakeSlides.extend(0.8);
+            outtakeSlides.extend(0.9);
         }
         else if (gamepad.right_bumper) {
             logger.addLine("==> RLB OUT SLD");
@@ -166,22 +166,22 @@ public class Collecting {
 
         if((gamepad.left_trigger > 0 ) && (outtakeSlides.isRetracted())) {
             logger.addLine("==> EXT IN SLD");
-            intakeSlides.extend(gamepad.left_trigger * 0.6);
+            intakeSlides.extend(gamepad.left_trigger * 0.9);
         }
         else if (gamepad.right_trigger > 0)          {
             logger.addLine("==> RLB IN SLD");
-            intakeSlides.rollback(gamepad.right_trigger * 0.4);
+            intakeSlides.rollback(gamepad.right_trigger * 0.7);
         }
         else                                         {
             intakeSlides.stop();
         }
 
-//        if(gamepad.left_stick_button) {
-//            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
-//            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
-//            wasLeftStickButtonPressed = true;
-//        }
-//        else { wasLeftStickButtonPressed = false; }
+        if(gamepad.left_stick_button) {
+            logger.addLine(String.format("==> IN SLD TO TRANSFER"));
+            if(!wasLeftStickButtonPressed) { intakeSlides.setPosition(IntakeSlides.Position.TRANSFER ); }
+            wasLeftStickButtonPressed = true;
+        }
+        else { wasLeftStickButtonPressed = false; }
 
         if(gamepad.x)                 {
             logger.addLine(String.format("==> SWT OUT CLW : " + outtakeClaw.getPosition()));

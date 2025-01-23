@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.components.ServoCoupled;
 import org.firstinspires.ftc.teamcode.components.ServoSingle;
 
 /* Utils includes */
+import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 public class IntakeClaw {
@@ -102,6 +103,15 @@ public class IntakeClaw {
             mServo.setPosition(mPositions.get(position));
             mPosition = position;
             mTimer.arm(sTimeOut);
+        }
+
+    }
+    public void setPosition(Position position, int timeout) {
+
+        if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mServo.setPosition(mPositions.get(position));
+            mPosition = position;
+            mTimer.arm(timeout);
         }
 
     }

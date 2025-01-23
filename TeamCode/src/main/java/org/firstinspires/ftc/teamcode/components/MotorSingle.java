@@ -21,7 +21,9 @@ import java.util.List;
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /* FTC Controller includes */
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -33,7 +35,7 @@ public class MotorSingle extends MotorComponent {
 
     Telemetry                       mLogger;
 
-    DcMotor                         mMotor;
+    DcMotorEx                         mMotor;
 
     int                             mInvertPosition;
 
@@ -56,7 +58,7 @@ public class MotorSingle extends MotorComponent {
 
             Map.Entry<String,Boolean> motor = hwiterator.next();
             Map.Entry<String,Boolean> invert = inviterator.next();
-            mMotor = hwMap.tryGet(DcMotor.class, motor.getKey());
+            mMotor = hwMap.tryGet(DcMotorEx.class, motor.getKey());
             if(mMotor != null && motor.getValue()) { mMotor.setDirection(DcMotor.Direction.REVERSE);}
             else if(mMotor != null)                { mMotor.setDirection(DcMotor.Direction.FORWARD);}
 
@@ -178,5 +180,41 @@ public class MotorSingle extends MotorComponent {
             mMotor.setPower(power);
         }
     }
+
+    @Override
+    public PIDFCoefficients            getPIDFCoefficients(DcMotor.RunMode mode){
+        PIDFCoefficients result = null;
+        if(mReady) {
+            result = mMotor.getPIDFCoefficients(mode);
+        }
+        return result;
+    }
+
+    @Override
+    public void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients){
+        if(mReady) {
+            mMotor.setPIDFCoefficients(mode, pidfCoefficients);
+        }
+    }
+
+    @Override
+    public void                        setTargetPositionTolerance(int tolerance)
+    {
+        if(mReady) {
+            mMotor.setTargetPositionTolerance(tolerance);
+        }
+    }
+
+    @Override
+    public int                         getTargetPositionTolerance()
+    {
+        int result = -1;
+        if(mReady) {
+            result = mMotor.getTargetPositionTolerance();
+        }
+        return result;
+
+    }
+
 
 }

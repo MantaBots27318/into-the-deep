@@ -19,9 +19,11 @@ import java.util.Map;
 import java.util.List;
 
 /* Qualcomm includes */
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /* FTC Controller includes */
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -37,8 +39,8 @@ public class MotorCoupled extends MotorComponent {
     int                             mSecondInvertPosition;
     DcMotorSimple.Direction         mDirection;
 
-    DcMotor                         mFirst;
-    DcMotor                         mSecond;
+    DcMotorEx                       mFirst;
+    DcMotorEx                       mSecond;
 
     /* -------------- Constructors --------------- */
     public MotorCoupled(ConfMotor conf, HardwareMap hwMap, String name, Telemetry logger)
@@ -61,7 +63,7 @@ public class MotorCoupled extends MotorComponent {
 
             Map.Entry<String,Boolean> motor = hwiterator.next();
             Map.Entry<String,Boolean> invert = inviterator.next();
-            mFirst = hwMap.tryGet(DcMotor.class, motor.getKey());
+            mFirst = hwMap.tryGet(DcMotorEx.class, motor.getKey());
             if(mFirst != null && motor.getValue()) { mFirst.setDirection(DcMotor.Direction.REVERSE);}
             else if(mFirst != null)                { mFirst.setDirection(DcMotor.Direction.FORWARD);}
 
@@ -69,7 +71,7 @@ public class MotorCoupled extends MotorComponent {
 
             motor = hwiterator.next();
             invert = inviterator.next();
-            mSecond = hwMap.tryGet(DcMotor.class, motor.getKey());
+            mSecond = hwMap.tryGet(DcMotorEx.class, motor.getKey());
             if(mSecond != null && motor.getValue()) { mSecond.setDirection(DcMotor.Direction.REVERSE);}
             else if(mSecond != null)                { mSecond.setDirection(DcMotor.Direction.FORWARD);}
 
@@ -209,4 +211,40 @@ public class MotorCoupled extends MotorComponent {
         }
     }
 
+    @Override
+    public PIDFCoefficients             getPIDFCoefficients(DcMotor.RunMode mode){
+        PIDFCoefficients result = null;
+        if(mReady) {
+            result = mSecond.getPIDFCoefficients(mode);
+        }
+        return result;
+    }
+
+    @Override
+    public void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients){
+        if(mReady) {
+            mFirst.setPIDFCoefficients(mode, pidfCoefficients);
+            mSecond.setPIDFCoefficients(mode, pidfCoefficients);
+        }
+    }
+
+    @Override
+    public void                        setTargetPositionTolerance(int tolerance)
+    {
+        if(mReady) {
+            mFirst.setTargetPositionTolerance(tolerance);
+            mSecond.setTargetPositionTolerance(tolerance);
+        }
+    }
+
+    @Override
+    public int                         getTargetPositionTolerance()
+    {
+        int result = -1;
+        if(mReady) {
+            result = mSecond.getTargetPositionTolerance();
+        }
+        return result;
+
+    }
 }
