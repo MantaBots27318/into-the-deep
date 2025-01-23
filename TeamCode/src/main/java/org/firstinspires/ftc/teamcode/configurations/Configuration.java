@@ -18,9 +18,6 @@ abstract public class Configuration {
     protected final  Map<String, ConfImu>   mImus   = new LinkedHashMap<>();
     protected final  Map<String, ConfServo> mServos = new LinkedHashMap<>();
 
-    // FOR TUNING ONLY !!! NO COUPLED SERVOS HERE
-    protected final Map<String, ConfServo> mSingleServos = new LinkedHashMap<>();
-
     // Current selected configuration
     public static Configuration s_Current = new V1() ;
 
@@ -43,13 +40,7 @@ abstract public class Configuration {
     }
 
     // Method to retrieve all servos uncoupled for tuning
-    public Map<String, ConfServo>   getForTuning() { return mSingleServos; }
-
-    // Method to retrieve a servo by its reference name
-    public ConfServo getServoForTuning(String name) {
-        if (mSingleServos.containsKey(name)) { return mSingleServos.get(name); }
-        else                                 { return null;            }
-    }
+    public Map<String, ConfServo>   getForTuning() { return mServos; }
 
     // Abstract method for initializing specific configurations
     protected abstract void initialize();
