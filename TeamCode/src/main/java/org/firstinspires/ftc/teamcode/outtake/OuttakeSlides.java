@@ -60,17 +60,29 @@ public class OuttakeSlides {
 
     boolean                 mReady;       // True if component is able to fulfil its mission
     SmartTimer              mTimer;       // Timer for timeout management
+    boolean                 mIsMoving;
 
     Position                mPosition;    // Current slide position (unknown if moving freely
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
     PIDFCoefficients        mPID;
+    int                     mTolerance;
 
     Map<Position, Integer>  mPositions;    // Link between positions enumerated and encoder positions
 
     // Check if the component is currently moving on command
     public boolean isMoving() {
-        return (mMotor.isBusy() && mTimer.isArmed());
+        // If motor stopped turning once, even if it is starting again to hold position, we decide
+        // it's no longer moving. By that time, its power would have been changed to 0, so he won't
+        // be able to reach its target position and we would be stuck waiting for the timer to unarm
+        if(mIsMoving) {
+            double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
+            if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
+                mMotor.setPower(0);
+                mIsMoving = false;
+            }
+        }
+        return (mIsMoving && mTimer.isArmed());
     }
 
     // Initialize component from configuration
@@ -78,6 +90,8 @@ public class OuttakeSlides {
 
         mLogger = logger;
         mReady = true;
+        mIsMoving = false;
+        mPosition = Position.UNKNOWN;
 
         mPositions = new LinkedHashMap<>();
         mTimer = new SmartTimer(mLogger);
@@ -175,6 +189,7 @@ public class OuttakeSlides {
 
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            mIsMoving = true;
             mMotor.setPower(1.0);
 
             mTimer.arm(sTimeOut);

@@ -47,10 +47,11 @@ public abstract class MotorComponent {
 
     /* -------------------- DcMotorEx functions -------------------- */
 
-    public abstract PIDFCoefficients            getPIDFCoefficients(DcMotor.RunMode mode);
     public abstract void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients);
+    public abstract PIDFCoefficients            getPIDFCoefficients(DcMotor.RunMode mode);
     public abstract void                        setTargetPositionTolerance(int tolerance);
     public abstract int                         getTargetPositionTolerance();
+    public abstract double                      getVelocity();
 
 
 }

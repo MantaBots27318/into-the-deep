@@ -206,6 +206,17 @@ public class MotorSingle extends MotorComponent {
     }
 
     @Override
+    public double                      getVelocity()
+    {
+        double result = 0;
+        if(mReady) {
+            result = mMotor.getVelocity();
+        }
+        return result;
+
+    }
+
+    @Override
     public String                      logPositions()
     {
         String result = "";

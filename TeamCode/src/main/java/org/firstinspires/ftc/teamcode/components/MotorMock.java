@@ -104,4 +104,10 @@ public class MotorMock extends MotorComponent {
         return mTolerance;
     }
 
+    @Override
+    public double                      getVelocity()
+    {
+        return 0.0;
+    }
+
 }

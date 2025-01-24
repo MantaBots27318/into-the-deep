@@ -145,7 +145,7 @@ public class MotorCoupled extends MotorComponent {
     public boolean	                    isBusy()
     {
         boolean result = false;
-        if(mReady) { result = (mFirst.isBusy() && mSecond.isBusy()); }
+        if(mReady) { result = (mFirst.isBusy() || mSecond.isBusy()); }
         return result;
     }
 
@@ -233,6 +233,17 @@ public class MotorCoupled extends MotorComponent {
         int result = -1;
         if(mReady) {
             result = mSecond.getTargetPositionTolerance();
+        }
+        return result;
+
+    }
+
+    @Override
+    public double                         getVelocity()
+    {
+        double result = 0;
+        if(mReady) {
+            result = 0.5 * mSecond.getVelocity() + 0.5 * mFirst.getVelocity();
         }
         return result;
 

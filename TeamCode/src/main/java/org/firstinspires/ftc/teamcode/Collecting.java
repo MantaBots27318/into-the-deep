@@ -300,7 +300,7 @@ public class Collecting {
             transitionMode = TransitionMode.WAITING;
         }
         if (transitionMode == TransitionMode.WAITING) {
-            intakeSlides.setPosition(IntakeSlides.Position.EXTEND, 5);
+            intakeSlides.setPosition(IntakeSlides.Position.EXTEND, 20);
 
             if(intakeSlides.getPosition() == IntakeSlides.Position.EXTEND) {
                 transitionMode = TransitionMode.IS_EXTENDING_INTAKE_SLIDES;
