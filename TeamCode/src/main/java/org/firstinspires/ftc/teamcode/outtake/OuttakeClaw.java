@@ -105,6 +105,16 @@ public class OuttakeClaw {
 
     }
 
+    public void setPosition(Position position, int timeout) {
+
+        if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mServo.setPosition(mPositions.get(position));
+            mPosition = position;
+            mTimer.arm(timeout);
+        }
+
+    }
+
     // Switch claw position between open and closed
     public void switchPosition() {
         if( mPosition == Position.OPEN) { this.setPosition(Position.CLOSED); }

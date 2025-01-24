@@ -108,6 +108,16 @@ public class IntakeElbow {
             mPosition = position;
         }
     }
+    public void setPosition(Position position, int timeout) {
+
+        if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mServo.setPosition(mPositions.get(position));
+            mPosition = position;
+            mTimer.arm(timeout);
+        }
+
+    }
+
 
     // Switch between the different positions of the arm, in the direction of the transfer position
     public void moveUp() {

@@ -16,11 +16,16 @@ package org.firstinspires.ftc.teamcode.components;
 /* Qualcomm includes */
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public abstract class MotorComponent {
 
     protected boolean  mReady;
     protected String   mName;
+
+    public abstract String                      logPositions();
+
+    /* --------------------- DcMotor functions --------------------- */
 
     public boolean                              isReady() { return mReady;}
     public String                               getName() { return mName; }
@@ -39,6 +44,14 @@ public abstract class MotorComponent {
     public abstract void	                    setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior);
     public abstract void                        setPower(double power);
 
-    public abstract String                      logPositions();
+
+    /* -------------------- DcMotorEx functions -------------------- */
+
+    public abstract void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients);
+    public abstract PIDFCoefficients            getPIDFCoefficients(DcMotor.RunMode mode);
+    public abstract void                        setTargetPositionTolerance(int tolerance);
+    public abstract int                         getTargetPositionTolerance();
+    public abstract double                      getVelocity();
+
 
 }

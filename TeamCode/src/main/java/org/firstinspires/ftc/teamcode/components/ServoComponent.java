@@ -18,23 +18,8 @@
 
 package org.firstinspires.ftc.teamcode.components;
 
-/* System includes */
-import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.List;
-
 /* Qualcomm includes */
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
-
-/* FTC Controller includes */
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-/* Configuration includes */
-import org.firstinspires.ftc.teamcode.configurations.ConfServo;
 
 public abstract class ServoComponent {
 

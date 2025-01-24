@@ -8,7 +8,6 @@
 package org.firstinspires.ftc.teamcode.configurations;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class V1 extends Configuration {
 
@@ -48,7 +47,7 @@ public class V1 extends Configuration {
        );
 
         mMotors.get("intake-slides").addPosition("min",0 );
-        mMotors.get("intake-slides").addPosition("transfer",180 );
+        mMotors.get("intake-slides").addPosition("transfer",179 );
         mMotors.get("intake-slides").addPosition("retracted",250 );
         mMotors.get("intake-slides").addPosition("init",300 );
         mMotors.get("intake-slides").addPosition("max",315 );

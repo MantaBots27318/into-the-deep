@@ -115,6 +115,16 @@ public class OuttakeWrist {
             mTimer.arm(sTimeOut);
         }
     }
+    public void setPosition(Position position, int timeout) {
+
+        if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mServo.setPosition(mPositions.get(position));
+            mPosition = position;
+            mTimer.arm(timeout);
+        }
+
+    }
+
 
     // Make the wrist rotate one step in one direction
     public void rotateUp() {
