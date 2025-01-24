@@ -154,7 +154,7 @@ public class IntakeSlides {
 
     // Stop slides
     public void stop() {
-        if(mReady && !this.isMoving()) {
+        if(mReady && mMotor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) {
             mMotor.setPower(0);
         }
     }
