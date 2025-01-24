@@ -83,10 +83,7 @@ public class MotorMock extends MotorComponent {
     public void	                        setPower(double power) { mPower = power; }
 
     @Override
-    public PIDFCoefficients getPIDFCoefficients(DcMotor.RunMode mode){
-        PIDFCoefficients result = null;
-        return result;
-    }
+    public PIDFCoefficients getPIDFCoefficients(DcMotor.RunMode mode) { return null; }
 
     @Override
     public void                        setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients pidfCoefficients){

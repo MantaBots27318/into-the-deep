@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 /* Qualcomm includes */
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /* Robot include */
 import org.firstinspires.ftc.teamcode.configurations.Configuration;
@@ -11,18 +10,18 @@ import org.firstinspires.ftc.teamcode.configurations.Configuration;
 @TeleOp
 public class ManualOpMode extends OpMode {
 
-    Moving          moving;
-    Collecting      collecting;
+    Driving         mDriving;
+    Collecting      mCollecting;
 
     @Override
     public void init(){
 
         try {
-            moving = new Moving();
-            collecting = new Collecting();
+            mDriving = new Driving();
+            mCollecting = new Collecting();
 
-            moving.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad1);
-            collecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
+            mDriving.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad1);
+            mCollecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
         }
         catch(Exception e){
             telemetry.addLine("INIT error : " + e.getMessage()) ;
@@ -33,11 +32,11 @@ public class ManualOpMode extends OpMode {
     public void loop (){
 
         try {
-            moving.move();
-            collecting.move();
+            mDriving.move();
+            mCollecting.move();
         }
         catch(Exception e){
-            telemetry.addLine("LOOP error : " + e.toString()) ;
+            telemetry.addLine("LOOP error : " + e.getMessage()) ;
         }
         
     }

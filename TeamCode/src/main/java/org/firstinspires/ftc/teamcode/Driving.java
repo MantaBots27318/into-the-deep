@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 /* System includes */
 
 /* Qualcomm includes */
+import android.annotation.SuppressLint;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,7 +26,7 @@ import org.firstinspires.ftc.teamcode.components.MotorSingle;
 import org.firstinspires.ftc.teamcode.components.MotorComponent;
 
 
-public class Moving {
+public class Driving {
 
     Telemetry       mLogger;
 
@@ -44,7 +46,7 @@ public class Moving {
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger, Gamepad gp) {
 
         mLogger = logger;
-        mLogger.addLine("===== MOVING =====");
+        mLogger.addLine("======== DRIVING =========");
 
         mReady = true;
 
@@ -118,9 +120,12 @@ public class Moving {
         else       { logger.addLine("==>  NOT READY"); }
     }
 
+    @SuppressLint("DefaultLocale")
     public void move() {
 
         if (mReady) {
+
+            mLogger.addLine("======== DRIVING =========");
 
             double multiplier = 0.45;
             if (mGamepad.left_bumper)  { multiplier = 0.2; }
@@ -164,8 +169,7 @@ public class Moving {
             return 0.0; // Inside deadzone
         }
         // Scale the value to account for the deadzone
-        double scaledValue = (value - Math.signum(value) * deadzone) / (1.0 - deadzone);
-        return scaledValue;
+        return ((value - Math.signum(value) * deadzone) / (1.0 - deadzone));
     }
 
 }

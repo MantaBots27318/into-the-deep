@@ -69,7 +69,7 @@ public class IntakeSlides {
         // be able to reach its target position and we would be stuck waiting for the timer to unarm
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
-            mPersistentLog = "" + error + " " + mTolerance + " " + mMotor.isBusy() + " " + mMotor.getVelocity();
+            mPersistentLog = String.format("%s %d %s %s", error, mTolerance, mMotor.isBusy(), mMotor.getVelocity());
             if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
                 mIsMoving = false;
             }
