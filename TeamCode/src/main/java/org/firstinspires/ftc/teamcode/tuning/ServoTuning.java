@@ -195,7 +195,27 @@ public class ServoTuning extends LinearOpMode {
 
     private void startServos()
     {
-        mServos.forEach((key, value) -> value.getController().pwmEnable());
+        Servo first = null;
+        Servo second = null;
+
+        ConfServo conf = mCurrentConf.get(mCurrentServo);
+        if(conf != null && conf.getHw().size() >= 1) {
+            if (mServos.containsKey(conf.getHw(0).getKey())) {
+                first = mServos.get(conf.getHw(0).getKey());
+            }
+        }
+        if(conf != null && conf.getHw().size() >= 2) {
+            if (mServos.containsKey(conf.getHw(1).getKey())) {
+                second = mServos.get(conf.getHw(1).getKey());
+            }
+        }
+
+        if (first != null && (mMode.get() == Mode.FIRST || mMode.get() == Mode.BOTH)) {
+            first.getController().pwmEnable();
+        }
+        if (second != null && (mMode.get() == Mode.SECOND || mMode.get() == Mode.BOTH)) {
+            second.getController().pwmEnable();
+        }
     }
 
     private double getServosPosition()
@@ -233,12 +253,12 @@ public class ServoTuning extends LinearOpMode {
         Servo second = null;
 
         ConfServo conf = mCurrentConf.get(mCurrentServo);
-        if(conf.getHw().size() >= 1) {
+        if(conf != null && conf.getHw().size() >= 1) {
             if (mServos.containsKey(conf.getHw(0).getKey())) {
                 first = mServos.get(conf.getHw(0).getKey());
             }
         }
-        if(conf.getHw().size() >= 2) {
+        if(conf != null && conf.getHw().size() >= 2) {
             if (mServos.containsKey(conf.getHw(1).getKey())) {
                 second = mServos.get(conf.getHw(1).getKey());
             }
@@ -247,8 +267,14 @@ public class ServoTuning extends LinearOpMode {
         if ((first != null) && (mMode.get() == Mode.FIRST || mMode.get() == Mode.BOTH)) {
             first.setPosition(position);
         }
+        else if (first != null) {
+            first.getController().pwmDisable();
+        }
         if ((second != null) && (mMode.get() == Mode.SECOND || mMode.get() == Mode.BOTH)) {
             second.setPosition(position);
+        }
+        else if (second != null) {
+            second.getController().pwmDisable();
         }
     }
 
@@ -260,6 +286,7 @@ public class ServoTuning extends LinearOpMode {
             logger.addLine("-----> HwMap : " + servo.getKey());
             logger.addLine("-----> Direction : " + servo.getValue().getDirection());
             logger.addLine("-----> Position : " + servo.getValue().getPosition());
+            logger.addLine("-----> Power : " + servo.getValue().getController().getPwmStatus());
             index ++;
         }
     }
@@ -268,31 +295,31 @@ public class ServoTuning extends LinearOpMode {
     {
         boolean result = false;
 
-        ConfServo local_conf = mCurrentConf.get(mCurrentServo);
+        ConfServo conf = mCurrentConf.get(mCurrentServo);
 
-        if(local_conf.getHw().size() >= 1) {
-            if (mServos.containsKey(local_conf.getHw(0).getKey())) {
-                Servo temp = mServos.get(local_conf.getHw(0).getKey());
+        if(conf != null && conf.getHw().size() >= 1) {
+            if (mServos.containsKey(conf.getHw(0).getKey())) {
+                Servo temp = mServos.get(conf.getHw(0).getKey());
                 if ((temp.getDirection() == Servo.Direction.REVERSE) &&
-                        !local_conf.getHw(0).getValue()) {
+                        !conf.getHw(0).getValue()) {
                     result = true;
                 }
                 if ((temp.getDirection() == Servo.Direction.FORWARD) &&
-                        local_conf.getHw(0).getValue()) {
+                        conf.getHw(0).getValue()) {
                     result = true;
                 }
             }
         }
 
-        if(local_conf.getHw().size() >= 2) {
-            if (mServos.containsKey(local_conf.getHw(1).getKey())) {
-                Servo temp = mServos.get(local_conf.getHw(1).getKey());
+        if(conf != null && conf.getHw().size() >= 2) {
+            if (mServos.containsKey(conf.getHw(1).getKey())) {
+                Servo temp = mServos.get(conf.getHw(1).getKey());
                 if ((temp.getDirection() == Servo.Direction.REVERSE) &&
-                        !local_conf.getHw(1).getValue()) {
+                        !conf.getHw(1).getValue()) {
                     result = true;
                 }
                 if ((temp.getDirection() == Servo.Direction.FORWARD) &&
-                        local_conf.getHw(1).getValue()) {
+                        conf.getHw(1).getValue()) {
                     result = true;
                 }
             }
@@ -333,7 +360,7 @@ public class ServoTuning extends LinearOpMode {
         public void set(Boolean Value) { mHw.setValue(Value);   }
     }
 
-    static public enum Mode {
+    public enum Mode {
         FIRST,
         SECOND,
         BOTH
