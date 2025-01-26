@@ -254,19 +254,19 @@ public class Collecting {
         }
         else { mWasLeftStickXPositivePressed = false; }
 
-        if(mGamepad.right_stick_x < 0) {
-            mLogger.addLine(String.format("==> RDW OUT WRS : " + mOuttakeWrist.getPosition()));
-            if(!mWasRightStickXNegativePressed){ mOuttakeWrist.rotateDown(); }
-            mWasRightStickXNegativePressed = true;
-        }
-        else { mWasRightStickXNegativePressed = false; }
-
-        if(mGamepad.right_stick_x > 0) {
-            mLogger.addLine(String.format("==> RUP OUT WRS : " + mOuttakeWrist.getPosition()));
-            if(!mWasRightStickXPositivePressed){ mOuttakeWrist.rotateUp(); }
-            mWasRightStickXPositivePressed = true;
-        }
-        else { mWasRightStickXPositivePressed = false; }
+//        if(mGamepad.right_stick_x < 0) {
+//            mLogger.addLine(String.format("==> RDW OUT WRS : " + mOuttakeWrist.getPosition()));
+//            if(!mWasRightStickXNegativePressed){ mOuttakeWrist.rotateDown(); }
+//            mWasRightStickXNegativePressed = true;
+//        }
+//        else { mWasRightStickXNegativePressed = false; }
+//
+//        if(mGamepad.right_stick_x > 0) {
+//            mLogger.addLine(String.format("==> RUP OUT WRS : " + mOuttakeWrist.getPosition()));
+//            if(!mWasRightStickXPositivePressed){ mOuttakeWrist.rotateUp(); }
+//            mWasRightStickXPositivePressed = true;
+//        }
+//        else { mWasRightStickXPositivePressed = false; }
 
         if(mTransitionMode != TransitionMode.NONE) { this.transition_optimized(); }
         if(mClawMode != ClawMode.NONE)             { this.closing();    }

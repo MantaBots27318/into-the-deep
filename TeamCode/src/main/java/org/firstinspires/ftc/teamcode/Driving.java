@@ -41,7 +41,7 @@ public class Driving {
 
     Gamepad         mGamepad;
 
-    boolean         mIsFieldCentric = false;
+    boolean         mIsFieldCentric = true;
 
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger, Gamepad gp) {
 
