@@ -44,7 +44,7 @@ public class IntakeSlides {
             "max", Position.MAX
     );
 
-    private static final int sTimeOut = 2000; // Timeout in ms
+    private static final int sTimeOut = 20000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
     String                  mPersistentLog;
@@ -69,10 +69,12 @@ public class IntakeSlides {
         // be able to reach its target position and we would be stuck waiting for the timer to unarm
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
-            mPersistentLog = String.format("%s %d %s %s", error, mTolerance, mMotor.isBusy(), mMotor.getVelocity());
+            double velocity = mMotor.getVelocity();
             if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
                 mIsMoving = false;
+                mMotor.setPower(0);
             }
+            mPersistentLog = String.format("%s %d %s %s", error, mTolerance, mMotor.isBusy(), velocity);
         }
         return (mIsMoving && mTimer.isArmed());
     }
@@ -157,6 +159,9 @@ public class IntakeSlides {
         if(mReady && mMotor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) {
             mMotor.setPower(0);
         }
+        else if(mReady && mMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && !mIsMoving) {
+            mMotor.setPower(0.3);
+        }
     }
 
     // Rollback slides with a given power
@@ -189,7 +194,7 @@ public class IntakeSlides {
             mMotor.setTargetPosition(mPositions.get(position));
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             mIsMoving = true;
-            mMotor.setPower(1.0);
+            mMotor.setPower(0.9);
             
             mTimer.arm(sTimeOut);
 
