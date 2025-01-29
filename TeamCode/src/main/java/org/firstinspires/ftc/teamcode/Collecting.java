@@ -332,7 +332,7 @@ public class Collecting {
         else if(mTransitionMode == TransitionMode.IS_MOVING_ARMS && !mIntakeArm.isMoving() && !mIntakeWrist.isMoving() && !mIntakeElbow.isMoving() && !mOuttakeClaw.isMoving() && !mOuttakeWrist.isMoving() && !mOuttakeElbow.isMoving())
         {
             mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
-            mIntakeClaw.setPosition(IntakeClaw.Position.MICRORELEASED);
+            mIntakeClaw.setPosition(IntakeClaw.Position.MICRORELEASED,200);
             if((mOuttakeSlides.getPosition() == OuttakeSlides.Position.TRANSFER) && 
                (mIntakeClaw.getPosition() == IntakeClaw.Position.MICRORELEASED)) {
                 mTransitionMode = TransitionMode.IS_MOVING_OUTTAKE_SLIDES_AND_MICRORELEASING_CLAW;
@@ -340,7 +340,7 @@ public class Collecting {
             
         }
         else if(mTransitionMode == TransitionMode.IS_MOVING_OUTTAKE_SLIDES_AND_MICRORELEASING_CLAW && !mIntakeClaw.isMoving() && !mOuttakeSlides.isMoving()) {
-            mIntakeClaw.setPosition(IntakeClaw.Position.CLOSED);
+            mIntakeClaw.setPosition(IntakeClaw.Position.CLOSED,200);
 
             if(mIntakeClaw.getPosition() == IntakeClaw.Position.CLOSED) {
                 mTransitionMode = TransitionMode.IS_REGRABBING;
@@ -349,14 +349,14 @@ public class Collecting {
 
         else if(mTransitionMode == TransitionMode.IS_REGRABBING && !mIntakeClaw.isMoving())
         {
-            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 5);
+            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 7);
 
             if(mIntakeSlides.getPosition() == IntakeSlides.Position.TRANSFER) {
                 mTransitionMode = TransitionMode.IS_MOVING_INTAKE_SLIDES;
             }
         }
         else if(mTransitionMode == TransitionMode.IS_MOVING_INTAKE_SLIDES && !mIntakeSlides.isMoving()) {
-            mOuttakeClaw.setPosition(OuttakeClaw.Position.CLOSED);
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.CLOSED,500);
 
             if (mOuttakeClaw.getPosition() == OuttakeClaw.Position.CLOSED) {
                 mTransitionMode = TransitionMode.IS_GRABBING;
@@ -371,6 +371,8 @@ public class Collecting {
         }
         else if(mTransitionMode == TransitionMode.IS_RELEASING && !mIntakeClaw.isMoving()) {
             mTransitionMode = TransitionMode.NONE;
+            mIntakeSlides.extend(0.05);
+            mOuttakeSlides.extend(0.05);
         }
     }
 
@@ -424,6 +426,7 @@ public class Collecting {
         else if(mOuttakeClawMode == OuttakeClawMode.IS_MOVING_ARM && !mOuttakeElbow.isMoving())
         {
             mOuttakeClawMode = OuttakeClawMode.NONE;
+            
         }
     }
 
