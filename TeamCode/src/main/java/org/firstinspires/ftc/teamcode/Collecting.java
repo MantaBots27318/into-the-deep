@@ -349,13 +349,13 @@ public class Collecting {
 
         else if(mTransitionMode == TransitionMode.IS_REGRABBING && !mIntakeClaw.isMoving())
         {
-            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 2);
+            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 5);
 
             if(mIntakeSlides.getPosition() == IntakeSlides.Position.TRANSFER) {
                 mTransitionMode = TransitionMode.IS_MOVING_INTAKE_SLIDES;
             }
         }
-        else if(mTransitionMode == TransitionMode.IS_MOVING_INTAKE_SLIDES && !mIntakeClaw.isMoving()) {
+        else if(mTransitionMode == TransitionMode.IS_MOVING_INTAKE_SLIDES && !mIntakeSlides.isMoving()) {
             mOuttakeClaw.setPosition(OuttakeClaw.Position.CLOSED);
 
             if (mOuttakeClaw.getPosition() == OuttakeClaw.Position.CLOSED) {

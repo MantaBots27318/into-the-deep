@@ -47,7 +47,7 @@ public class V1 extends Configuration {
        );
 
         mMotors.get("intake-slides").addPosition("min",0 );
-        mMotors.get("intake-slides").addPosition("transfer",179 );
+        mMotors.get("intake-slides").addPosition("transfer",176 );
         mMotors.get("intake-slides").addPosition("retracted",250 );
         mMotors.get("intake-slides").addPosition("init",300 );
         mMotors.get("intake-slides").addPosition("max",315 );
