@@ -64,7 +64,7 @@ public class V1 extends Configuration {
 
         /* Intake servos reference positions */
         mServos.get("intake-arm-pitch").addPosition("transfer", 0.97);
-        mServos.get("intake-arm-pitch").addPosition("overSub", 0.55);
+        mServos.get("intake-arm-pitch").addPosition("overSub", 0.6);
         mServos.get("intake-arm-pitch").addPosition("look", 0.44);
         mServos.get("intake-arm-pitch").addPosition("grab", 0.39);
         mServos.get("intake-arm-pitch").addPosition("off", 1.0);

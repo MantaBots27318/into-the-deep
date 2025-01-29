@@ -127,9 +127,9 @@ public class Driving {
 
             mLogger.addLine("======== DRIVING =========");
 
-            double multiplier = 0.45;
-            if (mGamepad.left_bumper)  { multiplier = 0.2; }
-            if (mGamepad.right_bumper) { multiplier = 0.9; }
+            double multiplier = 0.9;
+            if (mGamepad.left_bumper)  { multiplier = 0.45; }
+
 
             double y = -applyDeadzone(mGamepad.left_stick_y, 0.1);
             double x = applyDeadzone(mGamepad.left_stick_x, 0.1) * 1;
