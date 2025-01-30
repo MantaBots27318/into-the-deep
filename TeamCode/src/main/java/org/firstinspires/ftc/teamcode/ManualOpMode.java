@@ -32,8 +32,11 @@ public class ManualOpMode extends OpMode {
     public void loop (){
 
         try {
-            mDriving.move();
-            mCollecting.move();
+            mDriving.control();
+            mCollecting.control();
+
+            // Update state machines
+            mCollecting.loop();
         }
         catch(Exception e){
             telemetry.addLine("LOOP error : " + e.getMessage()) ;

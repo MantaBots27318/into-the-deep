@@ -121,7 +121,7 @@ public class Driving {
     }
 
     @SuppressLint("DefaultLocale")
-    public void move() {
+    public void control() {
 
         if (mReady) {
 

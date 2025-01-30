@@ -76,8 +76,12 @@ public class OuttakeSlides {
         // be able to reach its target position and we would be stuck waiting for the timer to unarm
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
-            if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
-                mMotor.setPower(0);
+//            if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
+//                mMotor.setPower(0);
+//                mIsMoving = false;
+//            }
+            if(!mMotor.isBusy()){
+                mMotor.setPower(0.3);
                 mIsMoving = false;
             }
         }

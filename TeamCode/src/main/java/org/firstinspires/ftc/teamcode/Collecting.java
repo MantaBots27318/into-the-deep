@@ -46,7 +46,8 @@ public class Collecting {
         IS_REGRABBING,
         IS_MOVING_INTAKE_SLIDES,
         IS_GRABBING,
-        IS_RELEASING
+        IS_RELEASING,
+        IS_MOVING_OUTTAKE_ARM
     }
 
     Telemetry       mLogger;
@@ -140,7 +141,7 @@ public class Collecting {
         mGamepad = gamepad;
     }
 
-    public void move() {
+    public void control() {
 
         mLogger.addLine("======= COLLECTING =======");
         mLogger.addLine("-------- FUNCTION --------");
@@ -282,9 +283,7 @@ public class Collecting {
 //        }
 //        else { mWasRightStickXPositivePressed = false; }
 
-        if(mTransitionMode != TransitionMode.NONE) { this.transition(); }
-        if(mIntakeClawMode != IntakeClawMode.NONE) { this.grab();       }
-        if(mOuttakeClawMode != OuttakeClawMode.NONE) {this.release();   }
+
 
         mLogger.addLine("\n-------- POSITION --------");
         mLogger.addLine(mIntakeSlides.logPositions());
@@ -292,6 +291,12 @@ public class Collecting {
 
         mLogger.addLine("\n--------- MOVING ---------");
         mLogger.addLine(this.logMovements());
+    }
+
+    public void loop() {
+        if(mTransitionMode != TransitionMode.NONE)   { this.transition(); }
+        if(mIntakeClawMode != IntakeClawMode.NONE)   { this.grab();       }
+        if(mOuttakeClawMode != OuttakeClawMode.NONE) { this.release();    }
     }
 
 
@@ -349,7 +354,7 @@ public class Collecting {
 
         else if(mTransitionMode == TransitionMode.IS_REGRABBING && !mIntakeClaw.isMoving())
         {
-            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 7);
+            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 5);
 
             if(mIntakeSlides.getPosition() == IntakeSlides.Position.TRANSFER) {
                 mTransitionMode = TransitionMode.IS_MOVING_INTAKE_SLIDES;
@@ -370,6 +375,13 @@ public class Collecting {
             }
         }
         else if(mTransitionMode == TransitionMode.IS_RELEASING && !mIntakeClaw.isMoving()) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+
+            if(mOuttakeElbow.getPosition() == OuttakeElbow.Position.DROP) {
+                mTransitionMode = TransitionMode.IS_MOVING_OUTTAKE_ARM;
+            }
+        }
+        else if(mTransitionMode == TransitionMode.IS_MOVING_OUTTAKE_ARM && !mOuttakeElbow.isMoving()) {
             mTransitionMode = TransitionMode.NONE;
             mIntakeSlides.extend(0.05);
             mOuttakeSlides.extend(0.05);
@@ -392,12 +404,14 @@ public class Collecting {
         if(mIntakeClawMode == IntakeClawMode.IS_CLOSING && !mIntakeClaw.isMoving()){
 
             mIntakeArm.setPosition(IntakeArm.Position.OVER_SUBMERSIBLE, 200);
+            mIntakeElbow.setPosition(IntakeElbow.Position.OVER_SUBMERSIBLE);
 
-            if(mIntakeArm.getPosition() == IntakeArm.Position.OVER_SUBMERSIBLE) {
+            if((mIntakeArm.getPosition() == IntakeArm.Position.OVER_SUBMERSIBLE) &&
+                    (mIntakeElbow.getPosition() == IntakeElbow.Position.OVER_SUBMERSIBLE)){
                 mIntakeClawMode = IntakeClawMode.IS_LIFTING_ARM;
             }
         }
-        else if(mIntakeClawMode == IntakeClawMode.IS_LIFTING_ARM && !mIntakeArm.isMoving())
+        else if(mIntakeClawMode == IntakeClawMode.IS_LIFTING_ARM && !mIntakeArm.isMoving() && !mIntakeElbow.isMoving())
         {
             mIntakeClawMode = IntakeClawMode.NONE;
         }

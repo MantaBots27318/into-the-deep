@@ -44,7 +44,7 @@ public class IntakeSlides {
             "max", Position.MAX
     );
 
-    private static final int sTimeOut = 20000; // Timeout in ms
+    private static final int sTimeOut = 3000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
     String                  mPersistentLog;
@@ -70,9 +70,13 @@ public class IntakeSlides {
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
             double velocity = mMotor.getVelocity();
-            if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
+//            if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
+//                mIsMoving = false;
+//                mMotor.setPower(0.3);
+//            }
+            if(!mMotor.isBusy()) {
                 mIsMoving = false;
-                mMotor.setPower(0);
+                mMotor.setPower(0.3);
             }
             mPersistentLog = String.format("%s %d %s %s", error, mTolerance, mMotor.isBusy(), velocity);
         }
