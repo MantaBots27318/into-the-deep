@@ -29,6 +29,7 @@ public final class AutonomousOpMode extends LinearOpMode {
 
             Actions.runBlocking(drive.actionBuilder(beginPose).setTangent(0).splineTo(new Vector2d(10,10),Math.PI/4).turn(Math.PI).build());
             mCollecting.dropHighBasket();
+            Actions.runBlocking(drive.actionBuilder(beginPose).turn(Math.PI/4).build());
         }
 
 }
