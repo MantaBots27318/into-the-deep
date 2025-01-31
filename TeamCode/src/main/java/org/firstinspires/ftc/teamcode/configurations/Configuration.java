@@ -19,7 +19,7 @@ abstract public class Configuration {
     protected final  Map<String, ConfServo> mServos = new LinkedHashMap<>();
 
     // Current selected configuration
-    public static Configuration s_Current = new V1() ;
+    public static Configuration s_Current = new V0();
 
     // Method to retrieve a motor by its reference name
     public ConfMotor getMotor(String name) {

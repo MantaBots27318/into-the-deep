@@ -60,16 +60,23 @@ import java.util.List;
 @Config
 public class MecanumDrive {
     public static class Params {
+        // IMU orientation
+        // TODO: fill in these values based on
+        //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
+        public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
+                RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         // drive model parameters
         public double inPerTick = 1; // If you're using OTOS/Pinpoint leave this at 1 (all values will be in inches, 1 tick = 1 inch)
-        public double lateralInPerTick = 0.7118231519430893; // Tune this with LateralRampLogger (even if you use OTOS/Pinpoint)
-        public double trackWidthTicks = 15.134752358682695;
+        public double lateralInPerTick = 0.8330903416931723; // Tune this with LateralRampLogger (even if you use OTOS/Pinpoint)
+        public double trackWidthTicks = 13.79031781728607;
 
         // feedforward parameters (in tick units)
-        public double kS = 0.6369655063611788;
-        public double kV = 0.20224958397771445;
-        public double kA = 0.05;
+        public double kS = 0.7105504799519657;
+        public double kV = 0.1460415919313059;
+        public double kA = 0.009;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -81,9 +88,9 @@ public class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 4.0;
-        public double lateralGain = 4.0;
-        public double headingGain = 4.0; // shared with turn
+        public double axialGain = 4;
+        public double lateralGain = 3;
+        public double headingGain = 3; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
