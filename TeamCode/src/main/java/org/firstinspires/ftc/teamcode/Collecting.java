@@ -457,5 +457,39 @@ public class Collecting {
         if(mOuttakeSlides.isMoving()) { result += "OUT SLD\n"; }
         return result;
     }
+    public void dropHighBasket() {
+
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 20);
+
+        while(mOuttakeSlides.isMoving()){
+            mLogger.addLine("HGB : OUT SLD MAX");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        while(mOuttakeElbow.isMoving()){
+            mLogger.addLine("HGB : OUT ELB DROP");
+
+            mLogger.update();
+        }
+        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        while(mOuttakeClaw.isMoving()){
+            mLogger.addLine("HGB : OUT CLW OPEN");
+            mLogger.update();
+        }
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
+        while(mOuttakeElbow.isMoving()){
+            mLogger.addLine("HGB : OUT ELB OFF");
+
+            mLogger.update();
+        }
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 20);
+
+        while(mOuttakeSlides.isMoving()){
+            mLogger.addLine("HGB : OUT SLD MIN");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+    }
 }
 
