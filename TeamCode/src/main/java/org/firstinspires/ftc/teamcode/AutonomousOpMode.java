@@ -28,22 +28,19 @@ public final class AutonomousOpMode extends LinearOpMode {
             waitForStart();
 
             Actions.runBlocking(drive.actionBuilder(beginPose)
-                                .setTangent(0)
-                                .splineTo(new Vector2d(10,10),Math.PI/4)
-                                .turn(Math.PI)
+                                .setTangent(Math.PI)
+                                .splineTo(new Vector2d(-11,-11),5*Math.PI/4)
                                 .build());
             mCollecting.dropHighBasket();
             Actions.runBlocking(drive
                     .actionBuilder(drive.pose)
-                    .turn(7 * Math.PI/24)
-                    .lineToXConstantHeading(14)
-
-
-
+                    .lineToXConstantHeading(-11.5)
+                    .turn(Math.PI/4)
+                    .lineToXConstantHeading(-14)
 //                    .lineToY(-8)
                     .build());
             mCollecting.catchFromGround();
-            Actions.runBlocking(drive.actionBuilder(drive.pose).lineToXConstantHeading(10).turn(-7 * Math.PI/24).build());
+            Actions.runBlocking(drive.actionBuilder(drive.pose).lineToXConstantHeading(-10).turn(-7 * Math.PI/24).build());
             mCollecting.dropHighBasket();
 
 //            Actions.runBlocking(drive.actionBuilder(drive.pose).turn(-Math.PI/4).build());

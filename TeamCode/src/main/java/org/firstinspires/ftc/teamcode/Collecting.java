@@ -496,7 +496,7 @@ public class Collecting {
 
     public void dropHighBasket() {
 
-        mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 20);
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 25);
 
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD MAX");
@@ -520,7 +520,7 @@ public class Collecting {
 
             mLogger.update();
         }
-        mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 20);
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 25);
 
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD MIN");
@@ -530,9 +530,9 @@ public class Collecting {
     }
 
     public void catchFromGround() {
-        mIntakeSlides.setPosition(IntakeSlides.Position.MAX, 10);
+        mIntakeSlides.setPosition(IntakeSlides.Position.EXTEND, 10);
         while (mIntakeSlides.isMoving()) {
-            mLogger.addLine("CFG : INT SLD MAX");
+            mLogger.addLine("CFG : INT SLD INIT");
             mLogger.addLine(mIntakeSlides.logPositions());
             mLogger.update();
         }
