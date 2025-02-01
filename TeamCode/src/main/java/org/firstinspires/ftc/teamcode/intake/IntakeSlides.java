@@ -31,6 +31,7 @@ public class IntakeSlides {
         MIN,
         TRANSFER,
         RETRACT,
+        AUTONOMOUS,
         EXTEND,
         MAX,
         UNKNOWN
@@ -40,6 +41,7 @@ public class IntakeSlides {
             "min",  Position.MIN,
             "transfer", Position.TRANSFER,
             "retracted", Position.RETRACT,
+            "autonomous", Position.AUTONOMOUS,
             "init", Position.EXTEND,
             "max", Position.MAX
     );

@@ -38,7 +38,8 @@ public class OuttakeSlides {
         HIGH_BASKET,
         LOW_BASKET,
         LOW_SUBMERSIBLE,
-        HIGH_SUBMERSIBLE
+        HIGH_SUBMERSIBLE,
+        ASCEND
     }
 
     private static final Map<String,Position> sConfToPosition = Map.of(
@@ -49,7 +50,8 @@ public class OuttakeSlides {
             "lowSubmersible",     Position.LOW_SUBMERSIBLE,
             "highSubmersible", Position.HIGH_SUBMERSIBLE,
             "min",  Position.MIN,
-            "max", Position.MAX
+            "max", Position.MAX,
+            "ascend", Position.ASCEND
 
     );
 

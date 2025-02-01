@@ -50,6 +50,7 @@ public class V1 extends Configuration {
         mMotors.get("intake-slides").addPosition("transfer",168 );
         mMotors.get("intake-slides").addPosition("retracted",250 );
         mMotors.get("intake-slides").addPosition("init",300 );
+        mMotors.get("intake-slides").addPosition("autonomous",270 );
         mMotors.get("intake-slides").addPosition("max",315 );
 
         /* Outtake motors reference positions */
@@ -61,6 +62,7 @@ public class V1 extends Configuration {
         mMotors.get("outtake-slides").addPosition("lowBasket",10 );
         mMotors.get("outtake-slides").addPosition("lowSubmersible",10 );
         mMotors.get("outtake-slides").addPosition("highSubmersible",10 );
+        mMotors.get("outtake-slides").addPosition("ascend",710 );
 
         /* Intake servos reference positions */
         mServos.get("intake-arm-pitch").addPosition("transfer", 0.97);

@@ -530,7 +530,7 @@ public class Collecting {
     }
 
     public void catchFromGround() {
-        mIntakeSlides.setPosition(IntakeSlides.Position.EXTEND, 10);
+        mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10);
         while (mIntakeSlides.isMoving()) {
             mLogger.addLine("CFG : INT SLD INIT");
             mLogger.addLine(mIntakeSlides.logPositions());
@@ -542,17 +542,31 @@ public class Collecting {
             mLogger.addLine("CFG : IN ARM GRABBING");
             mLogger.update();
         }
-        mIntakeClaw.setPosition(IntakeClaw.Position.CLOSED);
-        while (mIntakeClaw.isMoving()) {
-            mLogger.addLine("CFG : IN CLW GRABBING");
-            mLogger.update();
+        this.grab();
+        while (mIntakeClawMode != IntakeClawMode.NONE){
+           this.grab();
         }
         this.transition();
         while (mTransitionMode != TransitionMode.NONE) {
             this.transition();
         }
+        mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER,10);
 
     }
 
+    public void level1Ascent() {
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.ASCEND, 10);
+        while (mOuttakeSlides.isMoving()) {
+            mLogger.addLine("CFG : OUT SLD ASCEND");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT ELB DROP");
+
+            mLogger.update();
+        }
+    }
 }
 
