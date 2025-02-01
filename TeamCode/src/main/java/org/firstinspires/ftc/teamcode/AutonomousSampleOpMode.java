@@ -10,7 +10,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import org.firstinspires.ftc.teamcode.configurations.Configuration;
 import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
     @Autonomous
-public final class AutonomousOpMode extends LinearOpMode {
+public final class AutonomousSampleOpMode extends LinearOpMode {
         Collecting      mCollecting;
 
         @Override

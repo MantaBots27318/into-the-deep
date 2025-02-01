@@ -61,7 +61,7 @@ public class V1 extends Configuration {
         mMotors.get("outtake-slides").addPosition("highBasket",10 );
         mMotors.get("outtake-slides").addPosition("lowBasket",10 );
         mMotors.get("outtake-slides").addPosition("lowSubmersible",10 );
-        mMotors.get("outtake-slides").addPosition("highSubmersible",10 );
+        mMotors.get("outtake-slides").addPosition("highSubmersible",666 );
         mMotors.get("outtake-slides").addPosition("ascend",710 );
 
         /* Intake servos reference positions */
@@ -102,13 +102,16 @@ public class V1 extends Configuration {
         mServos.get("outtake-wrist-roll").addPosition("5", 0.465);
         mServos.get("outtake-wrist-roll").addPosition("6",  0.51);
 
-        mServos.get("outtake-claw").addPosition("closed", 0.67);
-        mServos.get("outtake-claw").addPosition("microrelease", 0.65);
-        mServos.get("outtake-claw").addPosition("open", 0.31);
+        mServos.get("outtake-claw").addPosition("closed", 0.7);
+        mServos.get("outtake-claw").addPosition("microrelease", 0.68);
+        mServos.get("outtake-claw").addPosition("open", 0.34);
+
 
         mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.103);//0.11
         mServos.get("outtake-elbow-pitch").addPosition("drop", 0.05);
         mServos.get("outtake-elbow-pitch").addPosition("off", 0.08);
+        mServos.get("outtake-elbow-pitch").addPosition("vertical", 0.085);
+        mServos.get("outtake-elbow-pitch").addPosition("specimen", 0.02);
 
     }
 

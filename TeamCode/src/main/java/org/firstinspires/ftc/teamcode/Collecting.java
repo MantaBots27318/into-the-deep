@@ -603,5 +603,34 @@ public class Collecting {
             mLogger.update();
         }
     }
+    public void clipSpecimen() {
+
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT ELB DROP");
+            mLogger.update();
+        }
+
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.HIGH_SUBMERSIBLE, 25);
+        while (mOuttakeSlides.isMoving()) {
+            mLogger.addLine("HGB : OUT SLD HIGH SUB");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT ELB VERTICAL");
+
+        }
+    }
+    public void openClaw() {
+        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        while (mOuttakeClaw.isMoving()) {
+            mLogger.addLine("HGB : OUT CLW OPEN");
+            mLogger.update();
+        }
+    }
+
 }
 
