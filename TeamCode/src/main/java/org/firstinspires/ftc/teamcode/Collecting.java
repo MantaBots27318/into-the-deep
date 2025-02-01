@@ -528,6 +528,41 @@ public class Collecting {
             mLogger.update();
         }
     }
+    public void dropHighBasketWithoutRetracting() {
+
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 25);
+
+        while (mOuttakeSlides.isMoving()) {
+            mLogger.addLine("HGB : OUT SLD MAX");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT ELB DROP");
+
+            mLogger.update();
+        }
+        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        while (mOuttakeClaw.isMoving()) {
+            mLogger.addLine("HGB : OUT CLW OPEN");
+            mLogger.update();
+        }
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT ELB OFF");
+
+            mLogger.update();
+        }
+        mOuttakeSlides.setPosition(OuttakeSlides.Position.ASCEND, 25);
+        mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        while (mOuttakeSlides.isMoving() || mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT SLD MIN");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+    }
+
 
     public void catchFromGround() {
         mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10);
