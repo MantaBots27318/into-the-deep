@@ -42,7 +42,7 @@ public class V1 extends Configuration {
        mServos.put("outtake-wrist-roll", new ConfServo("outtakeWristRoll", false));         // CH Servo 0     CSRoOut
        mServos.put("outtake-claw", new ConfServo("outtakeClaw", false));                    // CH Servo 1     CSOut
        mServos.put("outtake-elbow-pitch", new ConfServo(
-                "outtakeElbowPitchLeft", false,                                                // CH Servo 2     CSPROut
+                "outtakeElbowPitchLeft", false,                                               // EH Servo 3     CSPROut
                 "outtakeElbowPitchRight", true)                                                      // CH Servo 3     CSPLOut
        );
 
