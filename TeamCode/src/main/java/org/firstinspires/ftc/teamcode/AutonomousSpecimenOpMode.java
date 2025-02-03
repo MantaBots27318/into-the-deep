@@ -40,7 +40,7 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
 
        Actions.runBlocking(
                drive.actionBuilder(drive.pose)
-                      .lineToX(-29)
+                      .lineToX(-28)
                         .build());
 
        mCollecting.openClaw();
