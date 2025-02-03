@@ -79,8 +79,10 @@ public class IntakeClaw {
             mPositions.clear();
             Map<String, Double> confPosition = move.getPositions();
             for (Map.Entry<String, Double> pos : confPosition.entrySet()) {
-                if(sConfToPosition.containsKey(pos.getKey())) {
+                if (sConfToPosition.containsKey(pos.getKey())) {
                     mPositions.put(sConfToPosition.get(pos.getKey()), pos.getValue());
+                } else {
+                    mLogger.addLine("Found unmanaged intake claw position : " + pos.getKey());
                 }
             }
 

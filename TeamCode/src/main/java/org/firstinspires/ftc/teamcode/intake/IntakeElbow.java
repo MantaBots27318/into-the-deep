@@ -83,6 +83,8 @@ public class IntakeElbow {
             for (Map.Entry<String, Double> pos : confPosition.entrySet()) {
                 if(sConfToPosition.containsKey(pos.getKey())) {
                     mPositions.put(sConfToPosition.get(pos.getKey()), pos.getValue());
+                } else {
+                    mLogger.addLine("Found unmanaged intake elbow position : " + pos.getKey());
                 }
             }
 

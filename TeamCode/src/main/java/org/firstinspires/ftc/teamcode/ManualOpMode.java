@@ -28,6 +28,7 @@ public class ManualOpMode extends OpMode {
         }
 
     }
+
     @Override
     public void loop (){
 
@@ -43,4 +44,12 @@ public class ManualOpMode extends OpMode {
         }
         
     }
+
+    @Override
+    public void stop() {
+        // Make sure that once Teleop is over, we reset all the persisted data
+        Configuration.s_Current.reinit();
+    }
+
+
 }

@@ -23,6 +23,8 @@ import org.firstinspires.ftc.teamcode.outtake.OuttakeElbow;
 import org.firstinspires.ftc.teamcode.outtake.OuttakeWrist;
 import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
 
+import java.util.Map;
+
 
 public class Collecting {
     public enum OuttakeClawMode {
@@ -496,32 +498,42 @@ public class Collecting {
 
     public void dropHighBasket() {
 
-        mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 25);
-
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.MAX) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 25);
+        }
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD MAX");
             mLogger.addLine(mOuttakeSlides.logPositions());
             mLogger.update();
         }
-        mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.DROP) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB DROP");
-
             mLogger.update();
         }
-        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+
+        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.OPEN) {
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        }
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("HGB : OUT CLW OPEN");
             mLogger.update();
         }
-        mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
+
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
+        }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB OFF");
-
             mLogger.update();
         }
-        mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 25);
 
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.MIN) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 25);
+        }
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD MIN");
             mLogger.addLine(mOuttakeSlides.logPositions());
@@ -531,33 +543,27 @@ public class Collecting {
     public void dropHighBasketWithoutRetracting() {
 
         mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 25);
-
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD MAX");
             mLogger.addLine(mOuttakeSlides.logPositions());
             mLogger.update();
         }
+
         mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB DROP");
-
             mLogger.update();
         }
+
         mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("HGB : OUT CLW OPEN");
             mLogger.update();
         }
-//        mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
-//        while (mOuttakeElbow.isMoving()) {
-//            mLogger.addLine("HGB : OUT ELB OFF");
-//
-//            mLogger.update();
-//        }
+
         mOuttakeSlides.setPosition(OuttakeSlides.Position.ASCEND, 25);
-        //mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
-        while (mOuttakeSlides.isMoving() /*|| mOuttakeElbow.isMoving()*/) {
-            mLogger.addLine("HGB : OUT SLD MIN");
+        while (mOuttakeSlides.isMoving()) {
+            mLogger.addLine("HGB : OUT SLD ASCEND");
             mLogger.addLine(mOuttakeSlides.logPositions());
             mLogger.update();
         }
@@ -565,71 +571,91 @@ public class Collecting {
 
 
     public void catchFromGround() {
-        mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10);
+
+        while (mIntakeSlides.getPosition() != IntakeSlides.Position.AUTONOMOUS) {
+            mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10);
+        }
         while (mIntakeSlides.isMoving()) {
-            mLogger.addLine("CFG : INT SLD INIT");
+            mLogger.addLine("CFG : INT SLD AUTONOMOUS");
             mLogger.addLine(mIntakeSlides.logPositions());
             mLogger.update();
         }
-        mIntakeArm.setPosition(IntakeArm.Position.GRABBING, 1200);
-        mIntakeElbow.setPosition(IntakeElbow.Position.GRABBING, 1200);
+
+        while (mIntakeArm.getPosition() != IntakeArm.Position.GRABBING) {
+            mIntakeArm.setPosition(IntakeArm.Position.GRABBING, 1200);
+        }
+        while (mIntakeElbow.getPosition() != IntakeElbow.Position.GRABBING) {
+            mIntakeElbow.setPosition(IntakeElbow.Position.GRABBING, 1200);
+        }
         while (mIntakeArm.isMoving() || mIntakeElbow.isMoving()) {
             mLogger.addLine("CFG : IN ARM GRABBING");
             mLogger.update();
         }
+
         this.grab();
         while (mIntakeClawMode != IntakeClawMode.NONE){
            this.grab();
         }
+
         this.transition();
         while (mTransitionMode != TransitionMode.NONE) {
             this.transition();
         }
-        mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER,10);
+
+        while(mIntakeSlides.getPosition() != IntakeSlides.Position.TRANSFER) {
+            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 10);
+        }
+        while (mIntakeArm.getPosition() != IntakeArm.Position.TRANSFER) {
+            mIntakeArm.setPosition(IntakeArm.Position.TRANSFER);
+        }
+        while (mIntakeElbow.getPosition() != IntakeElbow.Position.GRABBING) {
+            mIntakeElbow.setPosition(IntakeElbow.Position.GRABBING);
+        }
+
 
     }
 
-    public void level1Ascent() {
-        mOuttakeSlides.setPosition(OuttakeSlides.Position.ASCEND, 10);
-        while (mOuttakeSlides.isMoving()) {
-            mLogger.addLine("CFG : OUT SLD ASCEND");
-            mLogger.addLine(mOuttakeSlides.logPositions());
-            mLogger.update();
-        }
-        mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
-        while (mOuttakeElbow.isMoving()) {
-            mLogger.addLine("HGB : OUT ELB DROP");
-
-            mLogger.update();
-        }
-    }
     public void clipSpecimen() {
 
-        mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.SPECIMEN) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
+        }
         while (mOuttakeElbow.isMoving()) {
-            mLogger.addLine("HGB : OUT ELB DROP");
+            mLogger.addLine("HGB : OUT ELB SPECIMEN");
             mLogger.update();
         }
 
-        mOuttakeSlides.setPosition(OuttakeSlides.Position.HIGH_SUBMERSIBLE, 25);
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.HIGH_SUBMERSIBLE) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.HIGH_SUBMERSIBLE, 25);
+        }
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD HIGH SUB");
             mLogger.addLine(mOuttakeSlides.logPositions());
             mLogger.update();
         }
 
-        mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.VERTICAL) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
+        }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB VERTICAL");
-
         }
+
     }
     public void openClaw() {
-        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+
+        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.OPEN) {
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        }
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("HGB : OUT CLW OPEN");
             mLogger.update();
         }
+    }
+
+    public void persist(Configuration config) {
+        mIntakeSlides.persist(config);
+        mOuttakeSlides.persist(config);
     }
 
 }

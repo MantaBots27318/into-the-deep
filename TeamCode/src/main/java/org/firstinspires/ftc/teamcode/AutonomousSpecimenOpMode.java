@@ -38,22 +38,17 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
 
         mCollecting.clipSpecimen();
 
-        drive.leftBack.setPower(1.0);
-        drive.rightBack.setPower(1.0);
-        drive.leftFront.setPower(1.0);
-        drive.rightFront.setPower(1.0);
-
-        sleep(10);
-        drive.leftBack.setPower(0.0);
-        drive.rightBack.setPower(0.0);
-        drive.leftFront.setPower(0.0);
-        drive.rightFront.setPower(0.0);
-
        Actions.runBlocking(
-               drive.actionBuilder(beginPose)
-                      .lineToX(-30.5)
+               drive.actionBuilder(drive.pose)
+                      .lineToX(-29)
                         .build());
 
        mCollecting.openClaw();
+
+       // Read current heading and transform it into the FTC field coordinate system
+       // Since the opmode roadrunner reference was backwards, with X along the field length and Y along the field width
+       // We have to rotate the angle by 90 degrees
+       telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() + Math.PI / 2));
+       Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() + Math.PI / 2);
     }
 }

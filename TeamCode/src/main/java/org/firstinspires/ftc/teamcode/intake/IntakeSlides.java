@@ -56,6 +56,7 @@ public class IntakeSlides {
     boolean                 mIsMoving;
 
     Position                mPosition;    // Current slide position (unknown if moving freely)
+    int                     mPositionOffset;
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
     PIDFCoefficients        mPID;
@@ -72,10 +73,6 @@ public class IntakeSlides {
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
             double velocity = mMotor.getVelocity();
-//            if(error <= mTolerance && !mMotor.isBusy() && (Math.abs(mMotor.getVelocity()) < 5)) {
-//                mIsMoving = false;
-//                mMotor.setPower(0.3);
-//            }
             if(!mMotor.isBusy()) {
                 mIsMoving = false;
                 mMotor.setPower(0.3);
@@ -118,10 +115,20 @@ public class IntakeSlides {
                 for (Map.Entry<String, Integer> pos : confPosition.entrySet()) {
                     if(sConfToPosition.containsKey(pos.getKey())) {
                         mPositions.put(sConfToPosition.get(pos.getKey()), pos.getValue());
+                    } else {
+                        mLogger.addLine("Found unmanaged intake slides position : " + pos.getKey());
                     }
                 }
 
+                mPositionOffset = 0;
+                Double offset = config.retrieve("intake-slides-position-offset");
+                if(offset != null) {
+                    mPositionOffset = offset.intValue();
+                }
+                status += " OFFSET : " + mPositionOffset;
+
             }
+
         }
 
         // Final check to assess the component readiness
@@ -135,7 +142,7 @@ public class IntakeSlides {
         }
 
         // Log status
-        if (mReady) { logger.addLine("==>  IN SLD : OK"); }
+        if (mReady) { logger.addLine("==>  IN SLD : OK : " + status); }
         else        { logger.addLine("==>  IN SLD : KO : " + status); }
 
 
@@ -197,7 +204,7 @@ public class IntakeSlides {
             mMotor.setTargetPositionTolerance(tolerance);
             mTolerance = tolerance;
             
-            mMotor.setTargetPosition(mPositions.get(position));
+            mMotor.setTargetPosition(mPositions.get(position) - mPositionOffset);
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             mIsMoving = true;
             mMotor.setPower(0.9);
@@ -238,6 +245,10 @@ public class IntakeSlides {
             result = mPosition;
         }
         return result;
+    }
+
+    public void persist(Configuration config) {
+        config.persist("intake-slides-position-offset",mMotor.getCurrentPosition());
     }
 
 }

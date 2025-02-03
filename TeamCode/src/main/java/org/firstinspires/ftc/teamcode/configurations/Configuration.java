@@ -14,9 +14,10 @@ import java.util.Map;
 abstract public class Configuration {
 
     // Map to store hardware components by reference name
-    protected final  Map<String, ConfMotor> mMotors = new LinkedHashMap<>();
-    protected final  Map<String, ConfImu>   mImus   = new LinkedHashMap<>();
-    protected final  Map<String, ConfServo> mServos = new LinkedHashMap<>();
+    protected final  Map<String, ConfMotor> mMotors         = new LinkedHashMap<>();
+    protected final  Map<String, ConfImu>   mImus           = new LinkedHashMap<>();
+    protected final  Map<String, ConfServo> mServos         = new LinkedHashMap<>();
+    protected        Map<String, Double>    mInterOpModes   = new LinkedHashMap<>();
 
     // Current selected configuration
     public static Configuration s_Current = new V1() ;
@@ -45,5 +46,21 @@ abstract public class Configuration {
     // Constructor
     public Configuration() {
         initialize();
+    }
+    
+    public void reinit() {
+        mInterOpModes.clear();
+    }
+
+    public void persist(String key, double data) {
+        mInterOpModes.put(key, data);
+    }
+
+    public Double retrieve(String key) {
+        Double result = null;
+        if(mInterOpModes.containsKey(key)) {
+            result = mInterOpModes.get(key);
+        }
+        return result;
     }
 }

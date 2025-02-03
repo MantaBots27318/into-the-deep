@@ -64,6 +64,8 @@ public class OuttakeSlides {
     boolean                 mIsMoving;
 
     Position                mPosition;    // Current slide position (unknown if moving freely
+    int                     mPositionOffset;
+
 
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
     PIDFCoefficients        mPID;
@@ -123,8 +125,17 @@ public class OuttakeSlides {
                 for (Map.Entry<String, Integer> pos : confPosition.entrySet()) {
                     if(sConfToPosition.containsKey(pos.getKey())) {
                         mPositions.put(sConfToPosition.get(pos.getKey()), pos.getValue());
+                    } else {
+                        mLogger.addLine("Found unmanaged outtake slides position : " + pos.getKey());
                     }
                 }
+
+                mPositionOffset = 0;
+                Double offset = config.retrieve("outtake-slides-position-offset");
+                if(offset != null) {
+                    mPositionOffset = offset.intValue();
+                }
+                status += " OFFSET : " + mPositionOffset;
             }
         }
 
@@ -137,7 +148,7 @@ public class OuttakeSlides {
         }
 
         // Log status
-        if (mReady) { logger.addLine("==>  OUT SLD : OK"); }
+        if (mReady) { logger.addLine("==>  OUT SLD : OK : " + status); }
         else        { logger.addLine("==>  OUT SLD : KO : " + status); }
 
     }
@@ -192,7 +203,7 @@ public class OuttakeSlides {
             mMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, mPID);
             mMotor.setTargetPositionTolerance(tolerance);
 
-            mMotor.setTargetPosition(mPositions.get(position));
+            mMotor.setTargetPosition(mPositions.get(position) - mPositionOffset);
             mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             mIsMoving = true;
             mMotor.setPower(1.0);
@@ -233,6 +244,10 @@ public class OuttakeSlides {
             result = mPosition;
         }
         return result;
+    }
+
+    public void persist(Configuration config) {
+        config.persist("outtake-slides-position-offset",mMotor.getCurrentPosition());
     }
 
 

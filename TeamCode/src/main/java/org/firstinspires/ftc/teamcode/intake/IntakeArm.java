@@ -85,6 +85,9 @@ public class IntakeArm {
                 if(sConfToPosition.containsKey(pos.getKey())) {
                     mPositions.put(sConfToPosition.get(pos.getKey()), pos.getValue());
                 }
+                else {
+                    mLogger.addLine("Found unmanaged intake arm position : " + pos.getKey());
+                }
             }
 
             if (!mServo.isReady()) { mReady = false; status += " HW";}

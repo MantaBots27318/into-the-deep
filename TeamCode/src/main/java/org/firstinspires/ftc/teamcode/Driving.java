@@ -34,6 +34,8 @@ public class Driving {
 
     IMU             mImu;
 
+    double          mHeadingOffset;
+
     MotorComponent  mFrontLeftMotor;
     MotorComponent  mBackLeftMotor;
     MotorComponent  mFrontRightMotor;
@@ -110,6 +112,13 @@ public class Driving {
                         imu.getLogo(), imu.getUsb());
                 mImu.initialize(new IMU.Parameters(RevOrientation));
                 mImu.resetYaw();
+                mHeadingOffset = 0;
+                Double initialHeading = config.retrieve("heading");
+                if(initialHeading != null) {
+                    // From FTC field reference to initial robot position;
+                    mHeadingOffset = initialHeading + Math.PI /2;
+                }
+                logger.addLine("==>  Heading Offset : " + mHeadingOffset);
             }
 
         }
@@ -138,6 +147,7 @@ public class Driving {
 
             if (mIsFieldCentric) {
                 double heading = mImu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+                heading += mHeadingOffset;
                 // Rotate the movement direction counter to the bot's rotation
                 double rotX = x * Math.cos(-heading) - y * Math.sin(-heading);
                 double rotY = x * Math.sin(-heading) + y * Math.cos(-heading);
