@@ -46,7 +46,7 @@ public class IntakeSlides {
             "max", Position.MAX
     );
 
-    private static final int sTimeOut = 3000; // Timeout in ms
+    private static final int sTimeOut = 2000; // Timeout in ms
 
     Telemetry               mLogger;      // Local logger
     String                  mPersistentLog;

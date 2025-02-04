@@ -314,7 +314,7 @@ public class Collecting {
             mTransitionMode = TransitionMode.WAITING;
         }
         if (mTransitionMode == TransitionMode.WAITING) {
-            mIntakeSlides.setPosition(IntakeSlides.Position.EXTEND, 20);
+            mIntakeSlides.setPosition(IntakeSlides.Position.EXTEND, 40);
 
             if (mIntakeSlides.getPosition() == IntakeSlides.Position.EXTEND) {
                 mTransitionMode = TransitionMode.IS_EXTENDING_INTAKE_SLIDES;
@@ -369,15 +369,9 @@ public class Collecting {
                 mTransitionMode = TransitionMode.IS_RELEASING;
             }
         } else if (mTransitionMode == TransitionMode.IS_RELEASING && !mIntakeClaw.isMoving()) {
-            mIntakeSlides.extend(0.05);
-            mOuttakeSlides.extend(0.05);
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
-
-            if (mOuttakeElbow.getPosition() == OuttakeElbow.Position.DROP) {
-                mTransitionMode = TransitionMode.IS_MOVING_OUTTAKE_ARM;
-            }
-        } else if (mTransitionMode == TransitionMode.IS_MOVING_OUTTAKE_ARM && !mOuttakeElbow.isMoving()) {
-            mTransitionMode = TransitionMode.NONE;
+             mIntakeSlides.extend(0.05);
+             mOuttakeSlides.extend(0.05);
+             mTransitionMode = TransitionMode.NONE;
         }
     }
 
