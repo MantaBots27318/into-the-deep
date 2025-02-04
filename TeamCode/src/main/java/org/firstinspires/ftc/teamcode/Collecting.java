@@ -351,7 +351,7 @@ public class Collecting {
                 mTransitionMode = TransitionMode.IS_REGRABBING;
             }
         } else if (mTransitionMode == TransitionMode.IS_REGRABBING && !mIntakeClaw.isMoving()) {
-            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 5);
+            mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 10);
 
             if (mIntakeSlides.getPosition() == IntakeSlides.Position.TRANSFER) {
                 mTransitionMode = TransitionMode.IS_MOVING_INTAKE_SLIDES;
