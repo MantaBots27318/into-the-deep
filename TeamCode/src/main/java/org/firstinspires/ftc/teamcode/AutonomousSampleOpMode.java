@@ -41,7 +41,7 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
                     .lineToXConstantHeading(-14)
                     .build());
             mCollecting.catchFromGround();
-            Actions.runBlocking(drive.actionBuilder(drive.pose).lineToXConstantHeading(-10).turn(-7 * Math.PI/24).build());
+            Actions.runBlocking(drive.actionBuilder(drive.pose).lineToXConstantHeading(-11).turn(-7 * Math.PI/24).build());
             mCollecting.dropHighBasketWithoutRetracting();
             Actions.runBlocking(drive.actionBuilder(drive.pose).splineTo(new Vector2d(-60,-10),-Math.PI/2).lineToYConstantHeading(14).build());
 

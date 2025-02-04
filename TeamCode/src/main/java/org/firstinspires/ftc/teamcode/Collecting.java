@@ -369,6 +369,8 @@ public class Collecting {
                 mTransitionMode = TransitionMode.IS_RELEASING;
             }
         } else if (mTransitionMode == TransitionMode.IS_RELEASING && !mIntakeClaw.isMoving()) {
+            mIntakeSlides.extend(0.05);
+            mOuttakeSlides.extend(0.05);
             mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
 
             if (mOuttakeElbow.getPosition() == OuttakeElbow.Position.DROP) {
@@ -376,8 +378,6 @@ public class Collecting {
             }
         } else if (mTransitionMode == TransitionMode.IS_MOVING_OUTTAKE_ARM && !mOuttakeElbow.isMoving()) {
             mTransitionMode = TransitionMode.NONE;
-            mIntakeSlides.extend(0.05);
-            mOuttakeSlides.extend(0.05);
         }
     }
 

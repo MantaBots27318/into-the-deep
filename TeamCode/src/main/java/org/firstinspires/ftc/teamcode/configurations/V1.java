@@ -105,7 +105,7 @@ public class V1 extends Configuration {
         mServos.get("outtake-claw").addPosition("open", 0.36);
 
 
-        mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.11);//0.11
+        mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.105);//0.11
         mServos.get("outtake-elbow-pitch").addPosition("drop", 0.05);
         mServos.get("outtake-elbow-pitch").addPosition("off", 0.08);
         mServos.get("outtake-elbow-pitch").addPosition("vertical", 0.085);
