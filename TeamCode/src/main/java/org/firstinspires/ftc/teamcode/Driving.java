@@ -116,7 +116,7 @@ public class Driving {
                 Double initialHeading = config.retrieve("heading");
                 if(initialHeading != null) {
                     // From FTC field reference to initial robot position;
-                    mHeadingOffset = initialHeading + Math.PI /2;
+                    mHeadingOffset = initialHeading - Math.PI /2;
                 }
                 logger.addLine("==>  Heading Offset : " + mHeadingOffset);
             }

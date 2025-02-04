@@ -47,8 +47,8 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
             // Read current heading and transform it into the FTC field coordinate system
             // Since the opmode roadrunner reference was backwards, with X along the field length and Y along the field width
             // We have to rotate the angle by 90 degrees
-            telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() + Math.PI / 2));
-            Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() + Math.PI / 2);
+            telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() - Math.PI / 2));
+            Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() - Math.PI / 2);
             mCollecting.persist(Configuration.s_Current);
             telemetry.update();
         }

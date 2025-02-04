@@ -49,7 +49,10 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
-                        .splineTo(new Vector2d(-15,39),-Math.PI)
+                        .lineToX(-15)
+                        .turn(Math.PI/2)
+                        .lineToY(39.5)
+                        .turn(Math.PI/2)
                         .lineToX(-5)
                         .build());
 
@@ -58,8 +61,10 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .lineToX(-10)
-                        .splineTo(new Vector2d(-10,-5),0)
-                        .lineToX(-26)
+                        .turn(-Math.PI/2)
+                        .lineToY(-10)
+                        .turn(-Math.PI/2)
+                        .lineToX(-25.5)
                         .build());
 
         mCollecting.letSpecimen();
@@ -74,8 +79,8 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
         // Read current heading and transform it into the FTC field coordinate system
        // Since the opmode roadrunner reference was backwards, with X along the field length and Y along the field width
        // We have to rotate the angle by 90 degrees
-       telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() + Math.PI / 2));
-       Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() + Math.PI / 2);
+       telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() - Math.PI / 2));
+       Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() - Math.PI / 2);
        mCollecting.persist(Configuration.s_Current);
        telemetry.update();
     }

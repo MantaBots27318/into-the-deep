@@ -30,6 +30,7 @@ public class OuttakeElbow {
         DROP,
         OFF,
         SPECIMEN,
+        SPECIMEN2,
         VERTICAL
 
     }
@@ -39,6 +40,7 @@ public class OuttakeElbow {
             "drop",Position.DROP,
             "off",Position.OFF,
             "specimen", Position.SPECIMEN,
+            "specimen2", Position.SPECIMEN2,
             "vertical", Position.VERTICAL
             );
 

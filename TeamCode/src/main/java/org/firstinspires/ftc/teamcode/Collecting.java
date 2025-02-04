@@ -595,8 +595,8 @@ public class Collecting {
             mLogger.update();
         }
 
-        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.DROP) {
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.VERTICAL) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
         }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB SPECIMEN");
@@ -615,8 +615,8 @@ public class Collecting {
             mLogger.update();
         }
 
-        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.SPECIMEN) {
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.SPECIMEN2) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN2);
         }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("LSP : OUT ELB SPECIMEN");
