@@ -156,7 +156,7 @@ public class IntakeSlides {
             mMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             mPosition = Position.UNKNOWN;
 
-            if(mMotor.getCurrentPosition() < mPositions.get(Position.MAX)){
+            if((mMotor.getCurrentPosition() + mPositionOffset) < mPositions.get(Position.MAX)){
                 mMotor.setPower(Power);
             }
             else {
@@ -183,7 +183,7 @@ public class IntakeSlides {
             mMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             mPosition = Position.UNKNOWN;
 
-            if(mMotor.getCurrentPosition() > mPositions.get(Position.MIN)){
+            if((mMotor.getCurrentPosition() + mPositionOffset) > mPositions.get(Position.MIN)){
                 mMotor.setPower(-Power);
             }
             else {
@@ -220,7 +220,7 @@ public class IntakeSlides {
     public boolean isRetracted() {
         boolean result = true;
         if(mReady && mPositions.containsKey(Position.RETRACT)) {
-            result = (mMotor.getCurrentPosition() < mPositions.get(Position.RETRACT));
+            result = ((mMotor.getCurrentPosition() + mPositionOffset) < mPositions.get(Position.RETRACT));
         }
         return result;
     }
