@@ -50,6 +50,7 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
             telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() + Math.PI / 2));
             Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() + Math.PI / 2);
             mCollecting.persist(Configuration.s_Current);
+            telemetry.update();
         }
 
 }

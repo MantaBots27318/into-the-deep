@@ -180,16 +180,6 @@ public class Collecting {
             mIntakeSlides.stop();
         }
 
-        if (mGamepad.left_stick_button) {
-            mLogger.addLine("==> IN SLD TO TRANSFER");
-            if (!mWasLeftStickButtonPressed) {
-                mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 2);
-            }
-            mWasLeftStickButtonPressed = true;
-        } else {
-            mWasLeftStickButtonPressed = false;
-        }
-
         if (mGamepad.x) {
             mLogger.addLine(String.format("==> SWT OUT CLW : " + mOuttakeClaw.getPosition()));
             if (!mWasXPressed) {
@@ -272,13 +262,6 @@ public class Collecting {
             mWasDPadDownPressed = false;
         }
 
-//        if(mGamepad.dpad_right) {
-//            mLogger.addLine(String.format("==> RETRACT"));
-//            if(!mWasDPadRightPressed){ this.retract() ;}
-//            mWasDPadRightPressed = true;
-//        }
-//        else { mWasDPadRightPressed = false; }
-
         if (mGamepad.left_stick_x < 0) {
             mLogger.addLine(String.format("==> RDW IN WRS : " + mIntakeWrist.getPosition()));
             if (!mWasLeftStickXNegativePressed) {
@@ -298,20 +281,6 @@ public class Collecting {
         } else {
             mWasLeftStickXPositivePressed = false;
         }
-
-//        if(mGamepad.right_stick_x < 0) {
-//            mLogger.addLine(String.format("==> RDW OUT WRS : " + mOuttakeWrist.getPosition()));
-//            if(!mWasRightStickXNegativePressed){ mOuttakeWrist.rotateDown(); }
-//            mWasRightStickXNegativePressed = true;
-//        }
-//        else { mWasRightStickXNegativePressed = false; }
-//
-//        if(mGamepad.right_stick_x > 0) {
-//            mLogger.addLine(String.format("==> RUP OUT WRS : " + mOuttakeWrist.getPosition()));
-//            if(!mWasRightStickXPositivePressed){ mOuttakeWrist.rotateUp(); }
-//            mWasRightStickXPositivePressed = true;
-//        }
-//        else { mWasRightStickXPositivePressed = false; }
 
 
         mLogger.addLine("\n-------- POSITION --------");
@@ -595,11 +564,13 @@ public class Collecting {
         this.grab();
         while (mIntakeClawMode != IntakeClawMode.NONE){
            this.grab();
+            mLogger.update();
         }
 
         this.transition();
         while (mTransitionMode != TransitionMode.NONE) {
             this.transition();
+            mLogger.update();
         }
 
         while(mIntakeSlides.getPosition() != IntakeSlides.Position.TRANSFER) {
@@ -612,6 +583,60 @@ public class Collecting {
             mIntakeElbow.setPosition(IntakeElbow.Position.GRABBING);
         }
 
+    }
+
+    public void grabSpecimen()
+    {
+        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.CLOSED) {
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.CLOSED);
+        }
+        while (mOuttakeClaw.isMoving()) {
+            mLogger.addLine("GSP : OUT CLW CLOSED");
+            mLogger.update();
+        }
+
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.DROP) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        }
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("HGB : OUT ELB SPECIMEN");
+            mLogger.update();
+        }
+    }
+
+    public void letSpecimen() {
+
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.HIGH_SUBMERSIBLE_OVER) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.HIGH_SUBMERSIBLE_OVER, 25);
+        }
+        while (mOuttakeSlides.isMoving()) {
+            mLogger.addLine("LSP : OUT SLD HIGH SUB");
+            mLogger.addLine(mOuttakeSlides.logPositions());
+            mLogger.update();
+        }
+
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.SPECIMEN) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
+        }
+        while (mOuttakeElbow.isMoving()) {
+            mLogger.addLine("LSP : OUT ELB SPECIMEN");
+            mLogger.update();
+        }
+
+        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.OPEN) {
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        }
+        while (mOuttakeClaw.isMoving()) {
+            mLogger.addLine("LSP : OUT CLW CLOSED");
+            mLogger.update();
+        }
+
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.DROP) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
+        }
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.TRANSFER) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
+        }
 
     }
 
@@ -625,8 +650,8 @@ public class Collecting {
             mLogger.update();
         }
 
-        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.HIGH_SUBMERSIBLE) {
-            mOuttakeSlides.setPosition(OuttakeSlides.Position.HIGH_SUBMERSIBLE, 25);
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.HIGH_SUBMERSIBLE_UNDER) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.HIGH_SUBMERSIBLE_UNDER, 25);
         }
         while (mOuttakeSlides.isMoving()) {
             mLogger.addLine("HGB : OUT SLD HIGH SUB");
@@ -641,6 +666,7 @@ public class Collecting {
             mLogger.addLine("HGB : OUT ELB VERTICAL");
         }
 
+
     }
     public void openClaw() {
 
@@ -650,6 +676,13 @@ public class Collecting {
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("HGB : OUT CLW OPEN");
             mLogger.update();
+        }
+
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.TRANSFER) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
+        }
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.SPECIMEN) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
         }
     }
 

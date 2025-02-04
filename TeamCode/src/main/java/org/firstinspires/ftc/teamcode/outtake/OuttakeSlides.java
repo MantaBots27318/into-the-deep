@@ -35,20 +35,16 @@ public class OuttakeSlides {
         UNKNOWN,
         TRANSFER,
         RETRACT,
-        HIGH_BASKET,
-        LOW_BASKET,
-        LOW_SUBMERSIBLE,
-        HIGH_SUBMERSIBLE,
+        HIGH_SUBMERSIBLE_UNDER,
+        HIGH_SUBMERSIBLE_OVER,
         ASCEND
     }
 
     private static final Map<String,Position> sConfToPosition = Map.of(
             "transfer", Position.TRANSFER,
             "retracted", Position.RETRACT,
-            "highBasket",  Position.HIGH_BASKET ,
-            "lowBasket",     Position.LOW_BASKET,
-            "lowSubmersible",     Position.LOW_SUBMERSIBLE,
-            "highSubmersible", Position.HIGH_SUBMERSIBLE,
+            "highSubmersibleUnder", Position.HIGH_SUBMERSIBLE_UNDER,
+            "highSubmersibleOver", Position.HIGH_SUBMERSIBLE_OVER,
             "min",  Position.MIN,
             "max", Position.MAX,
             "ascend", Position.ASCEND

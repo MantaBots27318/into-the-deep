@@ -29,6 +29,8 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
             telemetry.addLine("INIT error : " + e.getMessage());
         }
 
+        telemetry.update();
+
         waitForStart();
 
         Actions.runBlocking(
@@ -38,17 +40,43 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
 
         mCollecting.clipSpecimen();
 
-       Actions.runBlocking(
+        Actions.runBlocking(
                drive.actionBuilder(drive.pose)
-                      .lineToX(-28)
+                        .lineToX(-27)
                         .build());
 
-       mCollecting.openClaw();
+        mCollecting.openClaw();
 
-       // Read current heading and transform it into the FTC field coordinate system
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .splineTo(new Vector2d(-15,39),-Math.PI)
+                        .lineToX(-5)
+                        .build());
+
+        mCollecting.grabSpecimen();
+
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .lineToX(-10)
+                        .splineTo(new Vector2d(-10,-5),0)
+                        .lineToX(-26)
+                        .build());
+
+        mCollecting.letSpecimen();
+
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .lineToX(-5)
+                        .turn(Math.PI/2)
+                        .lineToY(39)
+                        .build());
+
+        // Read current heading and transform it into the FTC field coordinate system
        // Since the opmode roadrunner reference was backwards, with X along the field length and Y along the field width
        // We have to rotate the angle by 90 degrees
        telemetry.addData("Final Heading", "" + (drive.pose.heading.toDouble() + Math.PI / 2));
        Configuration.s_Current.persist("heading",drive.pose.heading.toDouble() + Math.PI / 2);
+       mCollecting.persist(Configuration.s_Current);
+       telemetry.update();
     }
 }
