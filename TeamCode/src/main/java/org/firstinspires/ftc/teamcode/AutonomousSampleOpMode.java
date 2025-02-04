@@ -19,13 +19,14 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
         Pose2d beginPose = new Pose2d(0, 0, Math.PI/2);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
             try {
-
+                Configuration.s_Current.reinit();
                 mCollecting = new Collecting();
                 mCollecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
             }
             catch(Exception e){
                 telemetry.addLine("INIT error : " + e.getMessage()) ;
             }
+            telemetry.update();
             waitForStart();
 
             Actions.runBlocking(drive.actionBuilder(beginPose)

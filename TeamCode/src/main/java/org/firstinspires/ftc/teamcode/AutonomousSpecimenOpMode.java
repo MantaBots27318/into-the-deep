@@ -22,7 +22,7 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
         Pose2d beginPose = new Pose2d(0, 0, 0);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
         try {
-
+            Configuration.s_Current.reinit();
             mCollecting = new Collecting();
             mCollecting.setHW(Configuration.s_Current, hardwareMap, telemetry, gamepad2);
         } catch (Exception e) {
