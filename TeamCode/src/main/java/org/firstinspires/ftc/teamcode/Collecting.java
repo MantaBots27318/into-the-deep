@@ -479,20 +479,12 @@ public class Collecting {
         }
 
         while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.OPEN) {
-            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN,1000);
         }
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("HGB : OUT CLW OPEN");
             mLogger.update();
         }
-
-//        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
-//            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
-//        }
-//        while (mOuttakeElbow.isMoving()) {
-//            mLogger.addLine("HGB : OUT ELB OFF");
-//            mLogger.update();
-//        }
 
         while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.MIN) {
             mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 25);
@@ -503,7 +495,7 @@ public class Collecting {
             mLogger.update();
         }
     }
-    public void dropHighBasketWithoutRetracting() {
+    public void dropHighBasketAscend() {
 
         mOuttakeSlides.setPosition(OuttakeSlides.Position.MAX, 25);
         while (mOuttakeSlides.isMoving()) {
@@ -518,7 +510,7 @@ public class Collecting {
             mLogger.update();
         }
 
-        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN,1000);
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("HGB : OUT CLW OPEN");
             mLogger.update();
@@ -532,23 +524,15 @@ public class Collecting {
         }
     }
 
-
     public void catchFromGround() {
 
-        // DO NOT REMOVE THOSE LOGS OR IT WILL FAIL {
-        mLogger.addData("IN SLD BEFORE",mIntakeSlides.logPositions());
         while (mIntakeSlides.getPosition() != IntakeSlides.Position.AUTONOMOUS) {
-            mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10);
+            mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10, 5000);
         }
         while (mIntakeSlides.isMoving()) {
             mLogger.addLine("CFG : INT SLD AUTONOMOUS");
-            mLogger.addData("IN SLD DURING",mIntakeSlides.logPositions());
             mLogger.update();
         }
-        mLogger.addData("IN SLD AFTER",mIntakeSlides.logPositions());
-        mLogger.update();
-        // } DO NOT REMOVE THOSE LOGS OR IT WILL FAIL
-
         while (mIntakeArm.getPosition() != IntakeArm.Position.GRABBING) {
             mIntakeArm.setPosition(IntakeArm.Position.GRABBING, 1200);
         }
@@ -594,8 +578,8 @@ public class Collecting {
             mLogger.update();
         }
 
-        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.VERTICAL) {
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
         }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB SPECIMEN");

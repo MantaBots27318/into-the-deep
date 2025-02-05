@@ -196,7 +196,7 @@ public class IntakeSlides {
 
     // Make the slides reach current position. The slides won't respond anymore until slides reached the position
     // A timer is armed fpr time out, and the slides will respond again once unarmed
-    public void setPosition(Position position, int tolerance)
+    public void setPosition(Position position, int tolerance, int timeout)
     {
         if(mReady && !this.isMoving() && mPositions.containsKey(position)) {
             
@@ -209,11 +209,15 @@ public class IntakeSlides {
             mIsMoving = true;
             mMotor.setPower(0.9);
             
-            mTimer.arm(sTimeOut);
+            mTimer.arm(timeout);
 
             mPosition = position;
 
         }
+    }
+    public void setPosition(Position position, int tolerance)
+    {
+        this.setPosition(position, tolerance, sTimeOut);
     }
 
 

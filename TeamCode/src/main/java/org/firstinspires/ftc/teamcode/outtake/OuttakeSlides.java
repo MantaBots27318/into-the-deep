@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.components.MotorCoupled;
 import org.firstinspires.ftc.teamcode.components.MotorSingle;
 
 /* Utils includes */
+import org.firstinspires.ftc.teamcode.intake.IntakeSlides;
 import org.firstinspires.ftc.teamcode.utils.SmartTimer;
 
 
@@ -192,7 +193,7 @@ public class OuttakeSlides {
 
     // Make the slides reach current position. The slides won't respond anymore until slides reached the position
     // A timer is armed fpr time out, and the slides will respond again once unarmed
-    public void setPosition(Position position, int tolerance)
+    public void setPosition(Position position, int tolerance, int timeout)
     {
         if(mReady && !this.isMoving() && mPositions.containsKey(position)) {
 
@@ -204,11 +205,15 @@ public class OuttakeSlides {
             mIsMoving = true;
             mMotor.setPower(1.0);
 
-            mTimer.arm(sTimeOut);
+            mTimer.arm(timeout);
 
             mPosition = position;
 
         }
+    }
+    public void setPosition(Position position, int tolerance)
+    {
+        this.setPosition(position, tolerance, sTimeOut);
     }
 
     public boolean isRetracted() {

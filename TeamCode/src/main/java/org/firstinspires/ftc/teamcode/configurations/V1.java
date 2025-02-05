@@ -50,7 +50,7 @@ public class V1 extends Configuration {
         mMotors.get("intake-slides").addPosition("transfer",167 );
         mMotors.get("intake-slides").addPosition("retracted",250 );
         mMotors.get("intake-slides").addPosition("init",300 );
-        mMotors.get("intake-slides").addPosition("autonomous",267 );
+        mMotors.get("intake-slides").addPosition("autonomous",260 );
         mMotors.get("intake-slides").addPosition("max",315 );
 
         /* Outtake motors reference positions */
@@ -70,10 +70,10 @@ public class V1 extends Configuration {
         mServos.get("intake-arm-pitch").addPosition("off", 1.0);
 
         mServos.get("intake-elbow-pitch").addPosition("transfer", 0.15);
-        mServos.get("intake-elbow-pitch").addPosition("grab", 0.68);
-        mServos.get("intake-elbow-pitch").addPosition("look", 0.70);
-        mServos.get("intake-elbow-pitch").addPosition("overSub", 0.73);
-        mServos.get("intake-elbow-pitch").addPosition("off", 0.68);
+        mServos.get("intake-elbow-pitch").addPosition("grab", 0.66);
+        mServos.get("intake-elbow-pitch").addPosition("look", 0.68);
+        mServos.get("intake-elbow-pitch").addPosition("overSub", 0.71);
+        mServos.get("intake-elbow-pitch").addPosition("off", 0.66);
 
         mServos.get("intake-wrist-roll").addPosition("-2", 0.27);
         mServos.get("intake-wrist-roll").addPosition("-1", 0.335);
@@ -105,11 +105,11 @@ public class V1 extends Configuration {
         mServos.get("outtake-claw").addPosition("open", 0.36);
 
 
-        mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.105);//0.11
+        mServos.get("outtake-elbow-pitch").addPosition("transfer", 0.11);//0.11
         mServos.get("outtake-elbow-pitch").addPosition("drop", 0.05);
         mServos.get("outtake-elbow-pitch").addPosition("off", 0.08);
         mServos.get("outtake-elbow-pitch").addPosition("vertical", 0.085);
-        mServos.get("outtake-elbow-pitch").addPosition("specimen", 0.015);
+        mServos.get("outtake-elbow-pitch").addPosition("specimen", 0.011);
         mServos.get("outtake-elbow-pitch").addPosition("specimen2", 0.025);
 
     }
