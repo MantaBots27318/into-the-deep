@@ -535,14 +535,19 @@ public class Collecting {
 
     public void catchFromGround() {
 
+        // DO NOT REMOVE THOSE LOGS OR IT WILL FAIL {
+        mLogger.addData("IN SLD BEFORE",mIntakeSlides.logPositions());
         while (mIntakeSlides.getPosition() != IntakeSlides.Position.AUTONOMOUS) {
             mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10);
         }
         while (mIntakeSlides.isMoving()) {
             mLogger.addLine("CFG : INT SLD AUTONOMOUS");
-            mLogger.addLine(mIntakeSlides.logPositions());
+            mLogger.addData("IN SLD DURING",mIntakeSlides.logPositions());
             mLogger.update();
         }
+        mLogger.addData("IN SLD AFTER",mIntakeSlides.logPositions());
+        mLogger.update();
+        // } DO NOT REMOVE THOSE LOGS OR IT WILL FAIL
 
         while (mIntakeArm.getPosition() != IntakeArm.Position.GRABBING) {
             mIntakeArm.setPosition(IntakeArm.Position.GRABBING, 1200);
