@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.configurations.Configuration;
+import org.firstinspires.ftc.teamcode.outtake.OuttakeElbow;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.TankDrive;
@@ -68,9 +69,15 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
                         .build());
 
         mCollecting.letSpecimen();
-
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
+                        .lineToX(-30)
+                        .build());
+
+        mCollecting.openClaw2();
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+
                         .lineToX(-5)
                         .turn(Math.PI/2)
                         .lineToY(39)

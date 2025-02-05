@@ -527,7 +527,7 @@ public class Collecting {
     public void catchFromGround() {
 
         while (mIntakeSlides.getPosition() != IntakeSlides.Position.AUTONOMOUS) {
-            mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10, 5000);
+            mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10, 8000);
         }
         while (mIntakeSlides.isMoving()) {
             mLogger.addLine("CFG : INT SLD AUTONOMOUS");
@@ -578,8 +578,8 @@ public class Collecting {
             mLogger.update();
         }
 
-        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.VERTICAL) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
         }
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB SPECIMEN");
@@ -605,23 +605,8 @@ public class Collecting {
             mLogger.addLine("LSP : OUT ELB SPECIMEN");
             mLogger.update();
         }
-
-        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.OPEN) {
-            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
-        }
-        while (mOuttakeClaw.isMoving()) {
-            mLogger.addLine("LSP : OUT CLW CLOSED");
-            mLogger.update();
-        }
-
-        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.DROP) {
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.DROP);
-        }
-        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.TRANSFER) {
-            mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
-        }
-
     }
+
 
     public void clipSpecimen() {
 
@@ -666,6 +651,24 @@ public class Collecting {
         }
         while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.SPECIMEN) {
             mOuttakeElbow.setPosition(OuttakeElbow.Position.SPECIMEN);
+        }
+    }
+
+    public void openClaw2() {
+
+        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.OPEN) {
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.OPEN);
+        }
+        while (mOuttakeClaw.isMoving()) {
+            mLogger.addLine("HGB : OUT CLW OPEN");
+            mLogger.update();
+        }
+
+        while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.TRANSFER) {
+            mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
+        }
+        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
+            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
         }
     }
 
