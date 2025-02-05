@@ -28,12 +28,14 @@ public class OuttakeClaw {
     public enum Position {
         OPEN,
         MICRORELEASED,
+        ULTRACLOSED,
         CLOSED
     }
 
     private static final Map<String, Position> sConfToPosition = Map.of(
             "open",         Position.OPEN,
             "microrelease", Position.MICRORELEASED,
+            "ultraclosed", Position.ULTRACLOSED,
             "closed",       Position.CLOSED
     );
 

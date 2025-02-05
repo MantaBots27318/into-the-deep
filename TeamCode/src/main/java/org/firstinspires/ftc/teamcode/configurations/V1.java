@@ -100,6 +100,7 @@ public class V1 extends Configuration {
         mServos.get("outtake-wrist-roll").addPosition("5", 0.465);
         mServos.get("outtake-wrist-roll").addPosition("6",  0.51);
 
+        mServos.get("outtake-claw").addPosition("ultraclosed", 0.75);
         mServos.get("outtake-claw").addPosition("closed", 0.73);
         mServos.get("outtake-claw").addPosition("microrelease", 0.70);
         mServos.get("outtake-claw").addPosition("open", 0.36);

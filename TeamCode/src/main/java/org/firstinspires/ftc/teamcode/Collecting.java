@@ -605,6 +605,14 @@ public class Collecting {
             mLogger.addLine("LSP : OUT ELB SPECIMEN");
             mLogger.update();
         }
+
+        while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.ULTRACLOSED) {
+            mOuttakeClaw.setPosition(OuttakeClaw.Position.ULTRACLOSED);
+        }
+        while (mOuttakeClaw.isMoving()) {
+            mLogger.addLine("GSP : OUT CLW CLOSED");
+            mLogger.update();
+        }
     }
 
 
