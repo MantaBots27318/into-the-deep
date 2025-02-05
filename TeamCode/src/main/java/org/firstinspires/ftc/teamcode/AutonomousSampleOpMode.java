@@ -31,7 +31,7 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
 
             Actions.runBlocking(drive.actionBuilder(beginPose)
                                 .setTangent(Math.PI)
-                                .splineTo(new Vector2d(-11,-11),5*Math.PI/4)
+                                .splineTo(new Vector2d(-10.75,-11.25),5*Math.PI/4)
                                 .build());
             mCollecting.dropHighBasket();
             Actions.runBlocking(drive
@@ -43,7 +43,7 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
             mCollecting.catchFromGround();
             Actions.runBlocking(drive.actionBuilder(drive.pose).lineToXConstantHeading(-11).turn(-7 * Math.PI/24).build());
             mCollecting.dropHighBasketWithoutRetracting();
-            Actions.runBlocking(drive.actionBuilder(drive.pose).splineTo(new Vector2d(-60,-10),-Math.PI/2).lineToYConstantHeading(14).build());
+            Actions.runBlocking(drive.actionBuilder(drive.pose).splineTo(new Vector2d(-51,-10),-Math.PI/2).lineToYConstantHeading(14.5).build());
 
             // Read current heading and transform it into the FTC field coordinate system
             // Since the opmode roadrunner reference was backwards, with X along the field length and Y along the field width

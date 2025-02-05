@@ -486,13 +486,13 @@ public class Collecting {
             mLogger.update();
         }
 
-        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
-            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
-        }
-        while (mOuttakeElbow.isMoving()) {
-            mLogger.addLine("HGB : OUT ELB OFF");
-            mLogger.update();
-        }
+//        while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.OFF) {
+//            mOuttakeElbow.setPosition(OuttakeElbow.Position.OFF);
+//        }
+//        while (mOuttakeElbow.isMoving()) {
+//            mLogger.addLine("HGB : OUT ELB OFF");
+//            mLogger.update();
+//        }
 
         while(mOuttakeSlides.getPosition() != OuttakeSlides.Position.MIN) {
             mOuttakeSlides.setPosition(OuttakeSlides.Position.MIN, 25);
