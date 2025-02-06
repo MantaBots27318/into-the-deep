@@ -529,6 +529,10 @@ public class Collecting {
         while (mIntakeSlides.getPosition() != IntakeSlides.Position.AUTONOMOUS) {
             mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10, 8000);
         }
+        try {
+            Thread.sleep(200);
+        }
+        catch(Exception e) {}
         while (mIntakeSlides.isMoving()) {
             mLogger.addLine("CFG : INT SLD AUTONOMOUS");
             mLogger.update();
