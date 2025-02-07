@@ -50,7 +50,7 @@ public class V1 extends Configuration {
         mMotors.get("intake-slides").addPosition("transfer",167 );
         mMotors.get("intake-slides").addPosition("retracted",250 );
         mMotors.get("intake-slides").addPosition("init",300 );
-        mMotors.get("intake-slides").addPosition("autonomous",260 );
+        mMotors.get("intake-slides").addPosition("autonomous",280 );
         mMotors.get("intake-slides").addPosition("max",315 );
 
         /* Outtake motors reference positions */

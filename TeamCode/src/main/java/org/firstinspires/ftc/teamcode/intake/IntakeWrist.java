@@ -130,26 +130,26 @@ public class IntakeWrist {
 
     // Make the wrist rotate one step in one direction
     public void rotateUp() {
-        if(mPosition == Position.MINUS_TWO)         { this.setPosition(Position.MINUS_ONE); }
-        else if(mPosition == Position.MINUS_ONE)    { this.setPosition(Position.NULL);      }
-        else if(mPosition == Position.NULL)         { this.setPosition(Position.ONE);       }
-        else if(mPosition == Position.ONE)          { this.setPosition(Position.TWO);       }
-        else if(mPosition == Position.TWO)          { this.setPosition(Position.THREE);     }
-        else if(mPosition == Position.THREE)        { this.setPosition(Position.FOUR);      }
-        else if(mPosition == Position.FOUR)         { this.setPosition(Position.FIVE);      }
-        else if(mPosition == Position.FIVE)         { this.setPosition(Position.SIX);       }
+//        if(mPosition == Position.MINUS_TWO)         { this.setPosition(Position.MINUS_ONE); }
+//        else if(mPosition == Position.MINUS_ONE)    { this.setPosition(Position.NULL);      }
+      if(mPosition == Position.NULL)         { this.setPosition(Position.FOUR);       }
+//        else if(mPosition == Position.ONE)          { this.setPosition(Position.TWO);       }
+//        else if(mPosition == Position.TWO)          { this.setPosition(Position.THREE);     }
+//        else if(mPosition == Position.THREE)        { this.setPosition(Position.FOUR);      }
+//        else if(mPosition == Position.FOUR)         { this.setPosition(Position.FIVE);      }
+//        else if(mPosition == Position.FIVE)         { this.setPosition(Position.SIX);       }
     }
 
     // Make the wrist rotate one step in the other direction
     public void rotateDown() {
-        if(mPosition == Position.MINUS_ONE)         { this.setPosition(Position.MINUS_TWO);  }
-        else if(mPosition == Position.NULL)         { this.setPosition(Position.MINUS_ONE);  }
-        else if(mPosition == Position.ONE)          { this.setPosition(Position.NULL);       }
-        else if(mPosition == Position.TWO)          { this.setPosition(Position.ONE);        }
-        else if(mPosition == Position.THREE)        { this.setPosition(Position.TWO);        }
-        else if(mPosition == Position.FOUR)         { this.setPosition(Position.THREE);      }
-        else if(mPosition == Position.FIVE)         { this.setPosition(Position.FOUR);       }
-        else if(mPosition == Position.SIX)          { this.setPosition(Position.FIVE);       }
+//        if(mPosition == Position.MINUS_ONE)         { this.setPosition(Position.MINUS_TWO);  }
+//        else if(mPosition == Position.NULL)         { this.setPosition(Position.MINUS_ONE);  }
+//        else if(mPosition == Position.ONE)          { this.setPosition(Position.NULL);       }
+//        else if(mPosition == Position.TWO)          { this.setPosition(Position.ONE);        }
+//        else if(mPosition == Position.THREE)        { this.setPosition(Position.TWO);        }
+        if(mPosition == Position.FOUR)         { this.setPosition(Position.NULL);      }
+//        else if(mPosition == Position.FIVE)         { this.setPosition(Position.FOUR);       }
+//        else if(mPosition == Position.SIX)          { this.setPosition(Position.FIVE);       }
     }
 
 }

@@ -526,6 +526,10 @@ public class Collecting {
 
     public void catchFromGround() {
 
+
+        mLogger.addData("CFG : INT SLD AUTONOMOUS","START");
+        mLogger.addData("CFG : INT SLD LOGS",mIntakeSlides.logPositions());
+        mLogger.update();
         while (mIntakeSlides.getPosition() != IntakeSlides.Position.AUTONOMOUS) {
             mIntakeSlides.setPosition(IntakeSlides.Position.AUTONOMOUS, 10, 8000);
         }
@@ -534,9 +538,14 @@ public class Collecting {
         }
         catch(Exception e) {}
         while (mIntakeSlides.isMoving()) {
-            mLogger.addLine("CFG : INT SLD AUTONOMOUS");
+            mLogger.addData("CFG : INT SLD AUTONOMOUS","IN");
+            mLogger.addData("CFG : INT SLD LOGS",mIntakeSlides.logPositions());
             mLogger.update();
         }
+
+        mLogger.addData("CFG : IN ARM GRABBING", "START");
+        mLogger.update();
+
         while (mIntakeArm.getPosition() != IntakeArm.Position.GRABBING) {
             mIntakeArm.setPosition(IntakeArm.Position.GRABBING, 1200);
         }
@@ -544,32 +553,38 @@ public class Collecting {
             mIntakeElbow.setPosition(IntakeElbow.Position.GRABBING, 1200);
         }
         while (mIntakeArm.isMoving() || mIntakeElbow.isMoving()) {
-            mLogger.addLine("CFG : IN ARM GRABBING");
+            mLogger.addData("CFG : IN ARM GRABBING", "IN");
             mLogger.update();
+
         }
 
+        mLogger.addData("CFG : IN GRABBING", "START");
         this.grab();
         while (mIntakeClawMode != IntakeClawMode.NONE){
-           this.grab();
-            mLogger.update();
+            mLogger.addData("CFG : IN GRABBING", "IN");
+            this.grab();
         }
 
+        mLogger.addData("CFG : TRANSITION", "START");
         this.transition();
         while (mTransitionMode != TransitionMode.NONE) {
+            mLogger.addData("CFG : TRANSITION", "IN");
             this.transition();
-            mLogger.update();
         }
 
         while(mIntakeSlides.getPosition() != IntakeSlides.Position.TRANSFER) {
             mIntakeSlides.setPosition(IntakeSlides.Position.TRANSFER, 10);
         }
+
         while (mIntakeArm.getPosition() != IntakeArm.Position.TRANSFER) {
             mIntakeArm.setPosition(IntakeArm.Position.TRANSFER);
         }
+
         while (mIntakeElbow.getPosition() != IntakeElbow.Position.GRABBING) {
             mIntakeElbow.setPosition(IntakeElbow.Position.GRABBING);
         }
 
+        mLogger.update();
     }
 
     public void grabSpecimen()
@@ -577,6 +592,7 @@ public class Collecting {
         while(mOuttakeClaw.getPosition() != OuttakeClaw.Position.CLOSED) {
             mOuttakeClaw.setPosition(OuttakeClaw.Position.CLOSED);
         }
+
         while (mOuttakeClaw.isMoving()) {
             mLogger.addLine("GSP : OUT CLW CLOSED");
             mLogger.update();
@@ -585,6 +601,7 @@ public class Collecting {
         while(mOuttakeElbow.getPosition() != OuttakeElbow.Position.VERTICAL) {
             mOuttakeElbow.setPosition(OuttakeElbow.Position.VERTICAL);
         }
+
         while (mOuttakeElbow.isMoving()) {
             mLogger.addLine("HGB : OUT ELB SPECIMEN");
             mLogger.update();

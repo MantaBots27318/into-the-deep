@@ -70,6 +70,7 @@ public class IntakeSlides {
         // If motor stopped turning once, even if it is starting again to hold position, we decide
         // it's no longer moving. By that time, its power would have been changed to 0, so he won't
         // be able to reach its target position and we would be stuck waiting for the timer to unarm
+        mLogger.addData("INT SLD isMoving",mIsMoving);
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
             double velocity = mMotor.getVelocity();
@@ -78,6 +79,7 @@ public class IntakeSlides {
                 mMotor.setPower(0.3);
             }
             mPersistentLog = String.format("%s %d %s %s", error, mTolerance, mMotor.isBusy(), velocity);
+            mLogger.addData("INT SLD persistent",mPersistentLog);
         }
         return (mIsMoving && mTimer.isArmed());
     }
