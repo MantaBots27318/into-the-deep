@@ -59,7 +59,7 @@ public class V1 extends Configuration {
         mMotors.get("outtake-slides").addPosition("retracted",1300 );
         mMotors.get("outtake-slides").addPosition("max",3726 );
         mMotors.get("outtake-slides").addPosition("highSubmersibleUnder",690 );
-        mMotors.get("outtake-slides").addPosition("highSubmersibleOver",870 );
+        mMotors.get("outtake-slides").addPosition("highSubmersibleOver",845 );
         mMotors.get("outtake-slides").addPosition("ascend",710 );
 
         /* Intake servos reference positions */

@@ -54,7 +54,7 @@ public final class AutonomousSpecimenOpMode extends LinearOpMode {
                         .turn(Math.PI/2)
                         .lineToY(39.5)
                         .turn(Math.PI/2)
-                        .lineToX(-5)
+                        .lineToX(-6)
                         .build());
 
         mCollecting.grabSpecimen();

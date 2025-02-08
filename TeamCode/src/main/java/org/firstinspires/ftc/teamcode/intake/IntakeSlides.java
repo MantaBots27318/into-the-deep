@@ -74,7 +74,7 @@ public class IntakeSlides {
         if(mIsMoving) {
             double error = Math.abs(mMotor.getCurrentPosition() - mMotor.getTargetPosition());
             double velocity = mMotor.getVelocity();
-            if(!mMotor.isBusy()) {
+            if(!mMotor.isBusy() && (error < mTolerance * 10)) {
                 mIsMoving = false;
                 mMotor.setPower(0.3);
             }
