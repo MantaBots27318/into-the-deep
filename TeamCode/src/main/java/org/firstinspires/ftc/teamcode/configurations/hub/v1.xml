@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <Robot type="FirstInspires-FTC">
+    <Webcam name="Webcam 1" serialNumber="C4171F1F" />
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Expansion Hub 2" port="2">
             <goBILDA5202SeriesMotor name="outtakeSlidesLeft" port="0" />
@@ -8,8 +9,8 @@
             <goBILDA5202SeriesMotor name="intakeSlidesLeft" port="3" />
             <Servo name="intakeElbowPitch" port="0" />
             <Servo name="intakeArmPitchRight" port="1" />
-            <Servo name="outtakeElbowPitchLeft" port="3" />
             <Servo name="intakeClaw" port="2" />
+            <Servo name="outtakeElbowPitchLeft" port="3" />
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
         </LynxModule>
         <LynxModule name="Control Hub" port="173">
@@ -22,8 +23,8 @@
             <Servo name="outtakeElbowPitchRight" port="3" />
             <Servo name="intakeWristRoll" port="4" />
             <Servo name="intakeArmPitchLeft" port="5" />
-            <RevTouchSensor name="outtakeSlidesRightTouch" port="3" />
             <RevTouchSensor name="outtakeSlidesLeftTouch" port="1" />
+            <RevTouchSensor name="outtakeSlidesRightTouch" port="3" />
             <ControlHubImuBHI260AP name="imu" port="0" bus="0" />
         </LynxModule>
     </LynxUsbDevice>
