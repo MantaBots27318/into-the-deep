@@ -27,6 +27,12 @@ import java.util.Map;
 
 
 public class Collecting {
+    public enum PreparingMode {
+        NONE,
+        WAITING,
+        IS_MOVING_ARM_AND_ELBOW,
+
+    }
     public enum OuttakeClawMode {
         NONE,
         WAITING,
@@ -59,6 +65,7 @@ public class Collecting {
     TransitionMode mTransitionMode;
     IntakeClawMode mIntakeClawMode;
     OuttakeClawMode mOuttakeClawMode;
+    PreparingMode mPreparingMode;
     IntakeSlides mIntakeSlides;
     IntakeArm mIntakeArm;
     IntakeElbow mIntakeElbow;
@@ -124,6 +131,7 @@ public class Collecting {
         mTransitionMode = TransitionMode.NONE;
         mIntakeClawMode = IntakeClawMode.NONE;
         mOuttakeClawMode = OuttakeClawMode.NONE;
+        mPreparingMode = PreparingMode.NONE;
     }
 
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger, Gamepad gamepad) {
@@ -262,6 +270,18 @@ public class Collecting {
             mWasDPadDownPressed = false;
         }
 
+        if (mGamepad.dpad_right) {
+            mLogger.addLine(String.format("==> Over Submersible Position : " + mIntakeArm.getPosition()));
+            if (!mWasDPadDownPressed) {
+                preparing();
+
+
+            }
+            mWasDPadDownPressed = true;
+        } else {
+            mWasDPadDownPressed = false;
+        }
+
         if (mGamepad.left_stick_x < 0) {
             mLogger.addLine(String.format("==> RDW IN WRS : " + mIntakeWrist.getPosition()));
             if (!mWasLeftStickXNegativePressed) {
@@ -301,6 +321,9 @@ public class Collecting {
         if (mOuttakeClawMode != OuttakeClawMode.NONE) {
             this.release();
         }
+        if (mPreparingMode != PreparingMode.NONE) {
+            this.preparing();
+        }
     }
 
 
@@ -338,7 +361,7 @@ public class Collecting {
             }
         } else if (mTransitionMode == TransitionMode.IS_MOVING_ARMS && !mIntakeArm.isMoving() && !mIntakeWrist.isMoving() && !mIntakeElbow.isMoving() && !mOuttakeClaw.isMoving() && !mOuttakeWrist.isMoving() && !mOuttakeElbow.isMoving()) {
             mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
-            mIntakeClaw.setPosition(IntakeClaw.Position.MICRORELEASED, 200);
+            mIntakeClaw.setPosition(IntakeClaw.Position.MICRORELEASED, 400);
             if ((mOuttakeSlides.getPosition() == OuttakeSlides.Position.TRANSFER) &&
                     (mIntakeClaw.getPosition() == IntakeClaw.Position.MICRORELEASED)) {
                 mTransitionMode = TransitionMode.IS_MOVING_OUTTAKE_SLIDES_AND_MICRORELEASING_CLAW;
@@ -375,7 +398,27 @@ public class Collecting {
         }
     }
 
+    public void preparing(){
+        if(mPreparingMode == PreparingMode.NONE){
+            mPreparingMode = PreparingMode.WAITING;
+        }
 
+        if(mPreparingMode == PreparingMode.WAITING){
+            mIntakeArm.setPosition(IntakeArm.Position.OVER_SUBMERSIBLE);
+            mIntakeElbow.setPosition(IntakeElbow.Position.OVER_SUBMERSIBLE);
+            mIntakeClaw.setPosition(IntakeClaw.Position.OPEN);
+            if (mIntakeElbow.getPosition() == IntakeElbow.Position.OVER_SUBMERSIBLE) {
+                mPreparingMode = PreparingMode.IS_MOVING_ARM_AND_ELBOW;
+            }
+        }
+        if(mPreparingMode == PreparingMode.IS_MOVING_ARM_AND_ELBOW && !mIntakeElbow.isMoving() && !mIntakeArm.isMoving()) {
+            mIntakeSlides.setPosition(IntakeSlides.Position.MAX, 20);
+            if (mIntakeSlides.getPosition() == IntakeSlides.Position.MAX){
+                mPreparingMode = PreparingMode.NONE;
+            }
+        }
+        
+    }
     public void grab() {
         mLogger.addLine("CLOSING CLAW : " + mIntakeClawMode);
         if (mIntakeClawMode == IntakeClawMode.NONE) {
