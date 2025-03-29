@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
 import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -15,7 +16,11 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
 import org.opencv.core.RotatedRect;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.List;
 
@@ -31,6 +36,7 @@ public class vision_test extends LinearOpMode  {
     private double Actual_Y;
     static public double Camera_Angle;
     private int counter = 0;
+    private OpenCvWebcam webcam;
 
 @Override
 
@@ -38,15 +44,15 @@ public class vision_test extends LinearOpMode  {
     public void runOpMode()
     {
         Height = 13-1.5;
-        FOV_X = 72 * (Math.PI/180);
-        FOV_Y = 41.5 * (Math.PI/180);
+        FOV_X = 62.4 * (Math.PI/180);
+        FOV_Y = 46.8 * (Math.PI/180);
 
         X_Resolution = 320;
-        Y_Resolution =240;
-        Camera_Angle = 34.7 * (Math.PI/180) - FOV_Y / 2;
+        Y_Resolution = 240;
+        Camera_Angle = 41.18 * (Math.PI/180) - FOV_Y / 2;
 
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.BLUE)         // use a predefined color match
+                .setTargetColorRange(ColorRange.RED)         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
@@ -65,11 +71,14 @@ public class vision_test extends LinearOpMode  {
          *  or
          *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
          */
+        HSVProcessor hsvProcessor = new HSVProcessor(telemetry);
         VisionPortal portal = new VisionPortal.Builder()
                 .addProcessor(colorLocator)
+                .addProcessor(hsvProcessor)
                 .setCameraResolution(new Size(320, 240))
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
+
 
         telemetry.setMsTransmissionInterval(50);   // Speed up telemetry updates, Just use for debugging.
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
@@ -77,6 +86,7 @@ public class vision_test extends LinearOpMode  {
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive() || opModeInInit())
         {
+
 
 
             // Read the current list
@@ -102,8 +112,9 @@ public class vision_test extends LinearOpMode  {
              *   A blob's Aspect ratio is the ratio of boxFit long side to short side.
              *   A perfect Square has an aspect ratio of 1.  All others are > 1
              */
-            ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);  // filter out very small blobs.
-            ColorBlobLocatorProcessor.Util.filterByAspectRatio(1.5, 3, blobs);
+             //           ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);  // filter out very small blobs.
+           // ColorBlobLocatorProcessor.Util.filterByAspectRatio(1.5, 3, blobs);
+
             /*
              * The list of Blobs can be sorted using the same Blob attributes as listed above.
              * No more than one sort call should be made.  Sorting can use ascending or descending order.
@@ -114,11 +125,12 @@ public class vision_test extends LinearOpMode  {
 
 //            telemetry.addLine(" Area Density Aspect  Center");
             counter = 0;
+            hsvProcessor.DrawBlob(null);
             // Display the size (area) and center location for each Blob.
             for(ColorBlobLocatorProcessor.Blob b : blobs) {
-                if( counter ==0) {
+                if (b.getAspectRatio() > 1.5) {
                     RotatedRect boxFit = b.getBoxFit();
-                    counter = counter +1;
+                    hsvProcessor.DrawBlob(b) ;
 //                telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d)",
 //                        b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
 
@@ -128,8 +140,8 @@ public class vision_test extends LinearOpMode  {
 
                     double x_center = boxFit.center.x - 160;
                     double y_center = -boxFit.center.y + 120;
-                    double actual_AngleX =((FOV_X / X_Resolution) * x_center);
-                    double actual_AngleY =Camera_Angle + ((FOV_Y / Y_Resolution) * y_center + (FOV_Y/2));
+                    double actual_AngleX = ((FOV_X / X_Resolution) * x_center);
+                    double actual_AngleY = Camera_Angle + ((FOV_Y / Y_Resolution) * y_center + (FOV_Y / 2));
 
                     Actual_X = Height * Math.tan(actual_AngleX);
                     Actual_Y = Height * Math.tan(actual_AngleY);
@@ -137,12 +149,12 @@ public class vision_test extends LinearOpMode  {
                     telemetry.addData("Actual Y", Actual_Y);
                     telemetry.addData("Center X", x_center);
                     telemetry.addData("Center Y", y_center);
-                    telemetry.addData("Angle X",(actual_AngleX*180/Math.PI));
-                    telemetry.addData("Angle Y",(actual_AngleY*180/Math.PI));
-
+                    telemetry.addData("Angle X", (actual_AngleX * 180 / Math.PI));
+                    telemetry.addData("Angle Y", (actual_AngleY * 180 / Math.PI));
 
 
                     telemetry.update();
+
                 }
             }
         }
