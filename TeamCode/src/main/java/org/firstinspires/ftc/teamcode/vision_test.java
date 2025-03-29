@@ -143,8 +143,9 @@ public class vision_test extends LinearOpMode  {
                     double actual_AngleX = ((FOV_X / X_Resolution) * x_center);
                     double actual_AngleY = Camera_Angle + ((FOV_Y / Y_Resolution) * y_center + (FOV_Y / 2));
 
-                    Actual_X = Height * Math.tan(actual_AngleX);
                     Actual_Y = Height * Math.tan(actual_AngleY);
+                    Actual_X =  (x_center/160)*Math.tan(FOV_X/2)*Math.sqrt(Height*Height+Actual_Y*Actual_Y) ;
+
                     telemetry.addData("Actual X", Actual_X);
                     telemetry.addData("Actual Y", Actual_Y);
                     telemetry.addData("Center X", x_center);
