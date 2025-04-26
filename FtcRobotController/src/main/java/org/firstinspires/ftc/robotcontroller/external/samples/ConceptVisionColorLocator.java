@@ -38,6 +38,7 @@ import org.opencv.core.RotatedRect;
 
 import java.util.List;
 
+
 /*
  * This OpMode illustrates how to use a video source (camera) to locate specifically colored regions
  *

@@ -28,6 +28,7 @@ import java.util.List;
 @TeleOp
 public class vision_test extends LinearOpMode  {
    static public double  Height;
+   static public boolean save;
     static public double FOV_X ;
     static public double FOV_Y ;
     static public double X_Resolution ;
@@ -128,6 +129,7 @@ public class vision_test extends LinearOpMode  {
             hsvProcessor.DrawBlob(null);
             // Display the size (area) and center location for each Blob.
             for(ColorBlobLocatorProcessor.Blob b : blobs) {
+                hsvProcessor.button(save);
                 if (b.getAspectRatio() > 1.5) {
                     RotatedRect boxFit = b.getBoxFit();
                     hsvProcessor.DrawBlob(b) ;
