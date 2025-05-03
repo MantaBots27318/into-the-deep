@@ -65,6 +65,7 @@ public class V1 extends Configuration {
         /* Intake servos reference positions */
         mServos.get("intake-arm-pitch").addPosition("transfer", 0.97);
         mServos.get("intake-arm-pitch").addPosition("overSub", 0.6);
+
         mServos.get("intake-arm-pitch").addPosition("look", 0.44);
         mServos.get("intake-arm-pitch").addPosition("grab", 0.39);
         mServos.get("intake-arm-pitch").addPosition("off", 1.0);
@@ -74,6 +75,8 @@ public class V1 extends Configuration {
         mServos.get("intake-elbow-pitch").addPosition("look", 0.68);
         mServos.get("intake-elbow-pitch").addPosition("overSub", 0.71);
         mServos.get("intake-elbow-pitch").addPosition("off", 0.66);
+        mServos.get("intake-elbow-pitch").addPosition("topView", 0.45);
+        mServos.get("intake-elbow-pitch").addPosition("visionStart", 0.62);
 
         mServos.get("intake-wrist-roll").addPosition("-2", 0.27);
         mServos.get("intake-wrist-roll").addPosition("-1", 0.335);

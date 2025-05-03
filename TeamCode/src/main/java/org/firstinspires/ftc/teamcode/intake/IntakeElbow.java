@@ -30,7 +30,9 @@ public class IntakeElbow {
         OVER_SUBMERSIBLE,
         LOOKING,
         GRABBING,
-        OFF
+        OFF,
+       TOP_VIEW,
+        VISION_START
     }
 
     private static final Map<String, Position> sConfToPosition = Map.of(
@@ -38,7 +40,9 @@ public class IntakeElbow {
         "overSub",  Position.OVER_SUBMERSIBLE ,
         "look",     Position.LOOKING,
         "grab",     Position.GRABBING,
-            "off",  Position.OFF
+            "off",  Position.OFF,
+            "topView", Position.TOP_VIEW,
+            "visionStart", Position.VISION_START
     );
 
     private static final int      sTimeOut = 100; // Timeout in ms

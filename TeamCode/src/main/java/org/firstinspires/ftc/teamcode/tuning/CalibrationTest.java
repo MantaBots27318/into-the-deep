@@ -6,12 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.vision.Calibration;
-import org.opencv.core.Mat;
 import org.opencv.core.Point;
 
 @Config
 @TeleOp
-public class Calibration_test_vision extends LinearOpMode {
+public class CalibrationTest extends LinearOpMode {
 
     // Inputs (editable from FTC Dashboard)
     public static double pixelX = 0;

@@ -158,18 +158,22 @@ public class Collecting {
         mLogger.addLine("======= COLLECTING =======");
         mLogger.addLine("-------- FUNCTION --------");
 
+        //Left bumper allows you to extend the outtake slides
         if (mGamepad.left_bumper && (mIntakeSlides.isRetracted())) {
             mLogger.addLine("==> EXT OUT SLD");
             mOuttakeSlides.extend(0.9);
+            //Right bumper allows you to retract the outtake slides
+
         } else if (mGamepad.right_bumper) {
             mLogger.addLine("==> RLB OUT SLD");
             mOuttakeSlides.rollback(0.7);
         } else {
             mOuttakeSlides.stop();
         }
-
+        //Right stick allows you to
         if (mGamepad.right_stick_button) {
             mLogger.addLine("==> OUT SLD TO TRANSFER");
+            //
             if (!mWasRightStickButtonPressed) {
                 mOuttakeSlides.setPosition(OuttakeSlides.Position.TRANSFER, 5);
             }
@@ -748,6 +752,14 @@ public class Collecting {
         mIntakeSlides.persist(config);
         mOuttakeSlides.persist(config);
     }
+
+    public void drone(){
+        mIntakeElbow.setPosition(IntakeElbow.Position.TOP_VIEW);
+        mIntakeArm.setPosition(IntakeArm.Position.OVER_SUBMERSIBLE);
+
+    }
+
+
 
 }
 

@@ -15,10 +15,13 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
+import org.firstinspires.ftc.teamcode.ColorDefinition;
+import org.firstinspires.ftc.vision.opencv.ColorSpace;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvWebcam;
 
@@ -33,7 +36,7 @@ public class vision_test extends LinearOpMode  {
     static public double FOV_Y ;
     static public double X_Resolution ;
     static public double Y_Resolution;
-    private double Actual_X;
+    public double Actual_X;
     private double Actual_Y;
     static public double Camera_Angle;
     private int counter = 0;
@@ -52,8 +55,18 @@ public class vision_test extends LinearOpMode  {
         Y_Resolution = 240;
         Camera_Angle = 41.18 * (Math.PI/180) - FOV_Y / 2;
 
+
+        ColorRange GOOD_RED = new ColorRange(
+                ColorSpace.HSV,
+                //bright red
+                new Scalar(ColorDefinition.MIN_RED_HUE,  ColorDefinition.MIN_RED_SATURATION,  ColorDefinition.MIN_RED_VALUE),
+                //dark red
+                new Scalar(ColorDefinition.MAX_RED_HUE, ColorDefinition.MAX_RED_SATURATION, ColorDefinition.MAX_RED_VALUE)
+        );
+
+
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.RED)         // use a predefined color match
+                .setTargetColorRange(GOOD_RED)         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
@@ -92,6 +105,8 @@ public class vision_test extends LinearOpMode  {
 
             // Read the current list
             List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
+            FtcDashboard.getInstance().getTelemetry().addLine(""+blobs.size());
+            FtcDashboard.getInstance().getTelemetry().update();
 
             /*
              * The list of Blobs can be filtered to remove unwanted Blobs.
