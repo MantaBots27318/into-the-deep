@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.SortOrder;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -23,10 +24,13 @@ import org.firstinspires.ftc.vision.opencv.ColorSpace;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvWebcam;
+
+import org.firstinspires.ftc.teamcode.vision.Calibration;
 
 import java.util.List;
 
@@ -45,6 +49,7 @@ public class vision_test extends LinearOpMode  {
     private int counter = 0;
     private OpenCvWebcam webcam;
 
+    private Calibration mCalibration;
     IntakeElbow mIntakeElbow;
     IntakeArm mIntakeArm;;
 
@@ -54,14 +59,7 @@ public class vision_test extends LinearOpMode  {
 
     public void runOpMode()
     {
-        Height = 13-1.5;
-        FOV_X = 62.4 * (Math.PI/180);
-        FOV_Y = 46.8 * (Math.PI/180);
-
-        X_Resolution = 320;
-        Y_Resolution = 240;
-        Camera_Angle = 41.18 * (Math.PI/180) - FOV_Y / 2;
-
+        mCalibration = new Calibration();
 
         ColorRange GOOD_RED = new ColorRange(
                 ColorSpace.HSV,
@@ -73,7 +71,7 @@ public class vision_test extends LinearOpMode  {
 
 
         ColorBlobLocatorProcessor colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(GOOD_RED)         // use a predefined color match
+                .setTargetColorRange(ColorRange.BLUE)         // use a predefined color match
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)    // exclude blobs inside blobs
                 .setRoi(ImageRegion.asUnityCenterCoordinates(-1, 1, 1, -1))  // search central 1/4 of camera view
                 .setDrawContours(true)                        // Show contours on the Stream Preview
@@ -121,8 +119,11 @@ public class vision_test extends LinearOpMode  {
         telemetry.setMsTransmissionInterval(50);   // Speed up telemetry updates, Just use for debugging.
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
 
+
+        waitForStart();
+
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
-        while (opModeIsActive() || opModeInInit())
+        while (opModeIsActive())
         {
 
 
@@ -130,7 +131,6 @@ public class vision_test extends LinearOpMode  {
             // Read the current list
             List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
             FtcDashboard.getInstance().getTelemetry().addLine(""+blobs.size());
-            FtcDashboard.getInstance().getTelemetry().update();
 
             /*
              * The list of Blobs can be filtered to remove unwanted Blobs.
@@ -169,36 +169,30 @@ public class vision_test extends LinearOpMode  {
             counter = 0;
             hsvProcessor.DrawBlob(null);
             // Display the size (area) and center location for each Blob.
+            ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.ASCENDING, blobs);
+            ColorBlobLocatorProcessor.Util.filterByArea(150,70000, blobs);
             for(ColorBlobLocatorProcessor.Blob b : blobs) {
+                FtcDashboard.getInstance().getTelemetry().addLine("" + b.getContourArea());
                 hsvProcessor.button(save);
                 if (b.getAspectRatio() > 1.5) {
+                    FtcDashboard.getInstance().getTelemetry().addLine("selected");
                     RotatedRect boxFit = b.getBoxFit();
                     hsvProcessor.DrawBlob(b) ;
+
 //                telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d)",
 //                        b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
 
 
-                    telemetry.update();
                     sleep(50);
+                    Point inputPixelPoint = new Point(boxFit.center.x, boxFit.center.y);
+                    mCalibration.distance(inputPixelPoint);
 
-                    double x_center = boxFit.center.x - 160;
-                    double y_center = -boxFit.center.y + 120;
-                    double actual_AngleX = ((FOV_X / X_Resolution) * x_center);
-                    double actual_AngleY = Camera_Angle + ((FOV_Y / Y_Resolution) * y_center + (FOV_Y / 2));
-
-                    Actual_Y = Height * Math.tan(actual_AngleY);
-                    Actual_X =  (x_center/160)*Math.tan(FOV_X/2)*Math.sqrt(Height*Height+Actual_Y*Actual_Y) ;
-
-                    telemetry.addData("Actual X", Actual_X);
-                    telemetry.addData("Actual Y", Actual_Y);
-                    telemetry.addData("Center X", x_center);
-                    telemetry.addData("Center Y", y_center);
-                    telemetry.addData("Angle X", (actual_AngleX * 180 / Math.PI));
-                    telemetry.addData("Angle Y", (actual_AngleY * 180 / Math.PI));
-
+                    telemetry.addData("Pixel X", boxFit.center.x);
+                    telemetry.addData("Pixel Y", boxFit.center.y);
 
                     telemetry.update();
 
+                    FtcDashboard.getInstance().getTelemetry().update();
                 }
             }
         }
