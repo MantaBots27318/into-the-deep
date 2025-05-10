@@ -12,6 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.intake.IntakeArm;
+import org.firstinspires.ftc.teamcode.intake.IntakeElbow;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
@@ -85,6 +87,16 @@ public class vision_test extends LinearOpMode  {
          *  or
          *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
          */
+
+        IntakeElbow mIntakeElbow;
+        mIntakeElbow = new IntakeElbow();
+        IntakeArm mIntakeArm;
+        mIntakeArm = new IntakeArm();
+
+        mIntakeElbow.setPosition(IntakeElbow.Position.LOOKING);
+        mIntakeArm.setPosition(IntakeArm.Position.TRANSFER);
+
+
         HSVProcessor hsvProcessor = new HSVProcessor(telemetry);
         VisionPortal portal = new VisionPortal.Builder()
                 .addProcessor(colorLocator)
