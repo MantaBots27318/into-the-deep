@@ -76,7 +76,7 @@ public class V1 extends Configuration {
         mServos.get("intake-elbow-pitch").addPosition("overSub", 0.71);
         mServos.get("intake-elbow-pitch").addPosition("off", 0.66);
         mServos.get("intake-elbow-pitch").addPosition("topView", 0.45);
-        mServos.get("intake-elbow-pitch").addPosition("visionStart", 0.62);
+        mServos.get("intake-elbow-pitch").addPosition("visionStart", 0.50);
 
         mServos.get("intake-wrist-roll").addPosition("-2", 0.27);
         mServos.get("intake-wrist-roll").addPosition("-1", 0.335);

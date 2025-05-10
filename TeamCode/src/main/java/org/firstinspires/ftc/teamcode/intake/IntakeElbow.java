@@ -108,7 +108,13 @@ public class IntakeElbow {
     // By the time, the servo should have reached its target position
     public void setPosition(Position position) {
 
+        mLogger.addLine(position.name());
+        mLogger.addLine("" + mPositions.containsKey(position));
+        mLogger.addLine("" + mReady);
+        mLogger.addLine("" + !this.isMoving());
         if( mPositions.containsKey(position) && mReady && !this.isMoving()) {
+            mLogger.addLine("here");
+            mLogger.addLine("" + mPositions.get(position));
             mServo.setPosition(mPositions.get(position));
             mTimer.arm(sTimeOut);
             mPosition = position;

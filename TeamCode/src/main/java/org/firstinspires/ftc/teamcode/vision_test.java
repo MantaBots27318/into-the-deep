@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.configurations.Configuration;
 import org.firstinspires.ftc.teamcode.intake.IntakeArm;
 import org.firstinspires.ftc.teamcode.intake.IntakeElbow;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -44,7 +45,11 @@ public class vision_test extends LinearOpMode  {
     private int counter = 0;
     private OpenCvWebcam webcam;
 
-@Override
+    IntakeElbow mIntakeElbow;
+    IntakeArm mIntakeArm;;
+
+
+    @Override
 
 
     public void runOpMode()
@@ -88,13 +93,20 @@ public class vision_test extends LinearOpMode  {
          *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
          */
 
-        IntakeElbow mIntakeElbow;
         mIntakeElbow = new IntakeElbow();
-        IntakeArm mIntakeArm;
         mIntakeArm = new IntakeArm();
 
-        mIntakeElbow.setPosition(IntakeElbow.Position.LOOKING);
+        mIntakeElbow.setHW(Configuration.s_Current, hardwareMap, telemetry);
+        mIntakeArm.setHW(Configuration.s_Current, hardwareMap, telemetry);
+
+        while (mIntakeElbow.isMoving() || mIntakeArm.isMoving()) {
+            sleep(100);
+        }
+
+        mIntakeElbow.setPosition(IntakeElbow.Position.VISION_START);
         mIntakeArm.setPosition(IntakeArm.Position.TRANSFER);
+
+        telemetry.update();
 
 
         HSVProcessor hsvProcessor = new HSVProcessor(telemetry);
@@ -152,6 +164,8 @@ public class vision_test extends LinearOpMode  {
              */
 
 //            telemetry.addLine(" Area Density Aspect  Center");
+
+
             counter = 0;
             hsvProcessor.DrawBlob(null);
             // Display the size (area) and center location for each Blob.

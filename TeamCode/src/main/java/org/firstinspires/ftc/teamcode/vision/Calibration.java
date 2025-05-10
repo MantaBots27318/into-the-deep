@@ -16,29 +16,29 @@ public class Calibration {
 
 
     static Point[] dstPoints = new Point[]{
-            new Point(3, 30),
-            new Point(21, 27),
-            new Point(12, 27),
-            new Point(3, 21),
-            new Point(18, 21),
             new Point(18, 15),
-            new Point(3, 15),
+            new Point(18, 21),
+            new Point(21, 27),
+            new Point(12, 30),
+            new Point(12, 21),
             new Point(12, 12),
-            new Point(6, 6),
-            new Point(21, 6),
+            new Point(6, 15),
+            new Point(3, 30),
+            new Point(3, 24),
+            new Point(3, 21),
 
     };
     static Point[] srcPoints = new Point[] {
-            new Point(72.2, 9.4),
-            new Point(245, 23.6),
-            new Point(154.6, 22.5),
-            new Point(48, 53),
-            new Point(222, 55),
-            new Point(232, 97.3),
-            new Point(26.3, 97.8),
-            new Point(147.6, 124.7),
-            new Point(23.6, 204.2),
-            new Point(319, 206.7),
+            new Point(246, 108),
+            new Point(232, 57),
+            new Point(254, 19),
+            new Point(155, 9),
+            new Point(153, 59),
+            new Point(149, 146),
+            new Point(57, 112),
+            new Point(64, 12),
+            new Point(48, 42),
+            new Point(38, 62),
     };
 
     private Telemetry mTelemetry;
