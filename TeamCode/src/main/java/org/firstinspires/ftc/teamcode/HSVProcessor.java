@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.util.SortOrder;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
@@ -52,8 +53,10 @@ public   class HSVProcessor implements VisionProcessor {
     @Override
     public Mat processFrame(Mat frame, long timestamp) {
 //        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
+        Mat temp = new Mat();
+        frame.copyTo(temp);
         if(save) {
-            Imgproc.cvtColor(frame, RGBframe , Imgproc.COLOR_BGR2RGB);
+            Imgproc.cvtColor(temp, RGBframe , Imgproc.COLOR_BGR2RGB);
             Imgcodecs.imwrite("/sdcard/FIRST/Image.png", RGBframe) ;
             FtcDashboard.getInstance().getTelemetry().addLine("Photo");
             FtcDashboard.getInstance().getTelemetry().update();
@@ -61,12 +64,13 @@ public   class HSVProcessor implements VisionProcessor {
         }
         List<MatOfPoint> contours = new ArrayList<>();
         if(blob !=null) { contours.add(blob.getContour());}
-        Imgproc.drawContours(frame,contours,0,new Scalar(255,165,0,1),3);
-        Utils.matToBitmap(frame, bitmap);
+
+        Imgproc.drawContours(temp,contours,0,new Scalar(255,165,0,1),3);
+        Utils.matToBitmap(temp, bitmap);
 
         dashboard.sendImage(bitmap);
 
-        return hsvMat;
+        return frame;
     }
 
     public void button ( boolean replace){
