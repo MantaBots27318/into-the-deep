@@ -59,7 +59,6 @@ public   class HSVProcessor implements VisionProcessor {
             Imgproc.cvtColor(temp, RGBframe , Imgproc.COLOR_BGR2RGB);
             Imgcodecs.imwrite("/sdcard/FIRST/Image.png", RGBframe) ;
             FtcDashboard.getInstance().getTelemetry().addLine("Photo");
-            FtcDashboard.getInstance().getTelemetry().update();
             save = false;
         }
         List<MatOfPoint> contours = new ArrayList<>();
@@ -74,7 +73,7 @@ public   class HSVProcessor implements VisionProcessor {
     }
 
     public void button ( boolean replace){
-        save = replace ;
+        save = replace;
     }
     public  void onDrawFrame(Canvas canva, int x,int y, float syrf,float iren,Object object ){
 

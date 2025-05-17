@@ -125,76 +125,38 @@ public class vision_test extends LinearOpMode  {
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive())
         {
-
-
-
+            counter ++;
             // Read the current list
             List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
             FtcDashboard.getInstance().getTelemetry().addLine(""+blobs.size());
 
-            /*
-             * The list of Blobs can be filtered to remove unwanted Blobs.
-             *   Note:  All contours will be still displayed on the Stream Preview, but only those that satisfy the filter
-             *          conditions will remain in the current list of "blobs".  Multiple filters may be used.
-             *
-             * Use any of the following filters.
-             *
-             * ColorBlobLocatorProcessor.Util.filterByArea(minArea, maxArea, blobs);
-             *   A Blob's area is the number of pixels contained within the Contour.  Filter out any that are too big or small.
-             *   Start with a large range and then refine the range based on the likely size of the desired object in the viewfinder.
-             *
-             * ColorBlobLocatorProcessor.Util.filterByDensity(minDensity, maxDensity, blobs);
-             *   A blob's density is an indication of how "full" the contour is.
-             *   If you put a rubber band around the contour you would get the "Convex Hull" of the contour.
-             *   The density is the ratio of Contour-area to Convex Hull-area.
-             *
-             * ColorBlobLocatorProcessor.Util.filterByAspectRatio(minAspect, maxAspect, blobs);
-             *   A blob's Aspect ratio is the ratio of boxFit long side to short side.
-             *   A perfect Square has an aspect ratio of 1.  All others are > 1
-             */
-             //           ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);  // filter out very small blobs.
-           // ColorBlobLocatorProcessor.Util.filterByAspectRatio(1.5, 3, blobs);
-
-            /*
-             * The list of Blobs can be sorted using the same Blob attributes as listed above.
-             * No more than one sort call should be made.  Sorting can use ascending or descending order.
-             *     ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.DESCENDING, blobs);      // Default
-             *     ColorBlobLocatorProcessor.Util.sortByDensity(SortOrder.DESCENDING, blobs);
-             *     ColorBlobLocatorProcessor.Util.sortByAspectRatio(SortOrder.DESCENDING, blobs);
-             */
-
-//            telemetry.addLine(" Area Density Aspect  Center");
-
-
-            counter = 0;
             hsvProcessor.DrawBlob(null);
+            hsvProcessor.button(save);
+
             // Display the size (area) and center location for each Blob.
             ColorBlobLocatorProcessor.Util.sortByArea(SortOrder.ASCENDING, blobs);
             ColorBlobLocatorProcessor.Util.filterByArea(150,70000, blobs);
             for(ColorBlobLocatorProcessor.Blob b : blobs) {
                 FtcDashboard.getInstance().getTelemetry().addLine("" + b.getContourArea());
-                hsvProcessor.button(save);
                 if (b.getAspectRatio() > 1.5) {
                     FtcDashboard.getInstance().getTelemetry().addLine("selected");
                     RotatedRect boxFit = b.getBoxFit();
                     hsvProcessor.DrawBlob(b) ;
 
-//                telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d)",
-//                        b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
-
-
-                    sleep(50);
                     Point inputPixelPoint = new Point(boxFit.center.x, boxFit.center.y);
                     mCalibration.distance(inputPixelPoint);
 
                     telemetry.addData("Pixel X", boxFit.center.x);
                     telemetry.addData("Pixel Y", boxFit.center.y);
 
-                    telemetry.update();
-
-                    FtcDashboard.getInstance().getTelemetry().update();
                 }
             }
+
+            telemetry.update();
+
+            FtcDashboard.getInstance().getTelemetry().addLine("" + counter);
+            FtcDashboard.getInstance().getTelemetry().update();
+            sleep(50);
         }
     }
 }
