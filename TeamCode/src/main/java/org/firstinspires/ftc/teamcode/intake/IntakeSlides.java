@@ -61,9 +61,10 @@ public class IntakeSlides {
     MotorComponent          mMotor;       // Motors (coupled if specified by the configuration) driving the slides
     PIDFCoefficients        mPID;
     int                     mTolerance;
-
+    double                  MM_PER_INCH=25.4;
+    static final double     DIAMETER_MM=36.15;
     Map<Position, Integer>  mPositions;    // Link between positions enumerated and encoder positions
-
+    static final double     TPR=103.8;
 
     // Check if the component is currently moving on command
     public boolean isMoving() {
@@ -83,7 +84,19 @@ public class IntakeSlides {
         }
         return (mIsMoving && mTimer.isArmed());
     }
-
+    public double convertIntoTicks(double lengthInInches){
+        double numberInTicks = ((lengthInInches/((DIAMETER_MM / MM_PER_INCH)*Math.PI)) * TPR);
+        return numberInTicks;
+    }
+    public void goToPosition(double positionInInches){
+        mLogger.addLine("" + positionInInches);
+        mLogger.addLine(mMotor.logPositions());
+        double ticks = convertIntoTicks(positionInInches);
+        mLogger.addLine("" + ticks);
+        mMotor.setTargetPosition((int) ticks);
+        mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mMotor.setPower(1);
+    }
     // Initialize component from configuration
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger) {
 
