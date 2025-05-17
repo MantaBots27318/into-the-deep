@@ -16,29 +16,33 @@ public class Calibration {
 
 
     static Point[] dstPoints = new Point[]{
-            new Point(18, 15),
-            new Point(18, 21),
-            new Point(21, 27),
-            new Point(12, 30),
-            new Point(12, 21),
             new Point(12, 12),
             new Point(6, 15),
-            new Point(3, 30),
-            new Point(3, 24),
+            new Point(18, 15),
             new Point(3, 21),
+            new Point(12, 21),
+            new Point(18, 21),
+            new Point(3, 24),
+            new Point(15, 27),
+            new Point(21, 27),
+            new Point(6, 30),
+            new Point(3, 30),
+            new Point(18, 33),
 
     };
     static Point[] srcPoints = new Point[] {
-            new Point(246, 108),
-            new Point(232, 57),
-            new Point(254, 19),
-            new Point(155, 9),
-            new Point(153, 59),
-            new Point(149, 146),
-            new Point(57, 112),
-            new Point(64, 12),
-            new Point(48, 42),
-            new Point(38, 62),
+            new Point(147, 190),
+            new Point(37, 145),
+            new Point(261, 45),
+            new Point(20, 87),
+            new Point(151, 87),
+            new Point(238, 87),
+            new Point(34, 64),
+            new Point(186, 46),
+            new Point(260, 46),
+            new Point(86, 33),
+            new Point(54, 33),
+            new Point(214, 20),
     };
 
     private Telemetry mTelemetry;
@@ -74,7 +78,6 @@ public class Calibration {
         if (dstPoints.length > 0) {
             FtcDashboard.getInstance().getTelemetry().addData("Real World X", dstPoints[0].x);
             FtcDashboard.getInstance().getTelemetry().addData("Real World Y", dstPoints[0].y);
-            FtcDashboard.getInstance().getTelemetry().update();
         }
     }
 
