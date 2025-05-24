@@ -36,7 +36,7 @@ public class TestSlides extends LinearOpMode {
             count ++;
             try {
                 dashboard.getTelemetry().addLine("" + count);
-                intakeSlides.goToPosition(position);
+                intakeSlides.goToPositionSlides(position);
             } catch (Exception e) {
                 dashboard.getTelemetry().addLine(e.getMessage());
             }

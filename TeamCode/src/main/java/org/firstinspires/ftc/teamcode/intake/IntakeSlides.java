@@ -12,7 +12,12 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /* FTC Controller includes */
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.teamcode.configurations.Configuration;
+import org.firstinspires.ftc.teamcode.roadrunner.SparkFunOTOSDrive;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.Actions;
 /* Configurations includes */
 import org.firstinspires.ftc.teamcode.configurations.Configuration;
 import org.firstinspires.ftc.teamcode.configurations.ConfMotor;
@@ -84,19 +89,7 @@ public class IntakeSlides {
         }
         return (mIsMoving && mTimer.isArmed());
     }
-    public double convertIntoTicks(double lengthInInches){
-        double numberInTicks = ((lengthInInches/((DIAMETER_MM / MM_PER_INCH)*Math.PI)) * TPR);
-        return numberInTicks;
-    }
-    public void goToPosition(double positionInInches){
-        mLogger.addLine("" + positionInInches);
-        mLogger.addLine(mMotor.logPositions());
-        double ticks = convertIntoTicks(positionInInches);
-        mLogger.addLine("" + ticks);
-        mMotor.setTargetPosition((int) ticks);
-        mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        mMotor.setPower(1);
-    }
+
     // Initialize component from configuration
     public void setHW(Configuration config, HardwareMap hwm, Telemetry logger) {
 
@@ -162,6 +155,20 @@ public class IntakeSlides {
 
 
     }
+    public double convertIntoTicks(double lengthInInches){
+        double numberInTicks = ((lengthInInches/((DIAMETER_MM / MM_PER_INCH)*Math.PI)) * TPR);
+        return numberInTicks;
+    }
+    public void goToPositionSlides(double xPositionInInches){
+        mLogger.addLine("" + xPositionInInches);
+        mLogger.addLine(mMotor.logPositions());
+        double ticks = convertIntoTicks(xPositionInInches);
+        mLogger.addLine("" + ticks);
+        mMotor.setTargetPosition((int) ticks);
+        mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mMotor.setPower(1);
+    }
+
 
     // Extends the slides with a given power
     public void extend(double Power)   {
