@@ -68,7 +68,7 @@ public class Calibration {
 
     }
 
-    public void distance(Point pixelPoint) {
+    public Point distance(Point pixelPoint) {
         MatOfPoint2f src = new MatOfPoint2f(pixelPoint);
         MatOfPoint2f dst = new MatOfPoint2f();
 
@@ -79,6 +79,7 @@ public class Calibration {
             FtcDashboard.getInstance().getTelemetry().addData("Real World X", dstPoints[0].x);
             FtcDashboard.getInstance().getTelemetry().addData("Real World Y", dstPoints[0].y);
         }
+        return dstPoints[0];
     }
 
 

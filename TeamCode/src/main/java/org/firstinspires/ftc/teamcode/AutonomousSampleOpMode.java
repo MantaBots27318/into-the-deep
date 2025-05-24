@@ -43,6 +43,7 @@ public final class AutonomousSampleOpMode extends LinearOpMode {
             mCollecting.catchFromGround();
             Actions.runBlocking(drive.actionBuilder(drive.pose).lineToXConstantHeading(-11).turn(-7 * Math.PI/24).build());
             mCollecting.dropHighBasketAscend();
+
             Actions.runBlocking(drive.actionBuilder(drive.pose).splineTo(new Vector2d(-51,-10),-Math.PI/2).lineToYConstantHeading(14.5).build());
 
             // Read current heading and transform it into the FTC field coordinate system

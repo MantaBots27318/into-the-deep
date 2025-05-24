@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.outtake.OuttakeSlides;
 import org.firstinspires.ftc.teamcode.outtake.OuttakeElbow;
 import org.firstinspires.ftc.teamcode.outtake.OuttakeWrist;
 import org.firstinspires.ftc.teamcode.outtake.OuttakeClaw;
+import org.opencv.core.Point;
 
 import java.util.Map;
 
@@ -75,6 +76,7 @@ public class Collecting {
     OuttakeElbow mOuttakeElbow;
     OuttakeWrist mOuttakeWrist;
     OuttakeClaw mOuttakeClaw;
+
 
     Gamepad mGamepad;
     boolean mWasXPressed;
@@ -182,6 +184,7 @@ public class Collecting {
             mWasRightStickButtonPressed = false;
         }
 
+
         if ((mGamepad.left_trigger > 0) && (mOuttakeSlides.isRetracted())) {
             mLogger.addLine("==> EXT IN SLD");
             mIntakeSlides.extend(mGamepad.left_trigger * 0.9);
@@ -236,6 +239,7 @@ public class Collecting {
         } else {
             mWasBPressed = false;
         }
+
 
         if (mGamepad.dpad_left) {
             mLogger.addLine(String.format("==> SWT IN CLW : " + mIntakeClaw.getPosition()));
@@ -758,6 +762,11 @@ public class Collecting {
         mIntakeArm.setPosition(IntakeArm.Position.OVER_SUBMERSIBLE);
 
     }
+
+   public void AutoGrab (double distance){
+       mIntakeSlides.goToPositionSlides(distance );
+
+   }
 
 
 

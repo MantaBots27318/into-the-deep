@@ -162,7 +162,7 @@ public class IntakeSlides {
     public void goToPositionSlides(double xPositionInInches){
         mLogger.addLine("" + xPositionInInches);
         mLogger.addLine(mMotor.logPositions());
-        double ticks = convertIntoTicks(xPositionInInches);
+        double ticks = (convertIntoTicks(xPositionInInches)-11);//-11 inches for the arm
         mLogger.addLine("" + ticks);
         mMotor.setTargetPosition((int) ticks);
         mMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
